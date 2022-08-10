@@ -1,9 +1,11 @@
 package com.summer.lijiahao.extend.util;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.summer.lijiahao.base.BaseUtil;
 import com.summer.lijiahao.base.NccEnvSettingService;
 import org.apache.commons.lang.StringUtils;
@@ -18,7 +20,7 @@ public class ExtendCopyUtil {
     /**
      * 项目的鉴权文件路径
      */
-    public static final String PROJECT_CONFIG_FILE_PATH = File.separator + "nccloud" + File.separator + "src" + File.separator + "client" + File.separator + "yyconfig";
+    public static final String PROJECT_CONFIG_FILE_PATH = File.separator + "src" + File.separator + "client" + File.separator + "yyconfig";
     /**
      * 模块的鉴权文件路径
      */
@@ -101,8 +103,17 @@ public class ExtendCopyUtil {
             Messages.showMessageDialog("请先设置NC Home", "Error", Messages.getErrorIcon());
             return;
         }
-        copyDir(module.getModuleNioFile().getParent().toString() + PROJECT_CONFIG_FILE_PATH, homePath + HOME_CONFIG_FILE_PATH);
 
+        String modulePath = module.getModuleNioFile().getParent().toString();
+        File file = new File(modulePath);
+        if(file.isDirectory()) {
+            String[] list = file.list();
+            for (String com : list) {
+                if (!com.endsWith(".xml") && !com.endsWith(".iml") && !com.equals("META-INF")) {
+                    copyDir(module.getModuleNioFile().getParent().toString() + File.separator + com + PROJECT_CONFIG_FILE_PATH, homePath + HOME_CONFIG_FILE_PATH);
+                }
+            }
+        }
     }
 
     /**
