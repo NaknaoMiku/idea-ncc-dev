@@ -1,0 +1,124 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.lijiahaosummer.nccdev</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>ncc开发插件</name>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="lijiahaosummer@gmail.com" url="https://www.lijiahaosummer.com">yonyou</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description>用友ncc开发插件,适用于ncc1909, ncc2005, ncc2105, ncc2111</description>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <moduleType id="NCCMODULE" implementationClass="com.summer.lijiahao.module.NCCModuleType"/>
+        <projectService serviceInterface="com.summer.lijiahao.base.NccEnvSettingService"
+                        serviceImplementation="com.summer.lijiahao.base.NccEnvSettingService"/>
+    </extensions>
+
+
+    <actions>
+
+        <action id="dev.module.conver" class="com.summer.lijiahao.module.action.ConvertModuleAction" text="转为ncc模块"
+                description="转为ncc模块" icon="AllIcons.Actions.ModuleDirectory">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="dev.module.newmodule" class="com.summer.lijiahao.module.action.CreateNewNCModuleAction" text="新建ncc模块"
+                description="新建ncc模块" icon="AllIcons.Actions.ModuleDirectory">
+            <add-to-group group-id="NewGroup" relative-to-action="NewModule" anchor="before"/>
+        </action>
+
+        <action id="dev.module.newcomponent" class="com.summer.lijiahao.module.action.CreateNCComponentAction" text="新建ncc组件"
+                description="新建ncc组件" icon="AllIcons.Actions.ModuleDirectory">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="NewGroup" relative-to-action="NewModule" anchor="before"/>
+        </action>
+
+        <action id="dev.extend.copy" class="com.summer.lijiahao.extend.action.CopyExtendAction" text="复制鉴权文件到nchome"
+                description="复制鉴权文件到nchome">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+        <action id="copy.upm.copy" class="com.summer.lijiahao.upm.action.CopyUpmAction" text="复制upm文件到nchome"
+                description="复制upm文件到nchome">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="dev.set.libraries" class="com.summer.lijiahao.library.action.LibrariesSetAction" popup="true"
+                text="设置nc类路径" description="设置nc类路径">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="dev.config" class="com.summer.lijiahao.devconfig.action.DevConfigAction" popup="true" text="集成配置"
+                description="集成配置">
+        </action>
+
+        <action id="dev.about" class="com.summer.lijiahao.devconfig.action.AboutAction" popup="true" text="使用教程"
+                description="使用配置"/>
+
+        <action id="dev.reset" class="com.summer.lijiahao.reset.action.ResetAction" popup="true" text="Eval Reset"
+                description="idea授权重置">
+            <add-to-group group-id="HelpMenu" anchor="last"/>
+            <add-to-group group-id="WelcomeScreen.Options"/>
+        </action>
+        <action id="dev.sql.item.export"
+                class="com.summer.lijiahao.script.action.ExportCommonInitAction" text="item导出预置脚本"
+                description="使用items.xml文件导出预置数据脚本">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+        <action id="dev.sql.pdm.export"
+                class="com.summer.lijiahao.script.action.ExportDBCreateScriptsAction" text="pdm导出建库脚本"
+                description="使用pdm文件导出建库脚本">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+        <action id="dev.patcher.export" class="com.summer.lijiahao.patcher.action.BuildPatcherAction" text="导出补丁NCC补丁"
+                description="导出NMC格式补丁">
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="Vcs.Log.ChangesBrowser.Popup" anchor="last"/>
+        </action>
+        <!--        <action id="publishMetaData" class="com.yingling.metadata.action.PublishMetaDataAction" text="发布元数据"-->
+        <!--                description="发布元数据">-->
+        <!--            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>-->
+        <!--        </action>-->
+        <action id="dev.application.server.create" class="com.summer.lijiahao.debug.action.NewServerApplicationAction"
+                text="server application" description="server application"/>
+        <action id="dev.application.client.create" class="com.summer.lijiahao.debug.action.NewClientApplicationAction"
+                text="client application" description="client application"/>
+
+        <action id="dev.dictionary" class="com.summer.lijiahao.dictionary.action.DataDictionaryAction" text="数据字典"
+                description="数据字典"/>
+        <action id="dev.reload.module" class="com.summer.lijiahao.devconfig.action.LoadAllModuleAction" text="加载所有模块"
+                description="加载所有模块"/>
+        <group id="dev.debug" text="调试..." popup="true" description="调试..."
+               class="com.summer.lijiahao.debug.action.AppGroupAction">
+            <reference id="dev.application.server.create"/>
+            <reference id="dev.application.client.create"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </group>
+
+        <group id="dev.group" description="集成配置" text="集成配置" popup="true" icon="AllIcons.Actions.Colors">
+            <reference id="dev.config"/>
+            <!--            <reference id="dev.reload.module"/>-->
+            <reference id="dev.dictionary"/>
+            <!--            <reference id="dev.reset"/>-->
+            <reference id="dev.about"/>
+            <!--添加到bar显示-->
+            <add-to-group group-id="ToolbarRunGroup" anchor="first"/>
+            <!--添加到tool菜单显示-->
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </group>
+    </actions>
+</idea-plugin>
