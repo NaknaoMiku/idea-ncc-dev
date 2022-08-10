@@ -1,1 +1,1 @@
-rootProject.name = "ncc"
+rootProject.name = "yonyou-ncc-dev"
