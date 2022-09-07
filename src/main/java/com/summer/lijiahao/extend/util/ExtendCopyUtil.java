@@ -162,8 +162,4 @@ public class ExtendCopyUtil {
         File toFile = new File(newFilePath);
         FileUtil.copy(fromFile, toFile);
     }
-
-    public static void main(String[] args) throws IOException {
-        copyDir("D://111", "D://222");
-    }
 }

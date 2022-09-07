@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.summer.lijiahao"
-version = "1.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -55,3 +55,4 @@ dependencies {
     implementation("com.oracle.database.jdbc:ojdbc8:21.6.0.0.1")
     implementation(fileTree(mapOf("dir" to "lib", "include" to listOf("*.jar"))))
 }
+
