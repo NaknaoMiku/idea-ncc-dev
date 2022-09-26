@@ -2,11 +2,11 @@
 <idea-plugin>
     <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
     <id>com.lijiahaosummer.nccdev</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 
     <!-- Public plugin name should be written in Title Case.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>ncc开发插件</name>
+    <name>NCC开发插件</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="lijiahaosummer@gmail.com" url="https://www.lijiahaosummer.com">yonyou</vendor>
@@ -14,17 +14,35 @@
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
-    <description>用友ncc开发插件,适用于ncc1909, ncc2005, ncc2105, ncc2111</description>
+    <description>
+        <![CDATA[
+		YonYou NC Cloud Secondary development tools
+		<ul>
+            <li>Support NCC1909.</li>
+            <li>Support NCC2005.</li>
+            <li>Support NCC2105.</li>
+            <li>Support NCC2111.</li>
+		</ul>
+	]]>
+    </description>
 
     <change-notes><![CDATA[
-     <em>1.0.3</em> <br>
+
+      <h3>1.0.4</h3>
+      <ul>
+          <li>1. 新增打开NC Home功能</li>
+          <li>2. 新增打开NC配置功能</li>
+          <li>3. 新增打开社区（https://nccdev.yonyou.com/index）功能</li>
+          <li>4. 兼容IntelliJ IDEA 2022.2.2</li>
+      </ul>
+
+      <h3>1.0.3</h3>
       <ul>
           <li>1. 调整插件使用的api，避免新版本开发工具不兼容</li>
           <li>2. 导出补丁时默认勾选包含源代码</li>
           <li>3. 支持复制资源文件(*.properties)到home</li>
           <li>4. 修复部分情况下插件报错的问题</li>
       </ul>
-
     ]]>
     </change-notes>
 
@@ -87,9 +105,6 @@
                 description="集成配置">
         </action>
 
-        <action id="dev.about" class="com.summer.lijiahao.devconfig.action.AboutAction" popup="true" text="使用教程"
-                description="使用配置"/>
-
         <action id="dev.sql.item.export"
                 class="com.summer.lijiahao.script.action.ExportCommonInitAction" text="item导出预置脚本"
                 description="使用items.xml文件导出预置数据脚本">
@@ -117,6 +132,16 @@
 
         <action id="dev.dictionary" class="com.summer.lijiahao.dictionary.action.DataDictionaryAction" text="数据字典"
                 description="数据字典"/>
+
+        <action id="dev.openHome" class="com.summer.lijiahao.utils.OpenNCHomeAction" text="NCHome"
+                description="NCHome"/>
+
+        <action id="dev.openConfig" class="com.summer.lijiahao.utils.OpenNCConfigAction" text="NC配置"
+                description="NC配置"/>
+
+        <action id="dev.openNccdev" class="com.summer.lijiahao.utils.OpenNccdevAction" text="nccdev"
+                description="nccdev"/>
+
         <action id="dev.reload.module" class="com.summer.lijiahao.devconfig.action.LoadAllModuleAction" text="加载所有模块"
                 description="加载所有模块"/>
         <group id="dev.debug" text="调试..." popup="true" description="调试..."
@@ -128,10 +153,11 @@
 
         <group id="dev.group" description="集成配置" text="集成配置" popup="true" icon="AllIcons.Actions.Colors">
             <reference id="dev.config"/>
-            <!--            <reference id="dev.reload.module"/>-->
             <reference id="dev.dictionary"/>
-            <!--            <reference id="dev.reset"/>-->
-            <reference id="dev.about"/>
+            <reference id="dev.openHome"/>
+            <reference id="dev.openConfig"/>
+            <reference id="dev.openNccdev"/>
+
             <!--添加到bar显示-->
             <add-to-group group-id="ToolbarRunGroup" anchor="first"/>
             <!--添加到tool菜单显示-->
