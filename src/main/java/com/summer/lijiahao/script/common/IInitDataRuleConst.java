@@ -1,11 +1,11 @@
 package com.summer.lijiahao.script.common;
 
 interface IInitDataRuleConst {
-    public static final String ROOT_DIR = "script/conf/initdata";
+    String ROOT_DIR = "script/conf/initdata";
 
-    public static final String RULE_CFG = "items.xml";
+    String RULE_CFG = "items.xml";
 
-    public static final String TABLE_CFG_DIR = "table";
+    String TABLE_CFG_DIR = "table";
 
-    public static final String MAPPING_CFG = "mapping.properties";
+    String MAPPING_CFG = "mapping.properties";
 }

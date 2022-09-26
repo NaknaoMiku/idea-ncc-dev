@@ -7,9 +7,9 @@ import com.summer.lijiahao.script.studio.ui.preference.prop.PropInfo;
 import java.io.File;
 
 public class PropXml {
-    private String xmlPath = "/bin/dbdriverset.xml";
+    private final String xmlPath = "/bin/dbdriverset.xml";
 
-    private String xmlPath2 = "/ierp/bin/dbdriverset.xml";
+    private final String xmlPath2 = "/ierp/bin/dbdriverset.xml";
 
     public PropInfo loadPropInfo(String propfile) throws Exception {
         return (PropInfo) XMLToObject.getJavaObjectFromFile(propfile,
@@ -36,7 +36,7 @@ public class PropXml {
         }
         DataSourceMeta[] metaswithdesign = new DataSourceMeta[metas.length + 1];
         System.arraycopy(metas, 0, metaswithdesign, 1, metas.length);
-        if(metas == null || metas.length == 0){
+        if (metas == null || metas.length == 0) {
             metaswithdesign[0] = new DataSourceMeta();
         } else {
             metaswithdesign[0] = metas[0];
@@ -57,10 +57,10 @@ public class PropXml {
     }
 
     public DatabaseDriverSetInfo getDriverSet(String nchome) throws Exception {
-        String fileName = String.valueOf(nchome) + this.xmlPath2;
+        String fileName = nchome + this.xmlPath2;
         File file = new File(fileName);
         if (!file.exists())
-            file = new File(String.valueOf(nchome) + this.xmlPath);
+            file = new File(nchome + this.xmlPath);
         if (!file.exists())
             throw new IllegalArgumentException("Configuration file not found");
         return (DatabaseDriverSetInfo) XMLToObject.getJavaObjectFromFile(file,

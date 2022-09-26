@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SqlQueryInserts {
-    private ITable table;
+    private final ITable table;
 
     private List<String> results;
 

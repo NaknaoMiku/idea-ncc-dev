@@ -8,13 +8,8 @@ import com.summer.lijiahao.script.studio.ui.preference.prop.DataSourceMeta;
 import com.summer.lijiahao.script.studio.ui.preference.prop.ToolUtils;
 import org.apache.commons.lang.StringUtils;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextField;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.util.Map;
 
 public class InitDataDialog extends AbstractDialog {

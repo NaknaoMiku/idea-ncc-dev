@@ -8,12 +8,7 @@ import com.summer.lijiahao.script.studio.ui.preference.xml.PropXml;
 import org.apache.commons.lang.StringUtils;
 
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * 数据字典 查询工具
@@ -21,7 +16,7 @@ import java.util.Vector;
 public class SearchTableUtil {
 
     private static DataSourceMeta meta;
-    private static Map<String, DataSourceMeta> metaMap = new HashMap<>();
+    private static final Map<String, DataSourceMeta> metaMap = new HashMap<>();
     private static SearchTableUtil instance;
 
 
@@ -197,7 +192,7 @@ public class SearchTableUtil {
                     }
                     for (Map<String, String> v : list) {
                         String dataType = v.get("datatype");
-                        if (enumMap.keySet().contains(dataType)) {
+                        if (enumMap.containsKey(dataType)) {
                             v.put("enumvalue", enumMap.get(dataType));
                         }
                     }

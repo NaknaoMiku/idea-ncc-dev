@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class DBDataUtil {
 
-    private DataSourceMeta meta;
+    private final DataSourceMeta meta;
 
     public DBDataUtil(DataSourceMeta meta) {
         this.meta = meta;

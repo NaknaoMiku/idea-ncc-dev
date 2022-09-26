@@ -14,12 +14,38 @@ import java.lang.reflect.Modifier;
 import java.util.StringTokenizer;
 
 public class ObjectToXML {
+    public static final String DOC_TYPE = "(Java lang)Middleware depoly parameter";
     public static Class[] classA = {
             Boolean.class, Character.class, Integer.class, Long.class, Double.class, Float.class, String.class,
             java.math.BigDecimal.class, int.class, char.class,
             boolean.class, long.class, double.class, float.class};
 
-    public static final String DOC_TYPE = "(Java lang)Middleware depoly parameter";
+    public static void saveAsXmlFile(String fileName, Object o) throws Exception {
+        saveAsXmlFile(fileName, o, Object.class);
+    }
+
+    private static void saveAsXmlFile(String fileName, Object o, Class defaultClass) throws Exception {
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+        Element nod = doc.createElement("root");
+        Node root = (new ObjectToXML()).getDocument(doc, nod, o, 0, defaultClass, null);
+        doc.appendChild(root);
+        String pathName = fileName;
+        String tmpDirectory = "";
+        pathName = pathName.replace('\\', '/');
+        pathName = pathName.substring(0, pathName.lastIndexOf("/"));
+        StringTokenizer st = new StringTokenizer(pathName, "/");
+        while (st.hasMoreTokens()) {
+            tmpDirectory = tmpDirectory + st.nextToken() + "/";
+            File f = new File(tmpDirectory);
+            if (!f.canRead())
+                f.mkdir();
+        }
+        FileWriter fileOutStream = new FileWriter(fileName);
+        PrintWriter dataOutStream = new PrintWriter(fileOutStream);
+        XMLPrinter.printDOMTree(dataOutStream, doc, 0);
+        dataOutStream.close();
+        fileOutStream.close();
+    }
 
     private void appendChild(Document doc, Node parent, Node child) {
         if (parent == null) {
@@ -122,32 +148,5 @@ public class ObjectToXML {
                 return true;
         }
         return false;
-    }
-
-    public static void saveAsXmlFile(String fileName, Object o) throws Exception {
-        saveAsXmlFile(fileName, o, Object.class);
-    }
-
-    private static void saveAsXmlFile(String fileName, Object o, Class defaultClass) throws Exception {
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-        Element nod = doc.createElement("root");
-        Node root = (new ObjectToXML()).getDocument(doc, nod, o, 0, defaultClass, null);
-        doc.appendChild(root);
-        String pathName = fileName;
-        String tmpDirectory = "";
-        pathName = pathName.replace('\\', '/');
-        pathName = pathName.substring(0, pathName.lastIndexOf("/"));
-        StringTokenizer st = new StringTokenizer(pathName, "/");
-        while (st.hasMoreTokens()) {
-            tmpDirectory = String.valueOf(tmpDirectory) + st.nextToken() + "/";
-            File f = new File(tmpDirectory);
-            if (!f.canRead())
-                f.mkdir();
-        }
-        FileWriter fileOutStream = new FileWriter(fileName);
-        PrintWriter dataOutStream = new PrintWriter(fileOutStream);
-        XMLPrinter.printDOMTree(dataOutStream, doc, 0);
-        dataOutStream.close();
-        fileOutStream.close();
     }
 }

@@ -4,9 +4,9 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.util.Pair;
-import com.summer.lijiahao.module.NCCModuleBuilder;
 import com.summer.lijiahao.base.BusinessException;
 import com.summer.lijiahao.base.ProjectManager;
+import com.summer.lijiahao.module.NCCModuleBuilder;
 import com.summer.lijiahao.module.NCCModuleType;
 
 import java.io.File;

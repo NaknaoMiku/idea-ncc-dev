@@ -101,7 +101,7 @@ public class ConnectionService {
 
             throw e;
         } finally {
-            closeQuietly(connection, statement, (ResultSet) null);
+            closeQuietly(connection, statement, null);
         }
     }
 
@@ -129,15 +129,15 @@ public class ConnectionService {
         return getPoolFacade().getDataSourceMetaInfo(dataSourceName);
     }
 
-    public static void setPoolFacade(PoolFacade facade) {
-        instance = facade;
-    }
-
     public static PoolFacade getPoolFacade() {
         if (instance == null) {
             instance = new PoolFacade();
         }
         return instance;
+    }
+
+    public static void setPoolFacade(PoolFacade facade) {
+        instance = facade;
     }
 
     public static void dispose() {

@@ -10,7 +10,7 @@ import java.util.List;
 public class DomUtil {
     public static Node findChild(Node node, String childName) {
         List<Node> nodes = findChilds(node, childName);
-        return nodes.isEmpty() ? null : (Node) nodes.get(0);
+        return nodes.isEmpty() ? null : nodes.get(0);
     }
 
     public static List<Node> findChilds(Node node, String childName) {
@@ -25,7 +25,7 @@ public class DomUtil {
 
     public static Node findNestedChild(Node node, String nestedChildName) {
         List<Node> nodes = findNestedChilds(node, nestedChildName);
-        return nodes.isEmpty() ? null : (Node) nodes.get(0);
+        return nodes.isEmpty() ? null : nodes.get(0);
     }
 
     public static List<Node> findNestedChilds(Node node, String nestedChildName) {

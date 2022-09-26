@@ -2,6 +2,7 @@ package com.summer.lijiahao.upm.util;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -73,7 +74,6 @@ public class EjbConfCopyUtil {
      * 递归路径获取可导出的文件
      *
      * @param filePath
-     * @param fileUrlSet
      */
     private Set<String> getFileUrl(String filePath) {
         Set<String> fileUrlSet = new HashSet<>();
@@ -104,14 +104,17 @@ public class EjbConfCopyUtil {
         Module module = BaseUtil.getModule(event);
         String ncModuleName = getNCModuleName(module);
         Set<String> fileUrls;
-        if (module.getModuleFile() == null) {
+
+        VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
+        if (contentRoots.length == 0) {
             return;
         }
         // 目标路径，但是缺少文件名字
         String toPath = homePath + File.separator + "modules" + File.separator + ncModuleName + File.separator
                 + "META-INF" + File.separator;
         // 获取某个模块下所有的upm文件
-        fileUrls = getFileUrl(module.getModuleFile().getParent().getPath());
+
+        fileUrls = getFileUrl(contentRoots[0].getPath());
         List<String> errorList = new ArrayList<>();
         for (String fileUrl : fileUrls) {
             File file = new File(fileUrl);
@@ -136,11 +139,12 @@ public class EjbConfCopyUtil {
     private String getNCModuleName(Module module) {
 
         String ncModuleName = null;
-        VirtualFile virtualFile = module.getModuleFile();
-        if (virtualFile == null) {
+
+        VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
+        if (contentRoots.length == 0) {
             return null;
         }
-        String modulePath = virtualFile.getParent().getPath();
+        String modulePath = contentRoots[0].getPath();
         try {
             File file = new File(modulePath + File.separator + "META-INF" + File.separator + "module.xml");
             if (file.exists()) {

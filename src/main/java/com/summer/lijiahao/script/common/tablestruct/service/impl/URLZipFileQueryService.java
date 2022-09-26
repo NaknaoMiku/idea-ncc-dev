@@ -7,33 +7,30 @@ import com.summer.lijiahao.script.common.tablestruct.service.ICommonTableStructQ
 import com.summer.lijiahao.script.common.tablestruct.util.XStreamParser;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Stack;
 
 public class URLZipFileQueryService implements ICommonTableStructQueryService {
+    public static final String CACHE_FOLDER_NAME = ".tables";
     //    protected static Logger logger = LoggerFactory.getLogger(URLZipFileQueryService.class.getName());
     private static final String DEFAULT_URL = "http://20.10.80.128:12345/cfgs/tables.zip";
-
-    public static final String CACHE_FOLDER_NAME = ".tables";
-
-    private NccEnvSettingService envSettingService = NccEnvSettingService.getInstance();
+    private final NccEnvSettingService envSettingService = NccEnvSettingService.getInstance();
     private Properties common;
 
     private List<MainTableCfg> cfgs;
 
-    private File localLocation;
+    private final File localLocation;
 
     public URLZipFileQueryService() throws BusinessException {
         localLocation = getDefaultLocalCacheLocation();
+    }
+
+    public static URLZipFileQueryService getSingleton() throws BusinessException {
+        return new URLZipFileQueryService();
     }
 
     public void sync() {
@@ -43,10 +40,6 @@ public class URLZipFileQueryService implements ICommonTableStructQueryService {
 //                this.localLocation.getAbsolutePath(), true);
 //        this.cfgs = null;
 //        this.common = null;
-    }
-
-    public static URLZipFileQueryService getSingleton() throws BusinessException {
-        return new URLZipFileQueryService();
     }
 
     public Properties getCommonMapping() {
@@ -60,7 +53,7 @@ public class URLZipFileQueryService implements ICommonTableStructQueryService {
                 InputStreamReader reader = null;
                 try {
                     reader = new InputStreamReader(new FileInputStream(file),
-                            "UTF-8");
+                            StandardCharsets.UTF_8);
                     this.common.load(reader);
                 } catch (UnsupportedEncodingException e) {
 //                    e.printStackTrace();
@@ -132,7 +125,7 @@ public class URLZipFileQueryService implements ICommonTableStructQueryService {
             Stack<File> stack = new Stack<File>();
             stack.add(folder);
             while (!stack.isEmpty()) {
-                File pop = (File) stack.pop();
+                File pop = stack.pop();
                 byte b;
                 int i;
                 File[] arrayOfFile = pop.listFiles();

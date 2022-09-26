@@ -12,7 +12,7 @@ public class Index implements IIndex {
 
     private ITable table;
 
-    private List<IColumn> columns = new ArrayList();
+    private final List<IColumn> columns = new ArrayList();
 
     private boolean clustered;
 
@@ -28,28 +28,28 @@ public class Index implements IIndex {
         return this.name;
     }
 
-    public ITable getTable() {
-        return this.table;
-    }
-
-    public boolean isClustered() {
-        return this.clustered;
-    }
-
-    public boolean isUnique() {
-        return this.unique;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ITable getTable() {
+        return this.table;
     }
 
     public void setTable(ITable table) {
         this.table = table;
     }
 
+    public boolean isClustered() {
+        return this.clustered;
+    }
+
     public void setClustered(boolean clustered) {
         this.clustered = clustered;
+    }
+
+    public boolean isUnique() {
+        return this.unique;
     }
 
     public void setUnique(boolean unique) {

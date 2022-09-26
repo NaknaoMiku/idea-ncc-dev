@@ -12,7 +12,7 @@ public interface IDbCreateService {
 
     void geneDataDictionary(VirtualFile paramFile1, boolean paramBoolean, VirtualFile paramFile2) throws PDMParseRuntimeException;
 
-    public enum DatabaseType {
-        ORACLE, SQLSERVER, DB2;
+    enum DatabaseType {
+        ORACLE, SQLSERVER, DB2
     }
 }

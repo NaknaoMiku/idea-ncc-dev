@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ObjectListResultSetProcessor<T> extends Object implements IResultSetProcessor<List<T>> {
     //    protected static Logger logger = LoggerFactory.getLogger(ObjectListResultSetProcessor.class.getName());
-    private Class<T> clazz;
+    private final Class<T> clazz;
 
     public ObjectListResultSetProcessor(Class<T> clazz) {
         this.clazz = clazz;
@@ -21,7 +21,7 @@ public class ObjectListResultSetProcessor<T> extends Object implements IResultSe
         ResultSetMetaData metaData = rs.getMetaData();
         while (rs.next()) {
             try {
-                T obj = (T) this.clazz.newInstance();
+                T obj = this.clazz.newInstance();
                 Field[] fields = this.clazz.getDeclaredFields();
                 byte b;
                 int j;
@@ -30,8 +30,8 @@ public class ObjectListResultSetProcessor<T> extends Object implements IResultSe
                     Field field = arrayOfField[b];
                     for (int i = 1; i <= metaData.getColumnCount(); i++) {
                         String columnName = metaData.getColumnName(i);
-                        if (field.getName().toLowerCase()
-                                .equals(columnName.toLowerCase())) {
+                        if (field.getName()
+                                .equalsIgnoreCase(columnName)) {
                             Object value = rs.getObject(i);
                             setProperty(obj, field, value,
                                     metaData.getColumnType(i));
@@ -48,14 +48,14 @@ public class ObjectListResultSetProcessor<T> extends Object implements IResultSe
     }
 
     private void setProperty(T obj, Field field, Object value, int columnType) {
-        if (value instanceof String && ((String) value).equals("~"))
+        if (value instanceof String && value.equals("~"))
             value = null;
         Class<?> fieldType = field.getType();
         if ((fieldType.equals(Boolean.class) || fieldType.equals(boolean.class)) && (
                 columnType == 1 || columnType == 12 ||
                         columnType == -9 || columnType == -15)) {
             boolean boolValue = !(value == null ||
-                    value.toString().trim().toUpperCase().equals("N"));
+                    value.toString().trim().equalsIgnoreCase("N"));
             ReflectionUtil.setProperty(obj, field.getName(), Boolean.valueOf(boolValue));
         } else if (fieldType.equals(Integer.class) ||
                 fieldType.equals(int.class)) {

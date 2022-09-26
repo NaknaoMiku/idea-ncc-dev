@@ -2,11 +2,11 @@ package com.summer.lijiahao.script.common.tablestruct.util;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import com.summer.lijiahao.script.common.tablestruct.model.InitDataCfg;
+import com.summer.lijiahao.script.common.tablestruct.model.MainTableCfg;
 import com.summer.lijiahao.script.common.tablestruct.model.SubTableCfg;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
-import com.summer.lijiahao.script.common.tablestruct.model.MainTableCfg;
 
 import java.io.Closeable;
 import java.io.InputStream;
@@ -71,7 +71,7 @@ public class XStreamParser {
             }
         } catch (Exception e) {
             String message = MessageFormat.format(
-                    "Parsing file {0} failed", new Object[]{file.getPath()});
+                    "Parsing file {0} failed", file.getPath());
 //            logger.error(message + e.getMessage(), e);
             throw e;
         } finally {

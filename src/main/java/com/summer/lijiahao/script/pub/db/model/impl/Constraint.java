@@ -18,23 +18,23 @@ public class Constraint implements IConstraint {
         return this.columns;
     }
 
-    public String getName() {
-        return this.name;
+    public void setColumns(List<IColumn> columns) {
+        this.columns = columns;
     }
 
-    public ITable getTable() {
-        return this.table;
+    public String getName() {
+        return this.name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setTable(ITable table) {
-        this.table = table;
+    public ITable getTable() {
+        return this.table;
     }
 
-    public void setColumns(List<IColumn> columns) {
-        this.columns = columns;
+    public void setTable(ITable table) {
+        this.table = table;
     }
 }

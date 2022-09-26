@@ -43,10 +43,6 @@ public class PropInfo {
         return this.internalServiceArray;
     }
 
-    public void setInternalServiceArray(InternalServiceArray[] internalService) {
-        this.internalServiceArray = internalService;
-    }
-
     public boolean isEncode() {
         return this.isEncode;
     }
@@ -91,22 +87,6 @@ public class PropInfo {
         return this.XADataSourceClass;
     }
 
-    public void setSqlDebugSetClass(String sqlDebugSetClass) {
-        this.SqlDebugSetClass = sqlDebugSetClass;
-    }
-
-    public void setTransactionManagerClass(String transactionManagerClass) {
-        this.TransactionManagerClass = transactionManagerClass;
-    }
-
-    public void setTransactionManagerProxyClass(String transactionManagerProxyClass) {
-        this.TransactionManagerProxyClass = transactionManagerProxyClass;
-    }
-
-    public void setUserTransactionClass(String userTransactionClass) {
-        this.UserTransactionClass = userTransactionClass;
-    }
-
     public void setXADataSourceClass(String dataSourceClass) {
         this.XADataSourceClass = dataSourceClass;
     }
@@ -131,20 +111,40 @@ public class PropInfo {
         return this.internalServiceArray;
     }
 
+    public void setInternalServiceArray(InternalServiceArray[] internalService) {
+        this.internalServiceArray = internalService;
+    }
+
     public String getSqlDebugSetClass() {
         return this.SqlDebugSetClass;
+    }
+
+    public void setSqlDebugSetClass(String sqlDebugSetClass) {
+        this.SqlDebugSetClass = sqlDebugSetClass;
     }
 
     public String getTransactionManagerClass() {
         return this.TransactionManagerClass;
     }
 
+    public void setTransactionManagerClass(String transactionManagerClass) {
+        this.TransactionManagerClass = transactionManagerClass;
+    }
+
     public String getTransactionManagerProxyClass() {
         return this.TransactionManagerProxyClass;
     }
 
+    public void setTransactionManagerProxyClass(String transactionManagerProxyClass) {
+        this.TransactionManagerProxyClass = transactionManagerProxyClass;
+    }
+
     public String getUserTransactionClass() {
         return this.UserTransactionClass;
+    }
+
+    public void setUserTransactionClass(String userTransactionClass) {
+        this.UserTransactionClass = userTransactionClass;
     }
 
     public String getFdbPath() {

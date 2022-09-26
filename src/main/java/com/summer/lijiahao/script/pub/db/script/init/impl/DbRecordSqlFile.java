@@ -6,7 +6,7 @@ import com.summer.lijiahao.script.pub.db.script.ScriptType;
 import java.io.File;
 
 public class DbRecordSqlFile implements ISqlFile {
-    private File file;
+    private final File file;
 
     public DbRecordSqlFile(File file) {
         this.file = file;

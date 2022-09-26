@@ -25,6 +25,53 @@ public class XMLToObject {
 
     private boolean m_AllowNoField = false;
 
+    public static Object getJavaObjectFromFile(String fileName) throws Exception {
+        return getJavaObjectFromFile(fileName, true);
+    }
+
+    public static Object getJavaObjectFromFile(File file, Class rootClass, boolean allowNoField) throws Exception {
+        DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document doc = parser.parse(file);
+        return getJavaObjectFromDocument(doc, rootClass, allowNoField);
+    }
+
+    public static Object getJavaObjectFromStream(InputStream stream, Class rootClass, boolean allowNoField) throws Exception {
+        DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document doc = parser.parse(stream);
+        return getJavaObjectFromDocument(doc, rootClass, allowNoField);
+    }
+
+    public static Object getJavaObjectFromDocument(Document doc, Class rootClass, boolean allowNoField) throws Exception {
+        XMLToObject xto = new XMLToObject();
+        xto.setAllowNoField(allowNoField);
+        Node node = doc.getDocumentElement();
+        return xto.revertDocument(node, rootClass, null);
+    }
+
+    public static Object getJavaObjectFromNode(Node node, Class rootClass, boolean allowNoField) throws Exception {
+        XMLToObject xto = new XMLToObject();
+        xto.setAllowNoField(allowNoField);
+        return xto.revertDocument(node, rootClass, null);
+    }
+
+    public static Object getJavaObjectFromFile(String fileName, boolean allowNoField) throws Exception {
+        DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document doc = parser.parse(fileName);
+        XMLToObject xto = new XMLToObject();
+        xto.setAllowNoField(allowNoField);
+        Node node = doc.getDocumentElement();
+        Class defaultClass = "(Java lang)Middleware depoly parameter".equals(((Element) node).getAttribute("docType")) ? Class.forName("nc.bs.mw.pm.MiddleParameter") :
+                Object.class;
+        String classType = ((Element) node).getAttribute("ClassType");
+        if (classType != null && classType.length() > 2)
+            defaultClass = Class.forName(classType);
+        return xto.revertDocument(node, defaultClass, null);
+    }
+
+    public static Object getJavaObjectFromFile(String fileName, Class rootClass, boolean allowNoField) throws Exception {
+        return getJavaObjectFromFile(new File(fileName), rootClass, allowNoField);
+    }
+
     private void fillFieldValue(Field f, Object o, String str) throws Exception {
         Class itemClass = f.getType();
         String value = str.trim();
@@ -109,55 +156,12 @@ public class XMLToObject {
         return Class.forName(className);
     }
 
-    public static Object getJavaObjectFromFile(String fileName) throws Exception {
-        return getJavaObjectFromFile(fileName, true);
-    }
-
-    public static Object getJavaObjectFromFile(File file, Class rootClass, boolean allowNoField) throws Exception {
-        DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document doc = parser.parse(file);
-        return getJavaObjectFromDocument(doc, rootClass, allowNoField);
-    }
-
-    public static Object getJavaObjectFromStream(InputStream stream, Class rootClass, boolean allowNoField) throws Exception {
-        DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document doc = parser.parse(stream);
-        return getJavaObjectFromDocument(doc, rootClass, allowNoField);
-    }
-
-    public static Object getJavaObjectFromDocument(Document doc, Class rootClass, boolean allowNoField) throws Exception {
-        XMLToObject xto = new XMLToObject();
-        xto.setAllowNoField(allowNoField);
-        Node node = doc.getDocumentElement();
-        return xto.revertDocument(node, rootClass, null);
-    }
-
-    public static Object getJavaObjectFromNode(Node node, Class rootClass, boolean allowNoField) throws Exception {
-        XMLToObject xto = new XMLToObject();
-        xto.setAllowNoField(allowNoField);
-        return xto.revertDocument(node, rootClass, null);
-    }
-
-    public static Object getJavaObjectFromFile(String fileName, boolean allowNoField) throws Exception {
-        DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document doc = parser.parse(fileName);
-        XMLToObject xto = new XMLToObject();
-        xto.setAllowNoField(allowNoField);
-        Node node = doc.getDocumentElement();
-        Class defaultClass = "(Java lang)Middleware depoly parameter".equals(((Element) node).getAttribute("docType")) ? Class.forName("nc.bs.mw.pm.MiddleParameter") :
-                Object.class;
-        String classType = ((Element) node).getAttribute("ClassType");
-        if (classType != null && classType.length() > 2)
-            defaultClass = Class.forName(classType);
-        return xto.revertDocument(node, defaultClass, null);
-    }
-
-    public static Object getJavaObjectFromFile(String fileName, Class rootClass, boolean allowNoField) throws Exception {
-        return getJavaObjectFromFile(new File(fileName), rootClass, allowNoField);
-    }
-
     private boolean isAllowNoField() {
         return this.m_AllowNoField;
+    }
+
+    public void setAllowNoField(boolean newAllowNoField) {
+        this.m_AllowNoField = newAllowNoField;
     }
 
     private boolean isArrayClass(String classArrayName) throws Exception {
@@ -168,18 +172,14 @@ public class XMLToObject {
         Node valueNode = cNode.getAttributes().getNamedItem("value");
         if (valueNode == null)
             return false;
-        if (valueNode.getNodeValue().equals("null"))
-            return true;
-        return false;
+        return valueNode.getNodeValue().equals("null");
     }
 
     private boolean isNullNodeArray(Node cNode) {
         Node valueNode = cNode.getAttributes().getNamedItem("arrayValue");
         if (valueNode == null)
             return false;
-        if (valueNode.getNodeValue().equals("null"))
-            return true;
-        return false;
+        return valueNode.getNodeValue().equals("null");
     }
 
     private boolean isPrimitive(Class cl) {
@@ -203,18 +203,18 @@ public class XMLToObject {
                 vNl.addElement(nl.item(i));
         }
         if (vNl.size() == 1 &&
-                isNullNodeArray((Node) vNl.elementAt(0)))
+                isNullNodeArray(vNl.elementAt(0)))
             return null;
         Object o = Array.newInstance(arrayItemClass, vNl.size());
         if (isPrimitive(arrayItemClass)) {
             for (int i = 0; i < vNl.size(); i++) {
-                Node item = (Node) vNl.elementAt(i);
+                Node item = vNl.elementAt(i);
                 String str = item.getChildNodes().item(0).getNodeValue().trim();
                 setArrayPrimitiveValue(o, i, arrayItemClass, str);
             }
         } else {
             for (int i = 0; i < vNl.size(); i++) {
-                Node item = (Node) vNl.elementAt(i);
+                Node item = vNl.elementAt(i);
                 Array.set(o, i, revertDocument(item, arrayItemClass, nodeName));
             }
         }
@@ -247,7 +247,7 @@ public class XMLToObject {
                 }
                 if (cNode == null && !fa[i].getType().isArray()) {
                     if (!isAllowNoField()) {
-                        String msg = MessageFormat.format("Description of {0} lost", new Object[]{fa[i].getName()});
+                        String msg = MessageFormat.format("Description of {0} lost", fa[i].getName());
                         throw new Exception(msg);
                     }
                 } else {
@@ -273,13 +273,9 @@ public class XMLToObject {
     }
 
     private Object newInstance(Class clazz) throws Exception {
-        Constructor cnst = clazz.getDeclaredConstructor(new Class[0]);
+        Constructor cnst = clazz.getDeclaredConstructor();
         cnst.setAccessible(true);
-        return cnst.newInstance(new Object[0]);
-    }
-
-    public void setAllowNoField(boolean newAllowNoField) {
-        this.m_AllowNoField = newAllowNoField;
+        return cnst.newInstance();
     }
 
     private void setArrayPrimitiveValue(Object arrayObject, int location, Class itemClass, String value) throws Exception {

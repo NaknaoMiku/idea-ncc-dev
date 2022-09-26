@@ -6,7 +6,7 @@ import com.summer.lijiahao.abs.AbstractMouseListener;
 import com.summer.lijiahao.base.NccEnvSettingService;
 import com.summer.lijiahao.dictionary.util.SearchTableUtil;
 
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import java.awt.event.MouseEvent;
 
 public class TableListClickedListener extends AbstractMouseListener {

@@ -10,11 +10,7 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.projectRoots.JavaSdk;
 import com.intellij.openapi.projectRoots.JavaSdkVersion;
 import com.intellij.openapi.projectRoots.Sdk;
-import com.intellij.openapi.roots.CompilerModuleExtension;
-import com.intellij.openapi.roots.ContentEntry;
-import com.intellij.openapi.roots.LanguageLevelProjectExtension;
-import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.roots.*;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider;
 import com.intellij.openapi.util.Pair;
@@ -37,17 +33,18 @@ import java.util.List;
  * 用于将含有src的目录转为依赖nc的可调试java module
  */
 public class NCCModuleBuilder extends ModuleBuilder {
+    private List<Pair<String, String>> mySourcePaths;
+    private Library[] libraries;
+    private String myCompilerOutputPath;
+
+    private static String getUrlByPath(String path) {
+        return VfsUtil.getUrlForLibraryRoot(new File(path));
+    }
+
     @Override
     public ModuleType<?> getModuleType() {
         return StdModuleTypes.JAVA;
     }
-
-    private List<Pair<String, String>> mySourcePaths;
-
-    private Library[] libraries;
-
-    private String myCompilerOutputPath;
-
 
     @Override
     public @Nullable
@@ -176,10 +173,6 @@ public class NCCModuleBuilder extends ModuleBuilder {
 
     public final void setCompilerOutputPath(String compilerOutputPath) {
         this.myCompilerOutputPath = acceptParameter(compilerOutputPath);
-    }
-
-    private static String getUrlByPath(String path) {
-        return VfsUtil.getUrlForLibraryRoot(new File(path));
     }
 
 }

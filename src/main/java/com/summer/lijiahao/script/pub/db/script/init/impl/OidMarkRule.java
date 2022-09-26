@@ -10,36 +10,28 @@ import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @XStreamAlias("oidMarkRule")
 public class OidMarkRule {
+    private static final Map<String, OidMarkRule> instanceMap = new HashMap();
     //    protected static Logger logger = LoggerFactory.getLogger(OidMarkRule.class.getName());
     @XStreamImplicit
     private List<OidMarkMap> oidMarkMaps;
-
     @XStreamAlias("table")
     @XStreamImplicit
     private List<String> tables;
-
     private File file;
-
     private long lastModified;
-
     private Map<String, String> deptOidMarkMap;
-
-    private static Map<String, OidMarkRule> instanceMap = new HashMap();
 
     public static OidMarkRule getInstance(String oidMarkRuleFileName) {
         if (StringUtils.isBlank(oidMarkRuleFileName))
             return null;
         File file = new File(oidMarkRuleFileName);
         oidMarkRuleFileName = file.getPath();
-        OidMarkRule rule = (OidMarkRule) instanceMap.get(oidMarkRuleFileName);
+        OidMarkRule rule = instanceMap.get(oidMarkRuleFileName);
         if (rule == null) {
             rule = parseOIDMarkRule(file);
             if (rule != null)
@@ -53,28 +45,20 @@ public class OidMarkRule {
             if (lastModified > rule.lastModified)
                 instanceMap.put(oidMarkRuleFileName, parseOIDMarkRule(file));
         }
-        return (OidMarkRule) instanceMap.get(oidMarkRuleFileName);
-    }
-
-    public List<String> getTables() {
-        return this.tables;
-    }
-
-    public Map<String, String> getDeptOidMarkMap() {
-        return this.deptOidMarkMap;
+        return instanceMap.get(oidMarkRuleFileName);
     }
 
     private static OidMarkRule parseOIDMarkRule(File ruleCfgfile) {
         XStream xstream = new XStream();
-        List<Class<?>> clazzs = new ArrayList<Class<?>>();
+        List<Class<?>> clazzs = new ArrayList<>();
         clazzs.add(OidMarkRule.class);
         clazzs.add(OidMarkMap.class);
-        Annotations.configureAliases(xstream, (Class[]) clazzs.toArray(new Class[0]));
+        Annotations.configureAliases(xstream, clazzs.toArray(new Class[0]));
         InputStreamReader reader = null;
         OidMarkRule rule = null;
         long lastModified = ruleCfgfile.lastModified();
         try {
-            reader = new InputStreamReader(new FileInputStream(ruleCfgfile), "UTF-8");
+            reader = new InputStreamReader(new FileInputStream(ruleCfgfile), StandardCharsets.UTF_8);
             rule = (OidMarkRule) xstream.fromXML(reader);
         } catch (Exception e) {
 //            logger.error("Failed to parse oidmark with version path: (" + ruleCfgfile.getPath() + ")", e);
@@ -102,6 +86,14 @@ public class OidMarkRule {
         rule.deptOidMarkMap = Collections.unmodifiableMap(deptOidMapTemp);
     }
 
+    public List<String> getTables() {
+        return this.tables;
+    }
+
+    public Map<String, String> getDeptOidMarkMap() {
+        return this.deptOidMarkMap;
+    }
+
     @XStreamAlias("oidMarkMap")
     static class OidMarkMap {
         private String department;
@@ -117,7 +109,7 @@ public class OidMarkRule {
         }
 
         public String toString() {
-            return String.valueOf(this.department) + ":" + this.oidMark;
+            return this.department + ":" + this.oidMark;
         }
     }
 }

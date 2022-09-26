@@ -12,10 +12,7 @@ import com.summer.lijiahao.script.studio.ui.preference.prop.ToolUtils;
 import com.summer.lijiahao.script.studio.ui.preference.xml.PropXml;
 import org.apache.commons.lang.StringUtils;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -129,7 +126,7 @@ public class DataSourceUtil {
                 dlg.getComponent(JComboBox.class, "dbTypeBox").setSelectedItem(dt);
                 DatabaseDriverInfo data = dlg.getDatabaseDriverInfoMap().get(dt);
                 if (data == null) {
-                    Messages.showMessageDialog(MessageFormat.format("Can't find the specified type of datasource{0}", new Object[]{dt}), "提示", Messages.getInformationIcon());
+                    Messages.showMessageDialog(MessageFormat.format("Can't find the specified type of datasource{0}", dt), "提示", Messages.getInformationIcon());
                 } else {
                     DriverInfo[] infos = data.getDatabase();
                     dlg.getComponent(JComboBox.class, "driverBox").setSelectedItem(findDriverType(meta.getDriverClassName(), infos));
@@ -208,7 +205,7 @@ public class DataSourceUtil {
 
     public static void main(String[] args) {
         String path = "/Users/liuchao/nchome/ncc2111-dev/ncscript/uapServer/setup.ini";
-        Properties properties =new Properties();
+        Properties properties = new Properties();
         FileInputStream fis = null; // 读
         try {
             fis = new FileInputStream(path);

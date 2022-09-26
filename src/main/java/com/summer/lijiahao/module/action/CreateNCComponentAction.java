@@ -4,8 +4,8 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.summer.lijiahao.module.NewComponentDialog;
 import com.summer.lijiahao.abs.AbstractAnAction;
+import com.summer.lijiahao.module.NewComponentDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

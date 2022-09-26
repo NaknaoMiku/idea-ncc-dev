@@ -24,10 +24,10 @@ public class ReflectionUtil {
                 field.getType().equals(Boolean.class)) {
             getter = "is";
             if (property.startsWith("is")) {
-                getter = String.valueOf(getter) + property.substring(2, 3).toUpperCase() +
+                getter = getter + property.substring(2, 3).toUpperCase() +
                         property.substring(3);
             } else {
-                getter = String.valueOf(getter) + property.substring(0, 1).toUpperCase() +
+                getter = getter + property.substring(0, 1).toUpperCase() +
                         property.substring(1);
             }
             return (T) invokeGetter(obj, getter, field.getType());
@@ -70,7 +70,7 @@ public class ReflectionUtil {
     private static boolean invokeSetter(Object obj, String methodName, Class<?> clazz, Object value) {
         Method method = null;
         try {
-            method = obj.getClass().getMethod(methodName, new Class[]{clazz});
+            method = obj.getClass().getMethod(methodName, clazz);
         } catch (SecurityException e) {
 //            logger.error(e.getMessage(), e);
         } catch (NoSuchMethodException e) {
@@ -78,7 +78,7 @@ public class ReflectionUtil {
         }
         if (method != null)
             try {
-                method.invoke(obj, new Object[]{value});
+                method.invoke(obj, value);
                 return true;
             } catch (IllegalArgumentException e) {
 //                logger.error(e.getMessage(), e);
@@ -93,7 +93,7 @@ public class ReflectionUtil {
     private static Object invokeGetter(Object obj, String methodName, Class<?> clazz) {
         Method method = null;
         try {
-            method = obj.getClass().getMethod(methodName, new Class[0]);
+            method = obj.getClass().getMethod(methodName);
         } catch (SecurityException e) {
 //            logger.error(e.getMessage(), e);
         } catch (NoSuchMethodException e) {
@@ -101,7 +101,7 @@ public class ReflectionUtil {
         }
         if (method != null)
             try {
-                return method.invoke(obj, new Object[0]);
+                return method.invoke(obj);
             } catch (IllegalArgumentException e) {
 //                logger.error(e.getMessage(), e);
             } catch (IllegalAccessException e) {

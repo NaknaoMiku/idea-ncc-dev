@@ -6,19 +6,9 @@ import com.summer.lijiahao.devconfig.util.DataSourceUtil;
 import com.summer.lijiahao.script.studio.ui.preference.prop.DataSourceMeta;
 import org.apache.commons.lang.StringUtils;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 /**
  * 复制数据源
@@ -68,6 +58,13 @@ public class DataSourceCopyDlg extends AbstractDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    public static void main(String[] args) {
+        DataSourceCopyDlg dialog = new DataSourceCopyDlg();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
+    }
+
     private void onOK() {
 
         String newName = newNameText.getText();
@@ -76,7 +73,7 @@ public class DataSourceCopyDlg extends AbstractDialog {
             return;
         }
 
-        if (parentDlg.getDataSourceMetaMap().keySet().contains(newName)) {
+        if (parentDlg.getDataSourceMetaMap().containsKey(newName)) {
             Messages.showErrorDialog("该数据源名称已存在！请更换一个", "出错了");
             return;
         }
@@ -110,14 +107,6 @@ public class DataSourceCopyDlg extends AbstractDialog {
         dispose();
 
     }
-
-    public static void main(String[] args) {
-        DataSourceCopyDlg dialog = new DataSourceCopyDlg();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
-
 
     public DevConfigDialog getParentDlg() {
         return parentDlg;

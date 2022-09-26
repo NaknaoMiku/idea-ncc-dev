@@ -2,7 +2,6 @@ package com.summer.lijiahao.base;
 
 
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
@@ -15,15 +14,6 @@ import org.jetbrains.annotations.Nullable;
 @State(name = "NccEnvSetting", storages = {@com.intellij.openapi.components.Storage(value = "$PROJECT_CONFIG_DIR$/nccEnvSetting.xml")})
 public class NccEnvSettingService implements PersistentStateComponent<Element> {
 
-    private String ncHomePath;
-    private String tablesPath;
-    private String ex_modules;
-    private String must_modules;
-    private String connected_data_source;
-    private String nccloudJar;
-    private String ncchrJAR;
-    private String lastPatcherPath;
-
     private final String ATTR_NCHOME_PATH = "ncHomePath";
     private final String ATTR_TABLES_PATH = "tablesPath";
     private final String ATTR__EX_MODULES = "ex_modules";
@@ -32,6 +22,14 @@ public class NccEnvSettingService implements PersistentStateComponent<Element> {
     private final String ATTR_NCCLOUDJAR = "nccloudJar";
     private final String ATTR_NCCHRJAR = "ncchrJar";
     private final String ATTR_LASTPATCHERPATH = "lastPatcherPath";
+    private String ncHomePath;
+    private String tablesPath;
+    private String ex_modules;
+    private String must_modules;
+    private String connected_data_source;
+    private String nccloudJar;
+    private String ncchrJAR;
+    private String lastPatcherPath;
 
 
     public NccEnvSettingService() {
@@ -44,10 +42,10 @@ public class NccEnvSettingService implements PersistentStateComponent<Element> {
 
     public static NccEnvSettingService getInstance(Project project) {
         if (project == null) {
-            Messages.showMessageDialog("please open a project", "error", Messages.getErrorIcon());
+            Messages.showMessageDialog("Please open a project", "Error", Messages.getErrorIcon());
             return null;
         } else {
-            return ServiceManager.getService(project, NccEnvSettingService.class);
+            return project.getService(NccEnvSettingService.class);
         }
 
     }
@@ -112,12 +110,12 @@ public class NccEnvSettingService implements PersistentStateComponent<Element> {
         this.must_modules = must_modules;
     }
 
-    public void setConnected_data_source(String connected_data_source) {
-        this.connected_data_source = connected_data_source;
-    }
-
     public String getConnected_data_source() {
         return StringUtils.isBlank(connected_data_source) ? "" : connected_data_source;
+    }
+
+    public void setConnected_data_source(String connected_data_source) {
+        this.connected_data_source = connected_data_source;
     }
 
     public String getNccloudJar() {

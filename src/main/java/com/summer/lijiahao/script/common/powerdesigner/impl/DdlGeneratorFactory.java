@@ -37,13 +37,13 @@ public class DdlGeneratorFactory {
 
     private static final String TEMPL_PATH_DB2 = "/vm/db2/";
 
-    private static Map<IDbCreateService.DatabaseType, IDdlGenerator> ddlGeneratorMap = new HashMap();
+    private static final Map<IDbCreateService.DatabaseType, IDdlGenerator> ddlGeneratorMap = new HashMap();
 
     public static IDdlGenerator getInstance(IDbCreateService.DatabaseType dbType) {
-        IDdlGenerator generator = (IDdlGenerator) ddlGeneratorMap.get(dbType);
+        IDdlGenerator generator = ddlGeneratorMap.get(dbType);
         if (generator == null)
             synchronized (ddlGeneratorMap) {
-                if ((generator = (IDdlGenerator) ddlGeneratorMap.get(dbType)) == null) {
+                if ((generator = ddlGeneratorMap.get(dbType)) == null) {
                     DdlGeneratorVelocityImpl temp = new DdlGeneratorVelocityImpl();
                     try {
                         if (IDbCreateService.DatabaseType.SQLSERVER == dbType) {
@@ -112,13 +112,13 @@ public class DdlGeneratorFactory {
                 template.merge(vc, writer);
             } catch (ResourceNotFoundException e) {
 //                logger.error("Generating index sql failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Template file {0} doesn't exist.", new Object[]{this.createIndexTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Template file {0} doesn't exist.", this.createIndexTempl));
             } catch (ParseErrorException e) {
 //                logger.error("Generating index sql failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", new Object[]{this.createIndexTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", this.createIndexTempl));
             } catch (Exception e) {
 //                logger.error("Generating index sql failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", new Object[]{this.createIndexTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", this.createIndexTempl));
             }
         }
 
@@ -130,13 +130,13 @@ public class DdlGeneratorFactory {
                 template.merge(vc, writer);
             } catch (ResourceNotFoundException e) {
 //                logger.error("Generating sql of creating table failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Template file {0} doesn't exist.", new Object[]{this.createTableTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Template file {0} doesn't exist.", this.createTableTempl));
             } catch (ParseErrorException e) {
 //                logger.error("Generating sql of creating table failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", new Object[]{this.createTableTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", this.createTableTempl));
             } catch (Exception e) {
 //                logger.error("Generating sql of creating table failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", new Object[]{this.createTableTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", this.createTableTempl));
             }
         }
 
@@ -148,13 +148,13 @@ public class DdlGeneratorFactory {
                 template.merge(vc, writer);
             } catch (ResourceNotFoundException e) {
 //                logger.error("Generating view sql failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Template file {0} doesn't exist.", new Object[]{this.createViewTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Template file {0} doesn't exist.", this.createViewTempl));
             } catch (ParseErrorException e) {
 //                logger.error("Generating view sql failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", new Object[]{this.createViewTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", this.createViewTempl));
             } catch (Exception e) {
 //                logger.error("Generating view sql failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", new Object[]{this.createViewTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", this.createViewTempl));
             }
         }
 
@@ -166,13 +166,13 @@ public class DdlGeneratorFactory {
                 template.merge(vc, writer);
             } catch (ResourceNotFoundException e) {
 //                logger.error("Genertating foreign key constraint sql failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Template file {0} doesn't exist.", new Object[]{this.referenceTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Template file {0} doesn't exist.", this.referenceTempl));
             } catch (ParseErrorException e) {
 //                logger.error("Genertating foreign key constraint sql failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", new Object[]{this.referenceTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", this.referenceTempl));
             } catch (Exception e) {
 //                logger.error("Genertating foreign key constraint sql failed.", e);
-                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", new Object[]{this.referenceTempl}));
+                throw new PDMParseRuntimeException(MessageFormat.format("Parsing template file {0} failed.", this.referenceTempl));
             }
         }
 

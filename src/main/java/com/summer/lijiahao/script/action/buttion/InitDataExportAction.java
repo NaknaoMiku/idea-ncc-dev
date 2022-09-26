@@ -2,7 +2,6 @@ package com.summer.lijiahao.script.action.buttion;
 
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.summer.lijiahao.script.common.tablestruct.service.CommonTableStructQueryServiceFactory;
 import com.summer.lijiahao.abs.AbstractButtonAction;
 import com.summer.lijiahao.abs.AbstractDialog;
 import com.summer.lijiahao.base.BusinessException;
@@ -11,6 +10,7 @@ import com.summer.lijiahao.script.common.tablestruct.model.InitDataCfg;
 import com.summer.lijiahao.script.common.tablestruct.model.MainTableCfg;
 import com.summer.lijiahao.script.common.tablestruct.model.SubTableCfg;
 import com.summer.lijiahao.script.common.tablestruct.model.TableMapping;
+import com.summer.lijiahao.script.common.tablestruct.service.CommonTableStructQueryServiceFactory;
 import com.summer.lijiahao.script.common.tablestruct.util.XStreamParser;
 import com.summer.lijiahao.script.dialog.InitDataDialog;
 import com.summer.lijiahao.script.pub.db.IQueryService;
@@ -23,8 +23,7 @@ import com.summer.lijiahao.script.pub.db.script.export.InitDataExportStratege2;
 import com.summer.lijiahao.script.studio.connection.ConnectionService;
 import com.summer.lijiahao.script.studio.connection.exception.ConnectionException;
 
-import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -32,11 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 public class InitDataExportAction extends AbstractButtonAction {
 
@@ -45,6 +40,78 @@ public class InitDataExportAction extends AbstractButtonAction {
 
     public InitDataExportAction(AbstractDialog dialog) {
         super(dialog);
+    }
+
+    public static TableStructure getTableStructByMainTableCfg(MainTableCfg mainCfg, Map<String, String> tableNoMap) {
+        TableStructure struct = new TableStructure();
+        struct.setTable(mainCfg.getTableName());
+        struct.setSubTables(new ArrayList());
+        if (tableNoMap != null)
+            tableNoMap.put(mainCfg.getTableName().toLowerCase(),
+                    mainCfg.getSqlNo());
+        if (mainCfg.getChildren() == null)
+            return struct;
+        for (SubTableCfg subTableCfg : mainCfg.getChildren())
+            processSubTableStructure(struct, subTableCfg, tableNoMap);
+        return struct;
+    }
+
+    private static void processSubTableStructure(TableStructure parentStruct, SubTableCfg subTableCfg, Map<String, String> tableNoMap) {
+        TableStructure struct = new TableStructure();
+        struct.setSubTables(new ArrayList());
+        struct.setForeignKey(subTableCfg.getFkColumn());
+        struct.setTable(subTableCfg.getTableName());
+        if (tableNoMap != null)
+            tableNoMap.put(subTableCfg.getTableName().toLowerCase(),
+                    subTableCfg.getSqlNo());
+        if (subTableCfg.getChildren() != null)
+            for (SubTableCfg subCfg : subTableCfg.getChildren())
+                processSubTableStructure(struct, subCfg, tableNoMap);
+        parentStruct.getSubTables().add(struct);
+    }
+
+    public static Map<String, List<String>> getMLTableInfo(String dsName) throws ConnectionException {
+        Map<String, List<String>> mlTableMetaInfos = new HashMap<String, List<String>>();
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql = "select distinct m.tableid as tableName, c.name as columnName from md_column c inner join md_ormap m on c.id = m.columnid and m.attributeid in (select id from md_property where datatype='BS000010000100001058')  order by m.tableid, c.name";
+        try {
+            conn = ConnectionService.getConnection(dsName);
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                String tableName = rs.getString(1);
+                String columnName = rs.getString(2);
+                List<String> list = mlTableMetaInfos.get(tableName
+                        .toLowerCase());
+                if (list == null) {
+                    list = new ArrayList<String>();
+                    mlTableMetaInfos.put(tableName.toLowerCase(), list);
+                }
+                if (!list.contains(columnName))
+                    list.add(columnName);
+            }
+        } catch (SQLException e) {
+//            logger.error(e.getMessage(), e);
+        } finally {
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (SQLException sQLException) {
+                }
+            if (stmt != null)
+                try {
+                    stmt.close();
+                } catch (SQLException sQLException) {
+                }
+            if (conn != null)
+                try {
+                    conn.close();
+                } catch (SQLException sQLException) {
+                }
+        }
+        return mlTableMetaInfos;
     }
 
     @Override
@@ -141,7 +208,6 @@ public class InitDataExportAction extends AbstractButtonAction {
         return null;
     }
 
-
     public List<InitDataInfo> getInitDataInfo(VirtualFile cfgRoot, VirtualFile file) throws Exception {
         List<InitDataInfo> cfgs = new ArrayList<InitDataInfo>();
         List<InitDataCfg> configurations = XStreamParser.getInitDataCfgs(file);
@@ -202,20 +268,6 @@ public class InitDataExportAction extends AbstractButtonAction {
         return cfgs;
     }
 
-    public static TableStructure getTableStructByMainTableCfg(MainTableCfg mainCfg, Map<String, String> tableNoMap) {
-        TableStructure struct = new TableStructure();
-        struct.setTable(mainCfg.getTableName());
-        struct.setSubTables(new ArrayList());
-        if (tableNoMap != null)
-            tableNoMap.put(mainCfg.getTableName().toLowerCase(),
-                    mainCfg.getSqlNo());
-        if (mainCfg.getChildren() == null)
-            return struct;
-        for (SubTableCfg subTableCfg : mainCfg.getChildren())
-            processSubTableStructure(struct, subTableCfg, tableNoMap);
-        return struct;
-    }
-
     private List<TableMapping> getMappingCfgs(VirtualFile root) {
         VirtualFile mappingCfgFile = getChildFile(root, "mapping.properties");
         List<TableMapping> moduleMappings = new ArrayList<TableMapping>();
@@ -237,20 +289,6 @@ public class InitDataExportAction extends AbstractButtonAction {
         return moduleMappings;
     }
 
-    private static void processSubTableStructure(TableStructure parentStruct, SubTableCfg subTableCfg, Map<String, String> tableNoMap) {
-        TableStructure struct = new TableStructure();
-        struct.setSubTables(new ArrayList());
-        struct.setForeignKey(subTableCfg.getFkColumn());
-        struct.setTable(subTableCfg.getTableName());
-        if (tableNoMap != null)
-            tableNoMap.put(subTableCfg.getTableName().toLowerCase(),
-                    subTableCfg.getSqlNo());
-        if (subTableCfg.getChildren() != null)
-            for (SubTableCfg subCfg : subTableCfg.getChildren())
-                processSubTableStructure(struct, subCfg, tableNoMap);
-        parentStruct.getSubTables().add(struct);
-    }
-
     private List<TableMapping> getPubMappingCfgs() throws BusinessException {
         List<TableMapping> mappings = new ArrayList<TableMapping>();
         Properties pubMappingCfgs =
@@ -264,7 +302,6 @@ public class InitDataExportAction extends AbstractButtonAction {
             }
         return mappings;
     }
-
 
     private List<MainTableCfg> getMainTableCfgs(VirtualFile cfgRoot) {
         VirtualFile subTableCfgsFolder = getChildFile(cfgRoot, "table");
@@ -292,49 +329,5 @@ public class InitDataExportAction extends AbstractButtonAction {
     private List<MainTableCfg> getPubMainTableCfgs() throws BusinessException {
         return CommonTableStructQueryServiceFactory.getService()
                 .getCommonMainTableCfgs();
-    }
-
-    public static Map<String, List<String>> getMLTableInfo(String dsName) throws ConnectionException {
-        Map<String, List<String>> mlTableMetaInfos = new HashMap<String, List<String>>();
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-        String sql = "select distinct m.tableid as tableName, c.name as columnName from md_column c inner join md_ormap m on c.id = m.columnid and m.attributeid in (select id from md_property where datatype='BS000010000100001058')  order by m.tableid, c.name";
-        try {
-            conn = ConnectionService.getConnection(dsName);
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                String tableName = rs.getString(1);
-                String columnName = rs.getString(2);
-                List<String> list = (List) mlTableMetaInfos.get(tableName
-                        .toLowerCase());
-                if (list == null) {
-                    list = new ArrayList<String>();
-                    mlTableMetaInfos.put(tableName.toLowerCase(), list);
-                }
-                if (!list.contains(columnName))
-                    list.add(columnName);
-            }
-        } catch (SQLException e) {
-//            logger.error(e.getMessage(), e);
-        } finally {
-            if (rs != null)
-                try {
-                    rs.close();
-                } catch (SQLException sQLException) {
-                }
-            if (stmt != null)
-                try {
-                    stmt.close();
-                } catch (SQLException sQLException) {
-                }
-            if (conn != null)
-                try {
-                    conn.close();
-                } catch (SQLException sQLException) {
-                }
-        }
-        return mlTableMetaInfos;
     }
 }

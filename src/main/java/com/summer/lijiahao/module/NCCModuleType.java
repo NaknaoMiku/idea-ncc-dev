@@ -5,7 +5,7 @@ import com.intellij.openapi.module.ModuleType;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.Icon;
+import javax.swing.*;
 
 public class NCCModuleType extends ModuleType<NCCModuleBuilder> {
 

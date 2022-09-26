@@ -6,20 +6,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class PrintIOUtil {
 
 //    protected static Logger logger = LoggerFactory.getLogger(PrintIOUtil.class.getName());
 
-    private Map<String, List<String>> sqlMap = new HashMap();
-
     private static PrintIOUtil instance = null;
+    private final Map<String, List<String>> sqlMap = new HashMap();
 
     public static PrintIOUtil getInstance() {
         if (instance == null)
@@ -34,14 +29,14 @@ public class PrintIOUtil {
         try {
             for (String fileName : fileNameSet) {
                 PrintWriter writer = null;
-                List<String> sqlList = (List) this.sqlMap.get(fileName);
+                List<String> sqlList = this.sqlMap.get(fileName);
                 if (sqlList == null || sqlList.size() == 0)
                     continue;
                 Collections.sort(sqlList);
                 try {
                     writer = new PrintWriter(new OutputStreamWriter(
                             new FileOutputStream(new File(fileName), false),
-                            "UTF-8"));
+                            StandardCharsets.UTF_8));
                     for (String sql : sqlList)
                         writer.println(sql);
                 } catch (Exception e) {
@@ -59,9 +54,9 @@ public class PrintIOUtil {
 
     public boolean resaveSql(List<String> sqlList, File folder, String mapFileNo) {
         if (sqlList != null && sqlList.size() > 0) {
-            String fileName = String.valueOf(folder.getAbsolutePath()) + IOUtils.DIR_SEPARATOR +
+            String fileName = folder.getAbsolutePath() + IOUtils.DIR_SEPARATOR +
                     mapFileNo + ".sql";
-            List<String> list = (List) this.sqlMap.get(fileName);
+            List<String> list = this.sqlMap.get(fileName);
             if (list == null) {
                 list = new ArrayList<String>();
                 this.sqlMap.put(fileName, list);

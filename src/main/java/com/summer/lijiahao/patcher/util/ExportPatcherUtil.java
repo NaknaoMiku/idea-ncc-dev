@@ -7,16 +7,17 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.CompilerModuleExtension;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.summer.lijiahao.base.ConfigureFileUtil;
 import com.summer.lijiahao.base.BusinessException;
+import com.summer.lijiahao.base.ConfigureFileUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.swing.JProgressBar;
+import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -25,15 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 
 /**
@@ -84,9 +77,9 @@ public class ExportPatcherUtil {
     /**
      * 导出变量
      **/
-    private String patchName;
-    private String exportPath;
-    private AnActionEvent event;
+    private final String patchName;
+    private final String exportPath;
+    private final AnActionEvent event;
     private String webServerName = File.separator + "nccloud";
     private String zipName = "";
     private boolean srcFlag = false;
@@ -148,11 +141,7 @@ public class ExportPatcherUtil {
             String moduleName = ModuleUtil.findModuleForFile(file, project).getName();
             //判断如是选择了模块或者组件，则获取所有可导出的目录
             List<String> fileList = getAllFileList(path, moduleMap.get(moduleName));
-            Set<String> fileUrlSet = modulePathMap.get(moduleName);
-            if (fileUrlSet == null) {
-                fileUrlSet = new HashSet<>();
-                modulePathMap.put(moduleName, fileUrlSet);
-            }
+            Set<String> fileUrlSet = modulePathMap.computeIfAbsent(moduleName, k -> new HashSet<>());
             for (String str : fileList) {
                 getFileUrl(str, fileUrlSet);
             }
@@ -334,8 +323,8 @@ public class ExportPatcherUtil {
     private String getNCModuleName(Module module) {
         String ncModuleName = null;
         try {
-            VirtualFile moduleFile = module.getModuleFile();
-            String modulePath = moduleFile == null ? new File(module.getModuleFilePath()).getParentFile().getPath() : moduleFile.getParent().getPath();
+            VirtualFile virtualFile = ModuleRootManager.getInstance(module).getContentRoots()[0];
+            String modulePath = virtualFile.getPath();
             File file = new File(modulePath + PATH_META_INF + File.separator + FILE_MODULE);
             if (file.exists()) {
                 InputStream in = new FileInputStream(file);
@@ -613,8 +602,8 @@ public class ExportPatcherUtil {
             return fileList;
         }
         //如果什么都不是，则判断是不是模块下的文件或者目录
-        String modulePath = module.getModuleFilePath();
-        if (path.startsWith(new File(modulePath).getParentFile().getPath())) {
+        String modulePath = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
+        if (path.startsWith(new File(modulePath).getPath())) {
             fileList.add(path);
         }
         return fileList;

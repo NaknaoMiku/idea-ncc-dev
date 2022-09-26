@@ -7,9 +7,9 @@ import java.util.Comparator;
 
 public class PropertyComparator<T> extends Object implements Comparator<T> {
     //    protected static Logger logger = LoggerFactory.getLogger(PropertyComparator.class.getName());
-    private String property;
+    private final String property;
 
-    private boolean ascending;
+    private final boolean ascending;
 
     public PropertyComparator(String property) {
         this(property, true);
@@ -32,11 +32,11 @@ public class PropertyComparator<T> extends Object implements Comparator<T> {
             value2 = ReflectionUtil.getProperty(o2, this.property);
         } catch (Exception e) {
             String msg = MessageFormat.format(
-                    "Failed to get property {0} of Class: {1}", new Object[]{this.property,
-                            o1.getClass().getName()});
+                    "Failed to get property {0} of Class: {1}", this.property,
+                    o1.getClass().getName());
 //            logger.error(msg, e);
         }
-        int temp = ((Comparable) value1).compareTo((Comparable) value2);
+        int temp = ((Comparable) value1).compareTo(value2);
         return this.ascending ? temp : (0 - temp);
     }
 }

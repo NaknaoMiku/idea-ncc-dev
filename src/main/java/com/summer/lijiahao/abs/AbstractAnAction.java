@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.summer.lijiahao.base.ProjectManager;
 import org.jetbrains.annotations.NotNull;
@@ -72,11 +73,13 @@ public abstract class AbstractAnAction extends AnAction {
         if (module == null) {
             return false;
         }
-        VirtualFile moduleFile = module.getModuleFile();
-        if (moduleFile == null) {
+
+
+        VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
+        if (contentRoots.length == 0) {
             return false;
         }
-        flag = new File(moduleFile.getParent().getPath() + File.separator + "META-INF" + File.separator + "module.xml").exists();
+        flag = new File(contentRoots[0].getPath() + File.separator + "META-INF" + File.separator + "module.xml").exists();
         return flag;
     }
 
@@ -89,11 +92,12 @@ public abstract class AbstractAnAction extends AnAction {
         if (module == null) {
             return false;
         }
-        VirtualFile moduleFile = module.getModuleFile();
-        if (moduleFile == null) {
+
+        VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
+        if (contentRoots.length == 0) {
             return false;
         }
-        flag = new File(moduleFile.getParent().getPath() + File.separator + "pom.xml").exists();
+        flag = new File(contentRoots[0].getPath() + File.separator + "pom.xml").exists();
         return flag;
     }
 

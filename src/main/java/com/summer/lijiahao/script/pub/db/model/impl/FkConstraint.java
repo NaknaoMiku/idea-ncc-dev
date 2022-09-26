@@ -10,7 +10,7 @@ import java.util.List;
 public class FkConstraint extends Constraint implements IFkConstraint {
     private ITable refTable;
 
-    private List<IColumn> refColumns = new ArrayList();
+    private final List<IColumn> refColumns = new ArrayList();
 
     public ITable getRefTable() {
         return this.refTable;

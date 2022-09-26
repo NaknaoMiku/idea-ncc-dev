@@ -1,10 +1,10 @@
 package com.summer.lijiahao.script.pub.db;
 
+import com.summer.lijiahao.script.pub.db.model.ITable;
+import com.summer.lijiahao.script.pub.db.model.TableStructure;
 import com.summer.lijiahao.script.pub.db.query.IQueryInfo;
 import com.summer.lijiahao.script.pub.db.query.QueryInfo;
 import com.summer.lijiahao.script.pub.db.query.SqlQueryResultSet;
-import com.summer.lijiahao.script.pub.db.model.ITable;
-import com.summer.lijiahao.script.pub.db.model.TableStructure;
 import org.apache.commons.lang.StringUtils;
 
 import java.sql.Connection;

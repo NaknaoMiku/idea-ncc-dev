@@ -1,6 +1,5 @@
 package com.summer.lijiahao.base;
 
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -10,6 +9,7 @@ import com.intellij.openapi.roots.ModuleRootModificationUtil;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
+import com.intellij.openapi.vfs.VirtualFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class ProjectManager {
     }
 
     public void setProject(Project project) {
-        this.project = project;
+        ProjectManager.project = project;
     }
 
     /**
@@ -136,8 +136,10 @@ public class ProjectManager {
         Project project = getProject();
         Module[] modules = getAllModule(project);
         Library[] libraries = getProjectLibraries(project);
+
         for (Module module : modules) {
-            if (module.getModuleFile() == null) {
+            VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
+            if (contentRoots.length == 0) {
                 continue;
             }
             //通过module.xml文件是否存在判定是不是nc module,只给nc的module设置类路径
@@ -154,23 +156,4 @@ public class ProjectManager {
         }
     }
 
-    public <T> T getService(Project project, Class<T> clazz) {
-        T t = null;
-        try {
-            t = ServiceManager.getService(project, clazz);
-        } catch (Throwable e) {
-//            e.printStackTrace();
-            return null;
-        }
-        if (t == null) {
-            LOG.error("Could not find service: " + clazz.getName());
-            return null;
-        }
-
-        return t;
-    }
-
-    public <T> T getService(Class<T> clazz) {
-        return getService(getProject(), clazz);
-    }
 }

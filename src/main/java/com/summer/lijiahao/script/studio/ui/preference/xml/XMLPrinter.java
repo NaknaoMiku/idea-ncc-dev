@@ -29,7 +29,7 @@ public class XMLPrinter {
                 break;
             case 1:
                 pw.println();
-                pw.print(String.valueOf(getSpace(deepSet)) + "<");
+                pw.print(getSpace(deepSet) + "<");
                 pw.print(node.getNodeName());
                 attrs = node.getAttributes();
                 for (int i = 0; i < attrs.getLength(); i++) {
@@ -52,7 +52,7 @@ public class XMLPrinter {
                 pw.print(";");
                 break;
             case 4:
-                pw.print(String.valueOf(getSpace(deepSet)) + "<![CDATA[");
+                pw.print(getSpace(deepSet) + "<![CDATA[");
                 pw.print(node.getNodeValue());
                 pw.print("]]>");
                 break;
@@ -62,7 +62,7 @@ public class XMLPrinter {
                 lastIsAString = !"".equals(value);
                 break;
             case 7:
-                pw.print(String.valueOf(getSpace(deepSet)) + "<?");
+                pw.print(getSpace(deepSet) + "<?");
                 pw.print(node.getNodeName());
                 data = node.getNodeValue();
                 pw.print("");
@@ -71,14 +71,14 @@ public class XMLPrinter {
                 break;
             case 8:
                 pw.println();
-                pw.print(String.valueOf(getSpace(deepSet)) + "<!--");
-                pw.print(String.valueOf(node.getNodeValue()) + "-->");
+                pw.print(getSpace(deepSet) + "<!--");
+                pw.print(node.getNodeValue() + "-->");
                 break;
         }
         if (type == 1) {
             if (!lastIsAString) {
                 pw.println();
-                pw.print(String.valueOf(getSpace(deepSet)) + "</");
+                pw.print(getSpace(deepSet) + "</");
             } else {
                 pw.print("</");
             }

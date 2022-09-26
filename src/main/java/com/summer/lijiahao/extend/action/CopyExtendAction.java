@@ -2,6 +2,7 @@ package com.summer.lijiahao.extend.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.newvfs.impl.FsRoot;
@@ -38,8 +39,10 @@ public class CopyExtendAction extends AbstractAnAction {
                 flag = isModuleChild(selectFile, e);
                 if (flag) {
                     Module module = getSelectModule(e);
-                    if (module != null && module.getModuleFile() != null) {
-                        if (selectFile.getParent().equals(module.getModuleFile().getParent())) {
+
+                    if (module != null) {
+                        VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
+                        if (contentRoots.length > 0 && selectFile.getParent().equals(contentRoots[0])) {
                             flag = new File(selectFile.getPath() + File.separator + "component.xml").exists();
                         }
                     }

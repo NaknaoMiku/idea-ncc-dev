@@ -1,8 +1,8 @@
 package com.summer.lijiahao.extend.util;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -104,13 +104,18 @@ public class ExtendCopyUtil {
             return;
         }
 
-        String modulePath = module.getModuleNioFile().getParent().toString();
+        VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
+        if (contentRoots.length == 0) {
+            Messages.showMessageDialog("请先设置NC Home", "Error", Messages.getErrorIcon());
+            return;
+        }
+        String modulePath = contentRoots[0].getPath();
         File file = new File(modulePath);
-        if(file.isDirectory()) {
+        if (file.isDirectory()) {
             String[] list = file.list();
             for (String com : list) {
                 if (!com.endsWith(".xml") && !com.endsWith(".iml") && !com.equals("META-INF")) {
-                    copyDir(module.getModuleNioFile().getParent().toString() + File.separator + com + PROJECT_CONFIG_FILE_PATH, homePath + HOME_CONFIG_FILE_PATH);
+                    copyDir(contentRoots[0].getPath() + File.separator + com + PROJECT_CONFIG_FILE_PATH, homePath + HOME_CONFIG_FILE_PATH);
                 }
             }
         }

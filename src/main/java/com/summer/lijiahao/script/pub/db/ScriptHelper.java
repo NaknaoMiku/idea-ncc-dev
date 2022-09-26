@@ -36,7 +36,7 @@ public class ScriptHelper {
             sql.append(table.getName());
             sql.append(" where ");
             for (int i = 0; i < pkColumns.size(); i++) {
-                IColumn column = (IColumn) pkColumns.get(i);
+                IColumn column = pkColumns.get(i);
                 String txtValue = SqlUtil.formatSql(
                         result.get(column.getName()), column.getDataType());
                 sql.append(column.getName());
@@ -81,7 +81,7 @@ public class ScriptHelper {
             }
         List<String> multColumnList = new LinkedList<String>();
         for (Map.Entry<String, Object> entry : result.entrySet()) {
-            String columnName = (String) entry.getKey();
+            String columnName = entry.getKey();
             if (bHasPK && lstPKColumnName.contains(columnName))
                 continue;
             IColumn col = table.getColumnByName(columnName);
@@ -96,43 +96,41 @@ public class ScriptHelper {
                     cols.append(columnName).append(",");
                     values.append("'~'").append(",");
                     multColumnList.clear();
-                    multColumnList.add(String.valueOf(columnName) + "2");
-                    multColumnList.add(String.valueOf(columnName) + "3");
-                    multColumnList.add(String.valueOf(columnName) + "4");
-                    multColumnList.add(String.valueOf(columnName) + "5");
-                    multColumnList.add(String.valueOf(columnName) + "6");
+                    multColumnList.add(columnName + "2");
+                    multColumnList.add(columnName + "3");
+                    multColumnList.add(columnName + "4");
+                    multColumnList.add(columnName + "5");
+                    multColumnList.add(columnName + "6");
                 }
                 continue;
             }
             cols.append(columnName).append(",");
             values.append(
-                    SqlUtil.formatSql(entry.getValue(), col.getDataType()))
+                            SqlUtil.formatSql(entry.getValue(), col.getDataType()))
                     .append(",");
         }
         cols.deleteCharAt(cols.length() - 1);
         values.deleteCharAt(values.length() - 1);
         if (bHasPK)
             singleSql.append(sbPKColumns);
-        singleSql.append(cols.toString()).append(") values").append("(");
+        singleSql.append(cols).append(") values").append("(");
         if (bHasPK)
-            singleSql.append(sbPKValues.toString());
-        singleSql.append(values.toString()).append(")").append(separator);
+            singleSql.append(sbPKValues);
+        singleSql.append(values).append(")").append(separator);
         return singleSql.toString();
     }
 
     public static boolean isBlobColumn(IColumn col) {
-        if (!col.getTypeName().equalsIgnoreCase("image") &&
-                !col.getTypeName().equalsIgnoreCase("blob") &&
-                !col.getTypeName().equalsIgnoreCase("blob(128m)"))
-            return false;
-        return true;
+        return col.getTypeName().equalsIgnoreCase("image") ||
+                col.getTypeName().equalsIgnoreCase("blob") ||
+                col.getTypeName().equalsIgnoreCase("blob(128m)");
     }
 
     public static boolean isMultColumn(IColumn col, ITable table, IScriptExportStratege stratege) {
         if (stratege instanceof InitDataExportStratege2) {
             Map<String, List<String>> mlTableInfo = ((InitDataExportStratege2) stratege)
                     .getMlTableInfo();
-            List<String> list = (List) mlTableInfo.get(table.getName());
+            List<String> list = mlTableInfo.get(table.getName());
             if (list != null)
                 return list.contains(col.getName());
         }

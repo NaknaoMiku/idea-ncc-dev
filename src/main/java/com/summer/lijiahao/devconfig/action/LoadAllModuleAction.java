@@ -4,14 +4,14 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.summer.lijiahao.abs.AbstractAnAction;
 import com.summer.lijiahao.base.BusinessException;
 import com.summer.lijiahao.base.ProjectManager;
-import com.summer.lijiahao.module.util.ModuleUtil;
-import com.summer.lijiahao.abs.AbstractAnAction;
 import com.summer.lijiahao.devconfig.LoadModuleDialog;
+import com.summer.lijiahao.module.util.ModuleUtil;
 import org.apache.commons.lang.StringUtils;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;

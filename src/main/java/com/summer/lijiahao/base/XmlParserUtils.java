@@ -1,4 +1,3 @@
-
 package com.summer.lijiahao.base;
 
 import org.w3c.dom.Document;
@@ -10,6 +9,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -79,7 +79,7 @@ public class XmlParserUtils {
         if (builder == null) {
             return null;
         }
-        InputStream is = new ByteArrayInputStream(xml.getBytes("utf-8"));
+        InputStream is = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
         Document doc = builder.parse(is);
         return doc;
     }

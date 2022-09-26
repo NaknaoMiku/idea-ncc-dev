@@ -1,8 +1,8 @@
 package com.summer.lijiahao.script.pub.db.model.impl;
 
 import com.summer.lijiahao.script.pub.db.model.IColumn;
-import com.summer.lijiahao.script.pub.db.model.IPkConstraint;
 import com.summer.lijiahao.script.pub.db.model.IFkConstraint;
+import com.summer.lijiahao.script.pub.db.model.IPkConstraint;
 import com.summer.lijiahao.script.pub.db.model.ITable;
 import org.apache.commons.io.IOUtils;
 
@@ -12,9 +12,9 @@ import java.util.List;
 public class Table implements ITable {
     private String name;
 
-    private List<IColumn> allColumns = new ArrayList();
+    private final List<IColumn> allColumns = new ArrayList();
 
-    private List<IFkConstraint> fkConstraints = new ArrayList();
+    private final List<IFkConstraint> fkConstraints = new ArrayList();
 
     private IPkConstraint pkConstraint;
 

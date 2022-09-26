@@ -6,7 +6,7 @@ import com.summer.lijiahao.devconfig.DevConfigDialog;
 import com.summer.lijiahao.devconfig.util.DataSourceUtil;
 import com.summer.lijiahao.script.studio.ui.preference.prop.DataSourceMeta;
 
-import javax.swing.JCheckBox;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Map;
 

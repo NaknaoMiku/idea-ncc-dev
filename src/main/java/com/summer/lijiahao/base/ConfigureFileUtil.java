@@ -1,15 +1,8 @@
 package com.summer.lijiahao.base;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class ConfigureFileUtil {
 
@@ -55,11 +48,11 @@ public class ConfigureFileUtil {
     private String readTemplate(InputStream in) throws BusinessException {
         StringBuilder tempBuilder = new StringBuilder();
         try {
-            InputStreamReader isr = new InputStreamReader(in, "utf-8");
+            InputStreamReader isr = new InputStreamReader(in, StandardCharsets.UTF_8);
             BufferedReader br = new BufferedReader(isr);
             String lineTxt;
             while (true) {
-                if (!((lineTxt = br.readLine()) != null)) break;
+                if ((lineTxt = br.readLine()) == null) break;
                 tempBuilder.append(lineTxt);
                 tempBuilder.append("\r\n");
             }

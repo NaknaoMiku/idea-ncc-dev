@@ -4,7 +4,7 @@ import com.summer.lijiahao.abs.AbstractButtonAction;
 import com.summer.lijiahao.abs.AbstractDialog;
 import com.summer.lijiahao.devconfig.util.TableModelUtil;
 
-import javax.swing.JTable;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
  */
 public class CancelAllAction extends AbstractButtonAction {
 
-    private int type;
+    private final int type;
 
     public CancelAllAction(AbstractDialog dialog, int type) {
         super(dialog);

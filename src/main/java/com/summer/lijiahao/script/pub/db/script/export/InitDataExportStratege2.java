@@ -2,31 +2,20 @@ package com.summer.lijiahao.script.pub.db.script.export;
 
 import com.intellij.openapi.vfs.VirtualFile;
 import com.summer.lijiahao.script.pub.db.exception.DatabaseRuntimeException;
-import com.summer.lijiahao.script.pub.util.PrintIOUtil;
 import com.summer.lijiahao.script.pub.db.model.IColumn;
 import com.summer.lijiahao.script.pub.db.model.IPkConstraint;
 import com.summer.lijiahao.script.pub.db.model.ITable;
 import com.summer.lijiahao.script.pub.db.model.TableStructure;
 import com.summer.lijiahao.script.pub.db.query.SqlQueryResultSet;
+import com.summer.lijiahao.script.pub.util.PrintIOUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class InitDataExportStratege2 implements IScriptExportStratege, IExportConst {
     //    protected static Logger logger = LoggerFactory.getLogger(PrintIOUtil.class.getName());
@@ -36,21 +25,21 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
 
     public static final String DEFAULT_LANG = "simpchn";
 
-    private VirtualFile root;
+    private final VirtualFile root;
 
-    private String mapName;
+    private final String mapName;
 
-    private Map<String, String> tableFilenameMap;
+    private final Map<String, String> tableFilenameMap;
 
-    private boolean isBusiness;
+    private final boolean isBusiness;
 
-    private Map<String, List<String>> mlTableInfo;
+    private final Map<String, List<String>> mlTableInfo;
 
     private String langCode;
 
     private int autoFileNo;
 
-    private TableStructure struct;
+    private final TableStructure struct;
 
     public InitDataExportStratege2(VirtualFile folder, boolean isBusiness, String mapName, TableStructure struct, Map<String, String> tableNoMap, String langCode, Map<String, List<String>> mlTableInfo) {
         this.root = folder;
@@ -76,11 +65,11 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
         ITable table = inserts.getTable();
         File folder = null;
         if (this.isBusiness) {
-            folder = new File(String.valueOf(this.root.getPath()) + IOUtils.DIR_SEPARATOR +
+            folder = new File(this.root.getPath() + IOUtils.DIR_SEPARATOR +
                     "business" + IOUtils.DIR_SEPARATOR + this.mapName +
                     IOUtils.DIR_SEPARATOR + table.getName());
         } else {
-            folder = new File(String.valueOf(this.root.getPath()) + IOUtils.DIR_SEPARATOR +
+            folder = new File(this.root.getPath() + IOUtils.DIR_SEPARATOR +
                     this.mapName + IOUtils.DIR_SEPARATOR + table.getName());
         }
         if ((!folder.exists() && !folder.mkdirs()) || (
@@ -98,7 +87,7 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
         List<String> sqls = inserts.getResults();
         boolean includeDeleted = (resultSet.size() != sqls.size());
         for (int i = 0; i < resultSet.size(); i++) {
-            Map<String, Object> map = (Map) resultSet.get(i);
+            Map<String, Object> map = resultSet.get(i);
             ITable currentTable = inserts.getResultSet().getTable();
             IPkConstraint pkConstraint = currentTable.getPkConstraint();
             if (pkConstraint == null || pkConstraint.getColumns() == null ||
@@ -106,10 +95,10 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
 //                logger.error(currentTable.getName() + "表不存在主键，无法导出脚本。");
                 return false;
             }
-            String pkName = ((IColumn) pkConstraint.getColumns().get(0)).getName();
+            String pkName = pkConstraint.getColumns().get(0).getName();
             String pkField = map.get(pkName).toString();
-            String singleFolder = String.valueOf(currentTable.getName()) + "_" + pkField;
-            File scriptFolder = new File(String.valueOf(folder.getAbsolutePath()) +
+            String singleFolder = currentTable.getName() + "_" + pkField;
+            File scriptFolder = new File(folder.getAbsolutePath() +
                     IOUtils.DIR_SEPARATOR + singleFolder);
             if ((!scriptFolder.exists() && !scriptFolder.mkdirs()) || (
                     scriptFolder.exists() && !scriptFolder.isDirectory()))
@@ -120,12 +109,12 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
             if (includeDeleted) {
                 int p = 2 * i;
                 if (sqls.size() > p && sqls.get(p) != null)
-                    sqlList.add((String) sqls.get(p));
+                    sqlList.add(sqls.get(p));
                 p++;
                 if (sqls.size() > p && sqls.get(p) != null)
-                    sqlList.add((String) sqls.get(p));
+                    sqlList.add(sqls.get(p));
             } else if (sqls.size() > i && sqls.get(i) != null) {
-                sqlList.add((String) sqls.get(i));
+                sqlList.add(sqls.get(i));
             }
             boolean isSucess = PrintIOUtil.getInstance().resaveSql(sqlList,
                     scriptFolder, mapNo);
@@ -160,11 +149,11 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
         Stack<SqlQueryInserts> stack = new Stack<SqlQueryInserts>();
         stack.push(inserts);
         while (this.mlTableInfo != null && !stack.isEmpty()) {
-            SqlQueryInserts current = (SqlQueryInserts) stack.pop();
+            SqlQueryInserts current = stack.pop();
             if (current == null)
                 continue;
             ITable currentTable = current.getTable();
-            List<String> mlColumns = (List) this.mlTableInfo.get(currentTable
+            List<String> mlColumns = this.mlTableInfo.get(currentTable
                     .getName().toLowerCase());
             if (mlColumns != null && mlColumns.size() > 0)
                 if (currentTable.getPkConstraint() == null ||
@@ -200,7 +189,7 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
     private String getFileNo(String table) {
         for (String key : this.tableFilenameMap.keySet()) {
             if (key.equalsIgnoreCase(table))
-                return (String) this.tableFilenameMap.get(key);
+                return this.tableFilenameMap.get(key);
         }
         return null;
     }
@@ -230,29 +219,27 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
         String[] pkKeys = new String[pkColumns.size()];
         List<String> resultList = new LinkedList<String>();
         for (int j = 0; j < resultSet2.size(); j++) {
-            Map<String, Object> datas = (Map) resultSet2.get(j);
+            Map<String, Object> datas = resultSet2.get(j);
             String key = foreignKey;
             for (String column : datas.keySet()) {
                 if (column.equalsIgnoreCase(key))
                     key = column;
                 for (int i = 0; i < pkColumns.size(); i++) {
-                    if (column.equalsIgnoreCase(((IColumn) pkColumns.get(i)).getName()))
+                    if (column.equalsIgnoreCase(pkColumns.get(i).getName()))
                         pkKeys[i] = column;
                 }
             }
-            boolean isRight = false;
-            if (pValue != null && pValue.equals(datas.get(key)))
-                isRight = true;
+            boolean isRight = pValue != null && pValue.equals(datas.get(key));
             if (isRight) {
                 if (includeDeletes) {
                     if (sqlResults.size() > j * 2 &&
                             sqlResults.get(j * 2) != null)
-                        resultList.add((String) sqlResults.get(j * 2));
+                        resultList.add(sqlResults.get(j * 2));
                     if (sqlResults.size() > j * 2 + 1 &&
                             sqlResults.get(j * 2 + 1) != null)
-                        resultList.add((String) sqlResults.get(j * 2 + 1));
+                        resultList.add(sqlResults.get(j * 2 + 1));
                 } else if (sqlResults.size() > j && sqlResults.get(j) != null) {
-                    resultList.add((String) sqlResults.get(j));
+                    resultList.add(sqlResults.get(j));
                 }
                 List<IColumn> blobColumns = getBlobColumns(inserts
                         .getTable());
@@ -295,11 +282,11 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
         Stack<SqlQueryInserts> stack = new Stack<SqlQueryInserts>();
         stack.push(inserts);
         while (!stack.isEmpty()) {
-            SqlQueryInserts current = (SqlQueryInserts) stack.pop();
+            SqlQueryInserts current = stack.pop();
             if (current == null)
                 continue;
             ITable currentTable = current.getTable();
-            String mapFileNo = (String) this.tableFilenameMap.get(currentTable.getName());
+            String mapFileNo = this.tableFilenameMap.get(currentTable.getName());
             if (mapFileNo == null)
                 mapFileNo = "t" + getAutoFileNo();
             boolean isSucess = PrintIOUtil.getInstance().resaveSql(
@@ -319,7 +306,7 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
 //                        logger.error(currentTable.getName() + "表不存在主键，无法导出BLOB。");
                     } else if (currentTable.getPkConstraint().getColumns()
                             .size() == 1) {
-                        IColumn pkColumn = (IColumn) currentTable.getPkConstraint()
+                        IColumn pkColumn = currentTable.getPkConstraint()
                                 .getColumns().get(0);
                         SqlQueryResultSet rs = current.getResultSet();
                         String fileFolderPath = folder.getAbsolutePath();
@@ -330,7 +317,7 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
                     }
             }
             if (this.mlTableInfo != null) {
-                List<String> mlColumns = (List) this.mlTableInfo.get(currentTable
+                List<String> mlColumns = this.mlTableInfo.get(currentTable
                         .getName().toLowerCase());
                 if (mlColumns != null && mlColumns.size() > 0) {
                     if (currentTable.getPkConstraint() == null ||
@@ -356,7 +343,7 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
         if (this.langCode == null)
             this.langCode = "simpchn";
         ITable currentTable = current.getTable();
-        File csvFolder = new File(String.valueOf(this.root.getPath()) +
+        File csvFolder = new File(this.root.getPath() +
                 IOUtils.DIR_SEPARATOR + "dbml" + IOUtils.DIR_SEPARATOR +
                 this.langCode + IOUtils.DIR_SEPARATOR + currentTable.getName());
         if ((!csvFolder.exists() && !csvFolder.mkdirs()) || (
@@ -365,11 +352,11 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
         PrintWriter csvWriter = null;
         try {
             csvWriter = new PrintWriter(new OutputStreamWriter(
-                    new FileOutputStream(String.valueOf(csvFolder.getAbsolutePath()) +
+                    new FileOutputStream(csvFolder.getAbsolutePath() +
                             IOUtils.DIR_SEPARATOR + "001.csv"),
-                    "UTF-8"));
+                    StandardCharsets.UTF_8));
             csvWriter.println(currentTable.getName());
-            IColumn pkColumn = (IColumn) currentTable.getPkConstraint()
+            IColumn pkColumn = currentTable.getPkConstraint()
                     .getColumns().get(0);
             csvWriter.print(pkColumn.getName());
             csvWriter.print(",");
@@ -382,7 +369,7 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
                 csvWriter.print(pk);
                 for (int i = 0; i < mlColumns.size(); i++) {
                     csvWriter.print(",");
-                    String column = (String) mlColumns.get(i);
+                    String column = mlColumns.get(i);
                     Object columnValue = result.get(column);
                     if (columnValue != null) {
                         String value = columnValue.toString().trim();
@@ -394,9 +381,6 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
                 csvWriter.println();
             }
         } catch (FileNotFoundException e) {
-//            logger.error(e.getMessage(), e);
-            return false;
-        } catch (UnsupportedEncodingException e) {
 //            logger.error(e.getMessage(), e);
             return false;
         } finally {
@@ -413,24 +397,14 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
 
     private void generateBlobFile(ITable table, Map<String, Object> result, String pkColumnName, List<IColumn> lstBlobColumn, String fileFolderPath, String tableMapNo) {
         String tableName = table.getName();
-        byte[] btTableName = (byte[]) null;
-        try {
-            btTableName = tableName.getBytes("utf-8");
-        } catch (UnsupportedEncodingException e) {
-//            logger.error("生成Blob文件时发生错误：转换表[" + tableName + "]名称为字节数组时发生错误。", e);
-            throw new DatabaseRuntimeException("生成Blob文件时发生错误：转换表[" + tableName + "]名称为字节数组时发生错误。", e);
-        }
+        byte[] btTableName = null;
+        btTableName = tableName.getBytes(StandardCharsets.UTF_8);
         if (btTableName.length > 40)
             throw new DatabaseRuntimeException("表名" + tableName + "长度超过40个字节");
         byte[] outputTableName = new byte[40];
         System.arraycopy(btTableName, 0, outputTableName, 0, btTableName.length);
-        byte[] btPKColumnName = (byte[]) null;
-        try {
-            btPKColumnName = pkColumnName.getBytes("utf-8");
-        } catch (UnsupportedEncodingException e) {
-//            logger.error("生成Blob文件时发生错误：转换表[" + tableName + "]的主键[" + pkColumnName + "]名称为字节数组时发生错误。", e);
-            throw new DatabaseRuntimeException("生成Blob文件时发生错误：转换表[" + tableName + "]的主键[" + pkColumnName + "]名称为字节数组时发生错误。", e);
-        }
+        byte[] btPKColumnName = null;
+        btPKColumnName = pkColumnName.getBytes(StandardCharsets.UTF_8);
         if (btPKColumnName.length > 40)
             throw new DatabaseRuntimeException("表名" + tableName + "中的主键名" +
                     pkColumnName + "长度超过40个字节");
@@ -440,23 +414,18 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
         byte btBlobColumnCount = (byte) lstBlobColumn.size();
         String[] aryBlobColumnName = new String[lstBlobColumn.size()];
         for (int i = 0; i < lstBlobColumn.size(); i++)
-            aryBlobColumnName[i] = ((IColumn) lstBlobColumn.get(i)).getName();
+            aryBlobColumnName[i] = lstBlobColumn.get(i).getName();
         byte[][] outputBlobColumnNames = new byte[aryBlobColumnName.length][40];
         for (int i = 0; i < aryBlobColumnName.length; i++) {
             byte[] outputBlobColumnName = new byte[40];
-            byte[] btBlobColumnName = (byte[]) null;
-            try {
-                btBlobColumnName = aryBlobColumnName[i].getBytes("utf-8");
-            } catch (UnsupportedEncodingException e) {
-//                logger.error("生成Blob文件时发生错误：转换表[" + tableName + "]的Blob字段[" + aryBlobColumnName[i] + "]名称为字节数组时发生错误。", e);
-                throw new DatabaseRuntimeException("生成Blob文件时发生错误：转换表[" + tableName + "]的Blob字段[" + aryBlobColumnName[i] + "]名称为字节数组时发生错误。", e);
-            }
+            byte[] btBlobColumnName = null;
+            btBlobColumnName = aryBlobColumnName[i].getBytes(StandardCharsets.UTF_8);
             System.arraycopy(btBlobColumnName, 0, outputBlobColumnName, 0,
                     btBlobColumnName.length);
             outputBlobColumnNames[i] = outputBlobColumnName;
         }
         for (Map.Entry<String, Object> mapEntry : result.entrySet()) {
-            String columnName = (String) mapEntry.getKey();
+            String columnName = mapEntry.getKey();
             String pkValue = null;
             if (columnName.equals(pkColumnName)) {
                 pkValue = mapEntry.getValue().toString().trim();
@@ -472,7 +441,7 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
                     out.write(new byte[]{btBlobColumnCount});
                     for (int ii = 0; ii < outputBlobColumnNames.length; ii++)
                         out.write(outputBlobColumnNames[ii]);
-                    byte[] outputPKValue = pkValue.getBytes("utf-8");
+                    byte[] outputPKValue = pkValue.getBytes(StandardCharsets.UTF_8);
                     byte pkValueLen = (byte) outputPKValue.length;
                     out.write(new byte[]{pkValueLen});
                     out.write(outputPKValue);
@@ -508,7 +477,7 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
                                     byte[] bytes = new byte[4];
                                     out.write(bytes);
                                 } else {
-                                    byte[] blobByte = (byte[]) null;
+                                    byte[] blobByte = null;
                                     try {
                                         blobByte = blobValue.getBytes(1L, (int) blobValue.length());
                                     } catch (SQLException e) {
@@ -555,11 +524,9 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
     }
 
     private boolean isBlobColumn(IColumn col) {
-        if (!col.getTypeName().equalsIgnoreCase("image") &&
-                !col.getTypeName().equalsIgnoreCase("blob") &&
-                !col.getTypeName().equalsIgnoreCase("blob(128m)"))
-            return false;
-        return true;
+        return col.getTypeName().equalsIgnoreCase("image") ||
+                col.getTypeName().equalsIgnoreCase("blob") ||
+                col.getTypeName().equalsIgnoreCase("blob(128m)");
     }
 
     private boolean isContainerQuote(String value) {

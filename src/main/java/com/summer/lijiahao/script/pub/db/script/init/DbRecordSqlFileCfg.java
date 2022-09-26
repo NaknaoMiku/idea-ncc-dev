@@ -3,11 +3,7 @@ package com.summer.lijiahao.script.pub.db.script.init;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 public class DbRecordSqlFileCfg {
@@ -32,11 +28,11 @@ public class DbRecordSqlFileCfg {
 
     private static final String ENABLE = "Y";
 
-    private String rootDir;
+    private final String rootDir;
 
-    private String commonMapPath;
+    private final String commonMapPath;
 
-    private String moduleMapPath;
+    private final String moduleMapPath;
 
     private String moduleQueryEngineFilePath;
 
@@ -54,7 +50,7 @@ public class DbRecordSqlFileCfg {
 
     private Properties frProp;
 
-    private Object obj;
+    private final Object obj;
 
     public DbRecordSqlFileCfg(String rootDir, String commonMapPath, String moduleMapPath) {
         this.obj = new Object();

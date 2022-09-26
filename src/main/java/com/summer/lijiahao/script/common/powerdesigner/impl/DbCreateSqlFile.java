@@ -1,7 +1,7 @@
 package com.summer.lijiahao.script.common.powerdesigner.impl;
 
-import com.summer.lijiahao.script.common.powerdesigner.itf.ISqlFile;
 import com.summer.lijiahao.script.common.powerdesigner.core.ScriptType;
+import com.summer.lijiahao.script.common.powerdesigner.itf.ISqlFile;
 
 import java.io.File;
 
@@ -16,11 +16,11 @@ public class DbCreateSqlFile implements ISqlFile {
         return this.file;
     }
 
-    public ScriptType getScriptType() {
-        return ScriptType.CREATE;
-    }
-
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public ScriptType getScriptType() {
+        return ScriptType.CREATE;
     }
 }

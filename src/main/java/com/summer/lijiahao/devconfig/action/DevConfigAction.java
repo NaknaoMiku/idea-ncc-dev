@@ -1,8 +1,8 @@
 package com.summer.lijiahao.devconfig.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.summer.lijiahao.devconfig.DevConfigDialog;
 import com.summer.lijiahao.abs.AbstractAnAction;
+import com.summer.lijiahao.devconfig.DevConfigDialog;
 
 /**
  * 集成环境配置按钮

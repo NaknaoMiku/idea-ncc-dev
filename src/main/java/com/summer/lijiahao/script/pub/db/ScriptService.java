@@ -1,10 +1,10 @@
 package com.summer.lijiahao.script.pub.db;
 
 import com.summer.lijiahao.script.pub.db.model.IColumn;
+import com.summer.lijiahao.script.pub.db.model.ITable;
 import com.summer.lijiahao.script.pub.db.query.SqlQueryResultSet;
 import com.summer.lijiahao.script.pub.db.script.export.IScriptExportStratege;
 import com.summer.lijiahao.script.pub.db.script.export.SqlQueryInserts;
-import com.summer.lijiahao.script.pub.db.model.ITable;
 import com.summer.lijiahao.script.studio.connection.ConnectionService;
 import com.summer.lijiahao.script.studio.connection.exception.ConnectionException;
 import org.apache.commons.io.IOUtils;
@@ -22,7 +22,7 @@ import java.util.Stack;
 
 public class ScriptService implements IScriptService {
     //    protected static Logger logger = LoggerFactory.getLogger(ScriptService.class.getName());
-    public static final String SQL_SERPERATOR = String.valueOf(IOUtils.LINE_SEPARATOR) + "go" +
+    public static final String SQL_SERPERATOR = IOUtils.LINE_SEPARATOR + "go" +
             IOUtils.LINE_SEPARATOR;
 
     private IScriptExportStratege stratege;
@@ -70,21 +70,21 @@ public class ScriptService implements IScriptService {
         Stack<SqlQueryInserts> stack = new Stack<SqlQueryInserts>();
         stack.add(inserts);
         while (!stack.empty()) {
-            SqlQueryInserts cInserts = (SqlQueryInserts) stack.pop();
+            SqlQueryInserts cInserts = stack.pop();
             if (cInserts == null)
                 continue;
             if (cInserts.getSubInserts() != null)
                 stack.addAll(cInserts.getSubInserts());
             List<String> sqls = cInserts.getResults();
             for (int i = 0; i < sqls.size(); i++) {
-                String sql = (String) sqls.get(i);
+                String sql = sqls.get(i);
                 int lastIndexOf = sql.lastIndexOf(SQL_SERPERATOR);
                 if (lastIndexOf > 0)
                     sqls.set(i, sql.substring(0, lastIndexOf));
             }
             try {
                 ConnectionService.executeBatch(dataSource,
-                        (String[]) sqls.toArray(new String[sqls.size()]));
+                        sqls.toArray(new String[sqls.size()]));
                 syncBlob(dataSource, cInserts);
             } catch (Exception i) {
                 throw new Exception(i.getMessage());
@@ -108,16 +108,16 @@ public class ScriptService implements IScriptService {
             buffer.append("update ").append(table.getName())
                     .append(" set ${column}= ? where ");
             for (int i = 0; i < pkColumns.size(); i++) {
-                buffer.append(((IColumn) pkColumns.get(i)).getName()).append("=?");
+                buffer.append(pkColumns.get(i).getName()).append("=?");
                 if (i != pkColumns.size() - 1)
                     buffer.append(" and ");
             }
             String template = buffer.toString();
             for (int i = 0; i < blobColumns.size(); i++) {
-                String blobName = ((IColumn) blobColumns.get(i)).getName();
+                String blobName = blobColumns.get(i).getName();
                 String sql = template.replace("${column}", blobName);
                 for (Map<String, Object> result : results) {
-                    Object obj = result.get(((IColumn) blobColumns.get(i)).getName());
+                    Object obj = result.get(blobColumns.get(i).getName());
                     if (obj == null)
                         continue;
                     Connection conn =
@@ -140,7 +140,7 @@ public class ScriptService implements IScriptService {
                             continue;
                         }
                         for (int j = 0; j < pkColumns.size(); j++) {
-                            String pkName = ((IColumn) pkColumns.get(i)).getName();
+                            String pkName = pkColumns.get(i).getName();
                             statement.setObject(j + 2, result.get(pkName));
                         }
                         statement.execute();
@@ -166,11 +166,9 @@ public class ScriptService implements IScriptService {
     }
 
     private boolean isBlobColumn(IColumn col) {
-        if (!col.getTypeName().equalsIgnoreCase("image") &&
-                !col.getTypeName().equalsIgnoreCase("blob") &&
-                !col.getTypeName().equalsIgnoreCase("blob(128m)"))
-            return false;
-        return true;
+        return col.getTypeName().equalsIgnoreCase("image") ||
+                col.getTypeName().equalsIgnoreCase("blob") ||
+                col.getTypeName().equalsIgnoreCase("blob(128m)");
     }
 
     public boolean export(SqlQueryResultSet rs, IScriptExportStratege stratege, boolean includeDeletes) {

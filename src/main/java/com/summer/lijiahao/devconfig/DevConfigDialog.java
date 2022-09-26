@@ -1,47 +1,25 @@
 package com.summer.lijiahao.devconfig;
 
+import com.summer.lijiahao.abs.AbstractDialog;
+import com.summer.lijiahao.base.NccEnvSettingService;
+import com.summer.lijiahao.devconfig.action.button.*;
+import com.summer.lijiahao.devconfig.action.button.datasource.*;
 import com.summer.lijiahao.devconfig.action.button.module.CancelAllAction;
 import com.summer.lijiahao.devconfig.action.button.module.DefaultModuleAction;
 import com.summer.lijiahao.devconfig.action.button.module.SelAllAction;
-import com.summer.lijiahao.devconfig.action.listenner.ConfigTabbedChangeListener;
-import com.summer.lijiahao.abs.AbstractDialog;
-import com.summer.lijiahao.base.NccEnvSettingService;
-import com.summer.lijiahao.devconfig.action.button.ApplyAction;
-import com.summer.lijiahao.devconfig.action.button.CancelAction;
-import com.summer.lijiahao.devconfig.action.button.OKAction;
-import com.summer.lijiahao.devconfig.action.button.SelHomePathAction;
-import com.summer.lijiahao.devconfig.action.button.SelTablePathAction;
-import com.summer.lijiahao.devconfig.action.button.SetLibraryAction;
-import com.summer.lijiahao.devconfig.action.button.datasource.CopyDataSourceAction;
-import com.summer.lijiahao.devconfig.action.button.datasource.DeleteDataSourceAction;
-import com.summer.lijiahao.devconfig.action.button.datasource.SetBaseDataSourceAction;
-import com.summer.lijiahao.devconfig.action.button.datasource.SetDevDataSourceAction;
-import com.summer.lijiahao.devconfig.action.button.datasource.TestConnectionAction;
 import com.summer.lijiahao.devconfig.action.item.DBBoxListener;
 import com.summer.lijiahao.devconfig.action.item.DBTypeBoxListener;
 import com.summer.lijiahao.devconfig.action.item.DriverBoxListener;
+import com.summer.lijiahao.devconfig.action.listenner.ConfigTabbedChangeListener;
 import com.summer.lijiahao.devconfig.util.DataSourceUtil;
 import com.summer.lijiahao.devconfig.util.TableModelUtil;
 import com.summer.lijiahao.script.studio.ui.preference.dbdriver.DatabaseDriverInfo;
 import com.summer.lijiahao.script.studio.ui.preference.dbdriver.DriverInfo;
 import com.summer.lijiahao.script.studio.ui.preference.prop.DataSourceMeta;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -95,9 +73,9 @@ public class DevConfigDialog extends AbstractDialog {
     private JButton setLibBtn;
 
     //数据源相关缓存
-    private Map<String, DatabaseDriverInfo> databaseDriverInfoMap = new HashMap<>();
-    private Map<String, DataSourceMeta> dataSourceMetaMap = new LinkedHashMap();
-    private Map<String, DriverInfo> driverInfoMap = new HashMap();
+    private final Map<String, DatabaseDriverInfo> databaseDriverInfoMap = new HashMap<>();
+    private final Map<String, DataSourceMeta> dataSourceMetaMap = new LinkedHashMap();
+    private final Map<String, DriverInfo> driverInfoMap = new HashMap();
     //当前数据源
     private DataSourceMeta currMeta;
 
@@ -109,6 +87,13 @@ public class DevConfigDialog extends AbstractDialog {
         initUI();
         initListener();
         initPath();
+    }
+
+    public static void main(String[] args) {
+        DevConfigDialog dialog = new DevConfigDialog();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
     }
 
     /**
@@ -162,6 +147,11 @@ public class DevConfigDialog extends AbstractDialog {
         cancelRBtn.addActionListener(new CancelAllAction(this, TableModelUtil.MODULE_TYPE_SEL));
 
     }
+
+//    private void onOK() {
+//        // add your code here
+//        dispose();
+//    }
 
     /**
      * 界面初始化
@@ -227,22 +217,9 @@ public class DevConfigDialog extends AbstractDialog {
 
     }
 
-//    private void onOK() {
-//        // add your code here
-//        dispose();
-//    }
-
     private void onCancel() {
         // add your code here if necessary
         dispose();
-    }
-
-
-    public static void main(String[] args) {
-        DevConfigDialog dialog = new DevConfigDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 
     public Map<String, DatabaseDriverInfo> getDatabaseDriverInfoMap() {

@@ -1,21 +1,15 @@
 package com.summer.lijiahao.script.studio.connection.ierp;
 
+import com.summer.lijiahao.script.studio.StudioUtil;
 import com.summer.lijiahao.script.studio.connection.model.DataSourceMetaInfo;
 import com.summer.lijiahao.script.studio.connection.provider.IDataSourceProvider;
-import com.summer.lijiahao.script.studio.StudioUtil;
 import com.summer.lijiahao.script.studio.ui.preference.prop.DataSourceMeta;
 import com.summer.lijiahao.script.studio.ui.preference.xml.PropXml;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 public class IerpDataSourceProvider implements IDataSourceProvider {
 
@@ -37,7 +31,7 @@ public class IerpDataSourceProvider implements IDataSourceProvider {
         Stack<File> stack = new Stack<File>();
         stack.add(driverFolder);
         while (!stack.isEmpty()) {
-            File pop = (File) stack.pop();
+            File pop = stack.pop();
             if (pop != null) {
                 if (pop.isDirectory()) {
                     Collections.addAll(stack, pop.listFiles());
@@ -51,7 +45,7 @@ public class IerpDataSourceProvider implements IDataSourceProvider {
                     }
             }
         }
-        return (URL[]) results.toArray(new URL[0]);
+        return results.toArray(new URL[0]);
     }
 
     public DataSourceMetaInfo[] getDataSourceMetas() {
@@ -88,7 +82,7 @@ public class IerpDataSourceProvider implements IDataSourceProvider {
 
     public String[] getDataSourceNames() {
         Set<String> dataSourceNames = getDataSourceMetaMap().keySet();
-        return (String[]) dataSourceNames.toArray(
+        return dataSourceNames.toArray(
                 new String[getDataSourceMetaMap().keySet().size()]);
     }
 

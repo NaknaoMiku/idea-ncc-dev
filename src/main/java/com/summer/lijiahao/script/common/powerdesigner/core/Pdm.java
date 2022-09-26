@@ -14,13 +14,13 @@ public class Pdm {
 
     private String version;
 
-    private List<ITable> tables = new ArrayList();
+    private final List<ITable> tables = new ArrayList();
 
-    private List<IFkConstraint> fkConstraints = new ArrayList();
+    private final List<IFkConstraint> fkConstraints = new ArrayList();
 
-    private List<IIndex> indexs = new ArrayList();
+    private final List<IIndex> indexs = new ArrayList();
 
-    private List<ViewInfo> views = new ArrayList();
+    private final List<ViewInfo> views = new ArrayList();
 
     public List<ITable> getTables() {
         return this.tables;

@@ -6,8 +6,7 @@ import com.summer.lijiahao.devconfig.DevConfigDialog;
 import com.summer.lijiahao.devconfig.util.DataSourceUtil;
 import com.summer.lijiahao.devconfig.util.TableModelUtil;
 
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseEvent;

@@ -12,7 +12,7 @@ import com.summer.lijiahao.devconfig.util.TableModelUtil;
 import com.summer.lijiahao.library.util.LibrariesUtil;
 import org.apache.commons.lang.StringUtils;
 
-import javax.swing.JTextField;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -48,7 +48,7 @@ public class OKAction extends AbstractButtonAction {
      */
     private void saveModuleConfig(boolean homeChanged) throws BusinessException {
 //        if (homeChanged) {
-            TableModelUtil.saveModuleConfig(getDialog());
+        TableModelUtil.saveModuleConfig(getDialog());
 //        }
     }
 

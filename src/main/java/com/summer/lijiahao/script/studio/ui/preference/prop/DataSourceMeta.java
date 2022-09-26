@@ -4,52 +4,21 @@ import java.io.Serializable;
 
 public class DataSourceMeta implements Serializable, Cloneable {
     private static final long serialVersionUID = 1774004595340815036L;
-
-    public String toString() {
-        return getDataSourceName();
-    }
-
     private String dataSourceName = "design";
-
     private String oidMark = "ZZ";
-
     private String databaseUrl = "jdbc:sqlserver://127.0.0.1:1433;database=nc50";
-
     private String user = "sa";
-
     private String password = "sa";
-
     private String driverClassName = "component.microsoft.sqlserver.jdbc.SQLServerDriver";
-
     private String databaseType = "SQLSERVER2008";
-
     private int maxCon = 5;
-
     private int minCon = 5;
-
     private String dataSourceClassName = "nc.bs.mw.ejb.xares.IerpDataSource";
-
     private String xaDataSourceClassName = "nc.bs.mw.ejb.xares.IerpXADataSource";
-
     private int conIncrement = 0;
-
     private int conInUse = 0;
-
     private int conIdle = 0;
-
     private boolean isBase;
-
-    public int getConIdle() {
-        return this.conIdle;
-    }
-
-    public int getConIncrement() {
-        return this.conIncrement;
-    }
-
-    public int getConInUse() {
-        return this.conInUse;
-    }
 
     public DataSourceMeta() {
     }
@@ -66,16 +35,56 @@ public class DataSourceMeta implements Serializable, Cloneable {
         this.minCon = minCon;
     }
 
+    public String toString() {
+        return getDataSourceName();
+    }
+
+    public int getConIdle() {
+        return this.conIdle;
+    }
+
+    public void setConIdle(int conIdle) {
+        this.conIdle = conIdle;
+    }
+
+    public int getConIncrement() {
+        return this.conIncrement;
+    }
+
+    public void setConIncrement(int conIncrement) {
+        this.conIncrement = conIncrement;
+    }
+
+    public int getConInUse() {
+        return this.conInUse;
+    }
+
+    public void setConInUse(int conInUse) {
+        this.conInUse = conInUse;
+    }
+
     public String getDataSourceName() {
         return this.dataSourceName;
+    }
+
+    public void setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
     }
 
     public String getDatabaseUrl() {
         return this.databaseUrl;
     }
 
+    public void setDatabaseUrl(String databaseUrl) {
+        this.databaseUrl = databaseUrl;
+    }
+
     public String getUser() {
         return this.user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getPassword() {
@@ -88,6 +97,10 @@ public class DataSourceMeta implements Serializable, Cloneable {
 
     public String getDriverClassName() {
         return this.driverClassName;
+    }
+
+    public void setDriverClassName(String driverClassName) {
+        this.driverClassName = driverClassName;
     }
 
     public String getDatabaseType() {
@@ -136,34 +149,6 @@ public class DataSourceMeta implements Serializable, Cloneable {
 
     public void setXaDataSourceClassName(String xaDataSourceClassName) {
         this.xaDataSourceClassName = xaDataSourceClassName;
-    }
-
-    public void setDatabaseUrl(String databaseUrl) {
-        this.databaseUrl = databaseUrl;
-    }
-
-    public void setDataSourceName(String dataSourceName) {
-        this.dataSourceName = dataSourceName;
-    }
-
-    public void setDriverClassName(String driverClassName) {
-        this.driverClassName = driverClassName;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public void setConIdle(int conIdle) {
-        this.conIdle = conIdle;
-    }
-
-    public void setConIncrement(int conIncrement) {
-        this.conIncrement = conIncrement;
-    }
-
-    public void setConInUse(int conInUse) {
-        this.conInUse = conInUse;
     }
 
     public boolean isDesign() {

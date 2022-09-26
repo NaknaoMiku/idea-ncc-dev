@@ -11,18 +11,8 @@ import com.summer.lijiahao.base.NccEnvSettingService;
 import com.summer.lijiahao.patcher.util.ExportPatcherUtil;
 import org.apache.commons.lang.StringUtils;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -30,10 +20,10 @@ import java.io.File;
 
 public class PatcherDialog extends AbstractDialog {
 
+    private final AnActionEvent event;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-
     private JTextField savePath;
     private JButton fileChooseBtn;
     private JPanel filePanel;
@@ -43,7 +33,6 @@ public class PatcherDialog extends AbstractDialog {
     private JProgressBar progressBar;
     private JPanel logPanel;
     private JCheckBox cloudFlagCheckBox;
-    private final AnActionEvent event;
     private JBList fieldList;
 
     public PatcherDialog(final AnActionEvent event) {
@@ -92,12 +81,12 @@ public class PatcherDialog extends AbstractDialog {
             return;
         }
         if (null == savePath.getText() || "".equals(savePath.getText())) {
-            Messages.showErrorDialog(this, "Please Select Save Path!", "Error");
+            Messages.showErrorDialog(this, "Please select save path!", "Error");
             return;
         }
         ListModel<VirtualFile> model = fieldList.getModel();
         if (model.getSize() == 0) {
-            Messages.showErrorDialog(this, "Please Select Export File!", "Error");
+            Messages.showErrorDialog(this, "Please select export file!", "Error");
             return;
         }
 
@@ -161,7 +150,7 @@ public class PatcherDialog extends AbstractDialog {
         VirtualFile[] data = event.getData(CommonDataKeys.VIRTUAL_FILE_ARRAY);
         assert data != null;
         fieldList = new JBList(data);
-        fieldList.setEmptyText("No File Selected!");
+        fieldList.setEmptyText("No file selected!");
         ToolbarDecorator decorator = ToolbarDecorator.createDecorator(fieldList);
         filePanel = decorator.createPanel();
     }

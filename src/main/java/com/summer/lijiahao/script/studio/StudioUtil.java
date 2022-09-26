@@ -2,19 +2,12 @@ package com.summer.lijiahao.script.studio;
 
 import com.summer.lijiahao.base.NccEnvSettingService;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class StudioUtil {
-    private static NccEnvSettingService envSettingService = NccEnvSettingService.getInstance();
     private static final String UAPHOME_FOLDERNAME = "UAP";
-
     private static final String LANG_FILE = ".lang";
-
+    private static final NccEnvSettingService envSettingService = NccEnvSettingService.getInstance();
     private static String studioHome;
 
     public static final String getStudioHome() {
@@ -30,7 +23,7 @@ public class StudioUtil {
     }
 
     public static String getDefaultNCHome() {
-        return String.valueOf(getStudioHome()) + File.separator + "UAP";
+        return getStudioHome() + File.separator + "UAP";
     }
 
     public static String getStudioLang() {
@@ -38,7 +31,7 @@ public class StudioUtil {
     }
 
     public static String getStudioPersistenceLang() {
-        String file = String.valueOf(getStudioHome()) + File.separator + ".lang";
+        String file = getStudioHome() + File.separator + ".lang";
         File langFile = new File(file);
         if (!langFile.exists())
             return null;
@@ -61,7 +54,7 @@ public class StudioUtil {
     public static boolean setStudioLang(String lang) {
         if (lang == null)
             lang = "en";
-        String file = String.valueOf(getStudioHome()) + File.separator + ".lang";
+        String file = getStudioHome() + File.separator + ".lang";
         File langFile = new File(file);
         FileWriter writer = null;
         try {

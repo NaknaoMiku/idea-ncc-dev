@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 public class SqlQueryResultSet {
-    private ITable table;
+    private final ITable table;
 
-    private List<Map<String, Object>> results;
+    private final List<Map<String, Object>> results;
 
-    private List<DBRowBlobsResult> blobs;
+    private final List<DBRowBlobsResult> blobs;
 
-    private List<SqlQueryResultSet> subResultSets;
+    private final List<SqlQueryResultSet> subResultSets;
 
     public SqlQueryResultSet(ITable table) {
         this.table = table;

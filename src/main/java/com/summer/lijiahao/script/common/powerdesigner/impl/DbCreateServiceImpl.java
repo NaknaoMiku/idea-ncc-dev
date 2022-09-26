@@ -1,24 +1,18 @@
 package com.summer.lijiahao.script.common.powerdesigner.impl;
 
 import com.intellij.openapi.vfs.VirtualFile;
-import com.summer.lijiahao.script.common.powerdesigner.util.PdmUtil;
 import com.summer.lijiahao.script.common.powerdesigner.core.Pdm;
 import com.summer.lijiahao.script.common.powerdesigner.exception.PDMParseRuntimeException;
 import com.summer.lijiahao.script.common.powerdesigner.itf.IDbCreateService;
 import com.summer.lijiahao.script.common.powerdesigner.itf.IDdlGenerator;
+import com.summer.lijiahao.script.common.powerdesigner.util.PdmUtil;
 import com.summer.lijiahao.script.pub.db.model.IColumn;
 import com.summer.lijiahao.script.pub.db.model.ITable;
 import com.summer.lijiahao.script.pub.db.model.impl.Column;
 import com.summer.lijiahao.script.pub.db.model.impl.Table;
 import org.apache.commons.io.IOUtils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import java.io.*;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -107,23 +101,23 @@ public class DbCreateServiceImpl implements IDbCreateService {
             tableSqlFile.delete();
         } else if (!tableSqlFile.getParentFile().exists() &&
                 !tableSqlFile.getParentFile().mkdirs()) {
-            String msg = MessageFormat.format("Create directory {0} failed.", new Object[]{tableSqlFile
-                    .getParentFile().getAbsolutePath()});
+            String msg = MessageFormat.format("Create directory {0} failed.", tableSqlFile
+                    .getParentFile().getAbsolutePath());
             throw new PDMParseRuntimeException(msg);
         }
         if (pdm.getIndexs().isEmpty() && pdm.getFkConstraints().isEmpty()) {
             indexAndRefSqlFile.delete();
         } else if (!indexAndRefSqlFile.getParentFile().exists() &&
                 !indexAndRefSqlFile.getParentFile().mkdirs()) {
-            String msg = MessageFormat.format("Create directory {0} failed.", new Object[]{indexAndRefSqlFile.getParentFile().getAbsolutePath()});
+            String msg = MessageFormat.format("Create directory {0} failed.", indexAndRefSqlFile.getParentFile().getAbsolutePath());
             throw new PDMParseRuntimeException(msg);
         }
         if (pdm.getViews().isEmpty()) {
             viewSqlFile.delete();
         } else if (!viewSqlFile.getParentFile().exists() &&
                 !viewSqlFile.getParentFile().mkdirs()) {
-            String msg = MessageFormat.format("Create directory {0} failed.", new Object[]{viewSqlFile
-                    .getParentFile().getAbsolutePath()});
+            String msg = MessageFormat.format("Create directory {0} failed.", viewSqlFile
+                    .getParentFile().getAbsolutePath());
             throw new PDMParseRuntimeException(msg);
         }
         IDdlGenerator generator = DdlGeneratorFactory.getInstance(dbType);
@@ -135,7 +129,7 @@ public class DbCreateServiceImpl implements IDbCreateService {
                 generator.geneCreateTableDdl(pdm.getTables(), tableWriter);
             }
             if (indexAndRefSqlFile.exists() && !indexAndRefSqlFile.delete()) {
-                String msg = MessageFormat.format("Create directory {0} failed.", new Object[]{indexAndRefSqlFile.getParentFile().getAbsolutePath()});
+                String msg = MessageFormat.format("Create directory {0} failed.", indexAndRefSqlFile.getParentFile().getAbsolutePath());
                 throw new PDMParseRuntimeException(msg);
             }
             if (!pdm.getIndexs().isEmpty() || !pdm.getFkConstraints().isEmpty()) {
@@ -156,7 +150,7 @@ public class DbCreateServiceImpl implements IDbCreateService {
 //            logger.error("File not found", e);
             throw new PDMParseRuntimeException("File not found");
         } catch (UnsupportedEncodingException e) {
-            String msg = MessageFormat.format("{0} code unsupported.", new Object[]{"gb2312"});
+            String msg = MessageFormat.format("{0} code unsupported.", "gb2312");
 //            logger.error(msg, e);
             throw new PDMParseRuntimeException(msg);
         } finally {
@@ -262,14 +256,14 @@ public class DbCreateServiceImpl implements IDbCreateService {
             length = 18;
         }
         for (Iterator<ITable> iter = tables.iterator(); iter.hasNext(); ) {
-            ITable table = (ITable) iter.next();
+            ITable table = iter.next();
             if (table.getPkConstraint() != null) {
                 String pkConstaintName = table.getPkConstraint().getName();
                 if (pkConstaintName != null &&
                         pkConstaintName.length() > length) {
                     String msg = MessageFormat.format(
-                            "The length of constraint name of primary key of table {1} belongs to  is exceeding", new Object[]{pdmName,
-                                    table.getName(), String.valueOf(length)});
+                            "The length of constraint name of primary key of table {1} belongs to  is exceeding", pdmName,
+                            table.getName(), String.valueOf(length));
 //                    logger.error(msg);
                     iter.remove();
                 }

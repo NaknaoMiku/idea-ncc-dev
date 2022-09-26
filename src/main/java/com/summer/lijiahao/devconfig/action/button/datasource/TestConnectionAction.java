@@ -34,8 +34,8 @@ public class TestConnectionAction extends AbstractButtonAction {
         try {
             flag = ConnectionService.testConnection(meta);
         } catch (Exception e1) {
-            String msg = MessageFormat.format("connection failed.(jdbcurl:{0}; user:{1}; pwd:{2}; driver:{3})", new Object[]{currMeta.getDatabaseUrl(), currMeta.getUser(),
-                    currMeta.getPassword(), currMeta.getDriverClassName()});
+            String msg = MessageFormat.format("connection failed.(jdbcurl:{0}; user:{1}; pwd:{2}; driver:{3})", currMeta.getDatabaseUrl(), currMeta.getUser(),
+                    currMeta.getPassword(), currMeta.getDriverClassName());
             Messages.showMessageDialog("Test failed,Please check input or cfg!" + '\n' + msg, "tips", Messages.getInformationIcon());
             return;
         }

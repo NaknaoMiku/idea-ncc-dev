@@ -17,8 +17,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class ConnectionManager {
-    private Map<String, DataSourceMetaInfo> metaMap = new HashMap();
-    private Map<DataSourceMetaInfo, BoneCP> dataSourceMap = new HashMap();
+    private final Map<String, DataSourceMetaInfo> metaMap = new HashMap();
+    private final Map<DataSourceMetaInfo, BoneCP> dataSourceMap = new HashMap();
 
     public ConnectionManager() {
     }
@@ -54,7 +54,7 @@ public class ConnectionManager {
 
     public Connection getConnection(DataSourceMetaInfo meta) throws SQLException, ConnectionException, ClassNotFoundException {
         if (meta != null) {
-            BoneCP comboPooledDataSource = (BoneCP) this.dataSourceMap.get(meta);
+            BoneCP comboPooledDataSource = this.dataSourceMap.get(meta);
             if (comboPooledDataSource == null) {
                 comboPooledDataSource = ConnectionUtil.getDataSource(meta);
                 if (comboPooledDataSource == null) {
@@ -72,10 +72,10 @@ public class ConnectionManager {
     }
 
     public Connection getConnection(String metaName) throws SQLException, ConnectionException, ClassNotFoundException {
-        return this.getConnection((DataSourceMetaInfo) this.metaMap.get(metaName));
+        return this.getConnection(this.metaMap.get(metaName));
     }
 
     public DataSourceMetaInfo getDataSourceMetaInfo(String dataSourceName) {
-        return this.metaMap != null ? (DataSourceMetaInfo) this.metaMap.get(dataSourceName) : null;
+        return this.metaMap != null ? this.metaMap.get(dataSourceName) : null;
     }
 }

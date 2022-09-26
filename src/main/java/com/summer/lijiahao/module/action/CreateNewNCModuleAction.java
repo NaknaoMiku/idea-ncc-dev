@@ -1,8 +1,8 @@
 package com.summer.lijiahao.module.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.summer.lijiahao.module.NewModuleDialog;
 import com.summer.lijiahao.abs.AbstractAnAction;
+import com.summer.lijiahao.module.NewModuleDialog;
 
 /**
  * 新建nc模块

@@ -1,9 +1,9 @@
 package com.summer.lijiahao.script.common.powerdesigner.util;
 
 import com.intellij.openapi.vfs.VirtualFile;
-import com.summer.lijiahao.script.common.powerdesigner.impl.PropertyComparator;
 import com.summer.lijiahao.script.common.powerdesigner.core.Pdm;
 import com.summer.lijiahao.script.common.powerdesigner.exception.PDMParseRuntimeException;
+import com.summer.lijiahao.script.common.powerdesigner.impl.PropertyComparator;
 import com.summer.lijiahao.script.common.powerdesigner.itf.IDataDictionaryGenerator;
 import com.summer.lijiahao.script.pub.db.model.IColumn;
 import com.summer.lijiahao.script.pub.db.model.IIndex;
@@ -15,23 +15,13 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class DataDictionaryGeneratorFactory {
     //    protected static Logger logger = LoggerFactory.getLogger(DataDictionaryGeneratorFactory.class.getName());
-    private static IDataDictionaryGenerator ddGenerator = new DataDictionaryGenerator();
+    private static final IDataDictionaryGenerator ddGenerator = new DataDictionaryGenerator();
 
     public static IDataDictionaryGenerator getInstance() {
         return ddGenerator;
@@ -77,7 +67,7 @@ public class DataDictionaryGeneratorFactory {
             Map<String, List<IIndex>> tableMapIndexs = new HashMap<String, List<IIndex>>();
             for (IIndex index : pdm.getIndexs()) {
                 List<IIndex> tableIndexs = null;
-                if ((tableIndexs = (List) tableMapIndexs.get(index.getTable().getName())) == null) {
+                if ((tableIndexs = tableMapIndexs.get(index.getTable().getName())) == null) {
                     tableIndexs = new ArrayList<IIndex>();
                     tableMapIndexs.put(index.getTable().getName(), tableIndexs);
                 }
@@ -88,7 +78,7 @@ public class DataDictionaryGeneratorFactory {
                     Template indexTempl = this.ve.getTemplate("nc/uap/studio/build/pdm/vm/index.templ", "UTF-8");
                     VelocityContext vc = new VelocityContext();
                     vc.put("pdmName", pdmFileName);
-                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, "nc_dd_index.html")), "UTF-8"));
+                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, "nc_dd_index.html")), StandardCharsets.UTF_8));
                     indexTempl.merge(vc, writer);
                 } finally {
                     IOUtils.closeQuietly(writer);
@@ -98,7 +88,7 @@ public class DataDictionaryGeneratorFactory {
                     Template headerTempl = this.ve.getTemplate("nc/uap/studio/build/pdm/vm/header.templ", "UTF-8");
                     VelocityContext vc = new VelocityContext();
                     vc.put("pdmName", pdmFileName);
-                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, "nc_dd_header.html")), "UTF-8"));
+                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, "nc_dd_header.html")), StandardCharsets.UTF_8));
                     headerTempl.merge(vc, writer);
                 } finally {
                     IOUtils.closeQuietly(writer);
@@ -111,7 +101,7 @@ public class DataDictionaryGeneratorFactory {
                     vc.put("reportName", pdmFileName);
                     vc.put("moduleName", pdmFileName);
                     vc.put("geneDatetime", DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
-                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, "nc_dd_doc_home.html")), "UTF-8"));
+                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, "nc_dd_doc_home.html")), StandardCharsets.UTF_8));
                     headerTempl.merge(vc, writer);
                 } finally {
                     IOUtils.closeQuietly(writer);
@@ -124,7 +114,7 @@ public class DataDictionaryGeneratorFactory {
                     List<ITable> tables = new ArrayList<ITable>(pdm.getTables());
                     Collections.sort(tables, new PropertyComparator("name"));
                     vc.put("tables", tables);
-                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, "nc_dd_navigator.html")), "UTF-8"));
+                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, "nc_dd_navigator.html")), StandardCharsets.UTF_8));
                     indexTempl.merge(vc, writer);
                 } finally {
                     IOUtils.closeQuietly(writer);
@@ -141,7 +131,7 @@ public class DataDictionaryGeneratorFactory {
                     vc.put("pkColNames", pkColNames);
                     writer = null;
                     try {
-                        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, String.valueOf(table.getName()) + ".html")), "UTF-8"));
+                        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(ddRoot, table.getName() + ".html")), StandardCharsets.UTF_8));
                         tableContentTempl.merge(vc, writer);
                     } finally {
                         IOUtils.closeQuietly(writer);

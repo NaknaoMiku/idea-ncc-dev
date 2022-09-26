@@ -4,11 +4,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.summer.lijiahao.script.common.powerdesigner.core.Pdm;
 import com.summer.lijiahao.script.common.powerdesigner.exception.PDMParseRuntimeException;
 import com.summer.lijiahao.script.pub.db.model.IColumn;
-import com.summer.lijiahao.script.pub.db.model.impl.Column;
-import com.summer.lijiahao.script.pub.db.model.impl.FkConstraint;
-import com.summer.lijiahao.script.pub.db.model.impl.Index;
-import com.summer.lijiahao.script.pub.db.model.impl.PkConstraint;
-import com.summer.lijiahao.script.pub.db.model.impl.Table;
+import com.summer.lijiahao.script.pub.db.model.impl.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
@@ -17,17 +13,9 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +34,7 @@ public class PdmUtil {
         boolean success = false;
         String fileName = pdmFile.getPath();
         try {
-            br = new BufferedReader(new InputStreamReader(pdmFile.getInputStream(), "UTF-8"));
+            br = new BufferedReader(new InputStreamReader(pdmFile.getInputStream(), StandardCharsets.UTF_8));
             String line = null;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
@@ -97,7 +85,7 @@ public class PdmUtil {
         List<Node> nameNodes = DomUtil.findNestedChilds(modelEle, "a:Name");
         if (nameNodes.size() != 1)
             throw new PDMParseRuntimeException("PDM(" + fileName + ")文件中包含非法数量的PDM");
-        pdm.setPdmDesc(((Node) nameNodes.get(0)).getFirstChild().getNodeValue());
+        pdm.setPdmDesc(nameNodes.get(0).getFirstChild().getNodeValue());
         pdm.setPdmName(DomUtil.findChildContent(modelEle, "a:Code"));
         Map<String, Table> idTableMap = new LinkedHashMap<String, Table>();
         Map<String, Column> idColumnMap = new HashMap<String, Column>();
@@ -191,7 +179,7 @@ public class PdmUtil {
                     index.setDesc(DomUtil.findChildContent(indexNode, "a:Name"));
                     for (Node indexColNode : indexColNodes) {
                         Element indexColEle = (Element) indexColNode;
-                        index.getColumns().add((IColumn) idColumnMap.get(indexColEle.getAttribute("Ref")));
+                        index.getColumns().add(idColumnMap.get(indexColEle.getAttribute("Ref")));
                     }
                     idIndexMap.put(indexId, index);
                 }
@@ -211,7 +199,7 @@ public class PdmUtil {
                             success = true;
                             for (Node pkColNode : pkColNodes) {
                                 String colRef = ((Element) pkColNode).getAttribute("Ref");
-                                Column col = (Column) idColumnMap.get(colRef);
+                                Column col = idColumnMap.get(colRef);
                                 if (col == null) {
                                     success = false;
                                     break;
@@ -228,7 +216,7 @@ public class PdmUtil {
                 }
                 String clusteredIndexId = DomUtil.findNestedChildAttr(tableNode, "c:ClusterObject/o:Index", "Ref");
                 if (StringUtils.isNotBlank(clusteredIndexId)) {
-                    Index index = (Index) idIndexMap.get(clusteredIndexId);
+                    Index index = idIndexMap.get(clusteredIndexId);
                     if (index != null)
                         index.setClustered(true);
                 }
@@ -252,8 +240,8 @@ public class PdmUtil {
             String referDesc = DomUtil.findChildContent(referenceNode, "a:Name");
             String mainTableId = DomUtil.findNestedChildAttr(referenceNode, "c:Object1/o:Table", "Ref");
             String subTableId = DomUtil.findNestedChildAttr(referenceNode, "c:Object2/o:Table", "Ref");
-            Table mainTable = (Table) idTableMap.get(mainTableId);
-            Table subTable = (Table) idTableMap.get(subTableId);
+            Table mainTable = idTableMap.get(mainTableId);
+            Table subTable = idTableMap.get(subTableId);
             if (mainTable == null || subTable == null) {
 //                logger.error((new StringBuilder("PDM(")).append(pdmFileName).append(")中外键引用(")
 //                        .append(referDesc).append(")引用关联的表无效。").toString());
@@ -263,8 +251,8 @@ public class PdmUtil {
             if (referenceJoinNode != null) {
                 String mainTableColId = DomUtil.findNestedChildAttr(referenceJoinNode, "c:Object1/o:Column", "Ref");
                 String subTableColId = DomUtil.findNestedChildAttr(referenceJoinNode, "c:Object2/o:Column", "Ref");
-                Column mainTableCol = (Column) idColumnMap.get(mainTableColId);
-                Column subTableCol = (Column) idColumnMap.get(subTableColId);
+                Column mainTableCol = idColumnMap.get(mainTableColId);
+                Column subTableCol = idColumnMap.get(subTableColId);
                 if (mainTableCol != null || subTableCol != null) {
                     FkConstraint fkConstraint = new FkConstraint();
                     fkConstraint.setTable(subTable);
@@ -336,6 +324,6 @@ public class PdmUtil {
     }
 
     enum CaseType {
-        TOLOWER, TOUPPER, RESERVE;
+        TOLOWER, TOUPPER, RESERVE
     }
 }

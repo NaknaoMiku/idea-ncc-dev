@@ -1,15 +1,14 @@
 package com.summer.lijiahao.devconfig.action.item;
 
-import com.summer.lijiahao.devconfig.DevConfigDialog;
 import com.summer.lijiahao.abs.AbstractDialog;
 import com.summer.lijiahao.abs.AbstractItemListener;
+import com.summer.lijiahao.devconfig.DevConfigDialog;
 import com.summer.lijiahao.devconfig.util.DataSourceUtil;
 import com.summer.lijiahao.script.studio.ui.preference.dbdriver.DriverInfo;
 import com.summer.lijiahao.script.studio.ui.preference.prop.ToolUtils;
 import org.apache.commons.lang.StringUtils;
 
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
+import javax.swing.*;
 import java.awt.event.ItemEvent;
 
 /**

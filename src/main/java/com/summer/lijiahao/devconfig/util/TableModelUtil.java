@@ -1,29 +1,22 @@
 package com.summer.lijiahao.devconfig.util;
 
+import com.summer.lijiahao.abs.AbstractDialog;
 import com.summer.lijiahao.base.BusinessException;
 import com.summer.lijiahao.base.ModuleFileUtil;
 import com.summer.lijiahao.base.NccEnvSettingService;
 import com.summer.lijiahao.debug.util.CreatApplicationConfigurationUtil;
-import com.summer.lijiahao.abs.AbstractDialog;
 import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 public class TableModelUtil {
 
@@ -184,6 +177,7 @@ public class TableModelUtil {
 
     /**
      * 更新模块选择内容
+     *
      * @param dialog
      * @throws BusinessException
      */
@@ -217,10 +211,10 @@ public class TableModelUtil {
             selModuleStr = new StringBuilder(selModuleStr.substring(1));
         }
 
-        if(!oldMust.equals(mustModuleStr)){
+        if (!oldMust.equals(mustModuleStr)) {
             NccEnvSettingService.getInstance().setMust_modules(mustModuleStr.toString());
         }
-        if(!oldEx.equals(selModuleStr.toString())){
+        if (!oldEx.equals(selModuleStr.toString())) {
             NccEnvSettingService.getInstance().setEx_modules(selModuleStr.toString());
             CreatApplicationConfigurationUtil.update();
         }

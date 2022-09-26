@@ -1,15 +1,14 @@
 package com.summer.lijiahao.dictionary.action;
 
 import com.intellij.ui.table.JBTable;
-import com.summer.lijiahao.dictionary.listener.TableListClickedListener;
-import com.summer.lijiahao.dictionary.util.SearchTableUtil;
 import com.summer.lijiahao.abs.AbstractButtonAction;
 import com.summer.lijiahao.abs.AbstractDialog;
 import com.summer.lijiahao.base.NccEnvSettingService;
 import com.summer.lijiahao.dictionary.DataDictionaryDialog;
+import com.summer.lijiahao.dictionary.listener.TableListClickedListener;
+import com.summer.lijiahao.dictionary.util.SearchTableUtil;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class SearchTableAction extends AbstractButtonAction {

@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ToolUtils {
-    private static Encode encode = new Encode();
+    private static final Encode encode = new Encode();
 
     public static boolean isNumber(String str) {
         return str.matches("\\d+");

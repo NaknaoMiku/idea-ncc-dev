@@ -42,7 +42,7 @@ public class MLTableMetaInfo {
         if (this.columnNames.contains(lcColumnName))
             return true;
         for (String column : this.columnNames) {
-            Pattern p = Pattern.compile(String.valueOf(column) + "\\d$");
+            Pattern p = Pattern.compile(column + "\\d$");
             Matcher m = p.matcher(lcColumnName);
             if (m.find())
                 return true;

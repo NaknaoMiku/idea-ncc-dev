@@ -11,11 +11,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.summer.lijiahao.base.BaseUtil;
-import com.summer.lijiahao.base.BusinessException;
-import com.summer.lijiahao.base.ModuleFileUtil;
-import com.summer.lijiahao.base.NccEnvSettingService;
-import com.summer.lijiahao.base.ProjectManager;
+import com.summer.lijiahao.base.*;
 import com.summer.lijiahao.script.studio.ui.preference.prop.ClusterInfo;
 import com.summer.lijiahao.script.studio.ui.preference.prop.DomainInfo;
 import com.summer.lijiahao.script.studio.ui.preference.prop.IpAndPort;
@@ -31,10 +27,10 @@ import java.util.Map;
 import static com.intellij.execution.ShortenCommandLine.CLASSPATH_FILE;
 
 public class CreatApplicationConfigurationUtil {
-    private static final String serverClass = "ufmiddle.start.tomcat.StartDirectServer";
-    private static final String clientClass = "nc.starter.test.JStarter";
     public static final int DEFALUT_PORT = 80;
     public static final String DEFALUT_IP = "127.0.0.1";
+    private static final String serverClass = "ufmiddle.start.tomcat.StartDirectServer";
+    private static final String clientClass = "nc.starter.test.JStarter";
 
     /**
      * 设置启动application
@@ -93,20 +89,20 @@ public class CreatApplicationConfigurationUtil {
         if (serverFlag) {
             conf.setMainClassName(serverClass);
             String exModulesStr = NccEnvSettingService.getInstance().getEx_modules();
-            if(StringUtils.isBlank(exModulesStr)){
+            if (StringUtils.isBlank(exModulesStr)) {
                 exModulesStr = "";
                 File homeFile = new File(homePath + File.separator + "modules");
-                if(homeFile.exists()){
-                    File [] modules = homeFile.listFiles();
-                    if(modules != null){
-                        for(File module : modules){
+                if (homeFile.exists()) {
+                    File[] modules = homeFile.listFiles();
+                    if (modules != null) {
+                        for (File module : modules) {
                             String moduleName = module.getName();
-                            if(ModuleFileUtil.getModuleSet().contains(moduleName)){
+                            if (ModuleFileUtil.getModuleSet().contains(moduleName)) {
                                 continue;
                             }
                             exModulesStr += "," + moduleName;
                         }
-                        if(exModulesStr.length() > 0){
+                        if (exModulesStr.length() > 0) {
                             exModulesStr = exModulesStr.substring(1);
                             NccEnvSettingService.getInstance().setEx_modules(exModulesStr);
                         }
@@ -115,17 +111,17 @@ public class CreatApplicationConfigurationUtil {
             }
             envs.put("FIELD_EX_MODULES", exModulesStr);
             String hotwebs = envs.get("FIELD_HOTWEBS");
-            if(StringUtils.isBlank(hotwebs)){
+            if (StringUtils.isBlank(hotwebs)) {
                 hotwebs = "nccloud,fs";
             }
             envs.put("FIELD_HOTWEBS", hotwebs);
             envs.put("FIELD_ENCODING", "UTF-8");
 
             String timeZone = envs.get("FIELD_TIMEZONE");
-            if(StringUtils.isBlank(timeZone)){
+            if (StringUtils.isBlank(timeZone)) {
                 timeZone = "GMT+8";
             }
-            envs.put("FIELD_TIMEZONE",timeZone);
+            envs.put("FIELD_TIMEZONE", timeZone);
             conf.setVMParameters("-Dnc.exclude.modules=$FIELD_EX_MODULES$\n" +
                     "-Dnc.runMode=develop\n" +
                     "-Dnc.server.location=$FIELD_NC_HOME$\n" +
@@ -141,7 +137,7 @@ public class CreatApplicationConfigurationUtil {
                     "-Dorg.owasp.esapi.resources=$FIELD_NC_HOME$/ierp/bin/esapi\n" +
                     "-Dfile.encoding=$FIELD_ENCODING$\n" +
                     // 默认添加时区
-                    "-Duser.timezone=$FIELD_TIMEZONE$\n" );
+                    "-Duser.timezone=$FIELD_TIMEZONE$\n");
 
         } else {
             // ip和端口号读取home中的，没有就取默认值127.0.0.1:80
@@ -152,13 +148,13 @@ public class CreatApplicationConfigurationUtil {
                 DomainInfo domainInfo = propXml.loadPropInfo(file).getDomain();
                 SingleServerInfo serverInfo = domainInfo.getServer();
                 //如果severInfo拿不到，尝试判断是集群配置，获取主服务配置
-                if(serverInfo == null){
+                if (serverInfo == null) {
                     ClusterInfo clusterInfo = domainInfo.getCluster();
-                    if(clusterInfo != null){
+                    if (clusterInfo != null) {
                         serverInfo = clusterInfo.getMgr();
                     }
                 }
-                if(serverInfo != null) {
+                if (serverInfo != null) {
                     // 优先http，然后是https，然后是ajp
                     if (ArrayUtils.isNotEmpty(serverInfo.getHttp())) {
                         ipAndPort = serverInfo.getHttp()[0];

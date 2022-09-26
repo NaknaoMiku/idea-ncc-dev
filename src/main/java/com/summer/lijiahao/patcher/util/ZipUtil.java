@@ -89,7 +89,7 @@ public class ZipUtil {
             ZipEntry entry = new ZipEntry(filePath);
             out.putNextEntry(entry);
             int count;
-            byte data[] = new byte[BUFFER];
+            byte[] data = new byte[BUFFER];
             while ((count = bis.read(data, 0, BUFFER)) != -1) {
                 out.write(data, 0, count);
             }

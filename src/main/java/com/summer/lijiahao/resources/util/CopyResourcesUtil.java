@@ -2,8 +2,9 @@ package com.summer.lijiahao.resources.util;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.util.io.FileUtil;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.summer.lijiahao.base.BaseUtil;
 import com.summer.lijiahao.base.NccEnvSettingService;
 
@@ -30,7 +31,8 @@ public class CopyResourcesUtil {
         String resourcesPath = homePath + File.separator + "resources" + File.separator;
 
         Module module = BaseUtil.getModule(event);
-        if (module.getModuleFile() == null) {
+        VirtualFile[] contentRoots = ModuleRootManager.getInstance(module).getContentRoots();
+        if (contentRoots.length == 0) {
             return;
         }
 

@@ -18,11 +18,11 @@ import java.security.SecureRandom;
  * @date: 2022/4/1
  */
 public class AESEncode {
+    static final IvParameterSpec iv = new IvParameterSpec(getUTF8Bytes("1234567890123456"));
+    static final String transform = "AES/CBC/PKCS5Padding";
     private static final String KEY = System.getProperty("project.aes.seed", "yonyou.default");
     private static final String KEY_AES = "AES";
     private static final String SECURE_RABDOM = "SHA1PRNG";
-    static final IvParameterSpec iv = new IvParameterSpec(getUTF8Bytes("1234567890123456"));
-    static final String transform = "AES/CBC/PKCS5Padding";
     private static final String FLAY = "#";
 
     public AESEncode() {
@@ -33,7 +33,7 @@ public class AESEncode {
     }
 
     public static String decrypt(String data) {
-        if (data.substring(0, 1).equals("#")) {
+        if (data.charAt(0) == '#') {
             data = data.substring(1);
             return aesDecode(data);
         } else {
@@ -106,10 +106,10 @@ public class AESEncode {
         } else {
             byte[] result = new byte[hexStr.length() / 2];
 
-            for(int i = 0; i < hexStr.length() / 2; ++i) {
+            for (int i = 0; i < hexStr.length() / 2; ++i) {
                 int high = Integer.parseInt(hexStr.substring(i * 2, i * 2 + 1), 16);
                 int low = Integer.parseInt(hexStr.substring(i * 2 + 1, i * 2 + 2), 16);
-                result[i] = (byte)(high * 16 + low);
+                result[i] = (byte) (high * 16 + low);
             }
 
             return result;
@@ -126,7 +126,7 @@ public class AESEncode {
     private static String parseByte2HexStr(byte[] buf) {
         StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < buf.length; ++i) {
+        for (int i = 0; i < buf.length; ++i) {
             String hex = Integer.toHexString(buf[i] & 255);
             if (hex.length() == 1) {
                 hex = '0' + hex;

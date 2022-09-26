@@ -5,9 +5,9 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.newvfs.impl.FsRoot;
-import com.summer.lijiahao.module.util.ModuleUtil;
 import com.summer.lijiahao.abs.AbstractAnAction;
 import com.summer.lijiahao.base.BusinessException;
+import com.summer.lijiahao.module.util.ModuleUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -49,7 +49,7 @@ public class ConvertModuleAction extends AbstractAnAction {
                     flag = false;
                     break;
                 }
-                Module module =  com.intellij.openapi.module.ModuleUtil.findModuleForFile(virtualFile, e.getProject());
+                Module module = com.intellij.openapi.module.ModuleUtil.findModuleForFile(virtualFile, e.getProject());
                 //这里当前目录如果没有转module，会找到上曾module，所以永远不是空
                 flag = module != null && !module.getName().equals(virtualFile.getName()) && new File(virtualFile.getPath() + File.separator + "META-INF" + File.separator + "module.xml").exists();
 

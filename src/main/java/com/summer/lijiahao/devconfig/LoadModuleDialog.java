@@ -2,11 +2,8 @@ package com.summer.lijiahao.devconfig;
 
 import com.summer.lijiahao.abs.AbstractDialog;
 
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 
 public class LoadModuleDialog extends AbstractDialog {
     private JPanel contentPane;

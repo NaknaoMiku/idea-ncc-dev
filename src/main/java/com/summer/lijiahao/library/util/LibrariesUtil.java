@@ -15,19 +15,8 @@ import com.summer.lijiahao.base.NccEnvSettingService;
 import com.summer.lijiahao.base.ProjectManager;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -191,10 +180,10 @@ public class LibrariesUtil {
         //add date 2022/04/14
         //这里暂时不清楚有多少个extra。目前仅仅知道在basepp/MATA-INF下有，因此暂时默认所有的private代码可能会有extra
         String extraPath = basePath;
-        if(basePath.contains("META-INF")){
+        if (basePath.contains("META-INF")) {
             extraPath += "extra";
             File extraFile = new File(basePath);
-            if(extraFile.exists()){
+            if (extraFile.exists()) {
                 pathList.add(extraPath);
             }
         }
@@ -221,7 +210,7 @@ public class LibrariesUtil {
                 return;
             }
             boolean isNCCloudFlag = server.equals("nccloud");
-            StringBuffer jarBuffer = new StringBuffer("");
+            StringBuffer jarBuffer = new StringBuffer();
             for (File file : files) {
                 try {
                     //nccloud的jar需要解压提取鉴权文件

@@ -2,30 +2,19 @@ package com.summer.lijiahao.script.pub.db;
 
 import com.summer.lijiahao.script.pub.db.exception.DatabaseRuntimeException;
 import com.summer.lijiahao.script.pub.db.model.IColumn;
+import com.summer.lijiahao.script.pub.db.model.IFkConstraint;
 import com.summer.lijiahao.script.pub.db.model.IPkConstraint;
+import com.summer.lijiahao.script.pub.db.model.ITable;
 import com.summer.lijiahao.script.pub.db.model.impl.Column;
 import com.summer.lijiahao.script.pub.db.model.impl.FkConstraint;
 import com.summer.lijiahao.script.pub.db.model.impl.PkConstraint;
 import com.summer.lijiahao.script.pub.db.model.impl.Table;
 import com.summer.lijiahao.script.pub.db.query.IQueryInfo;
 import com.summer.lijiahao.script.pub.db.query.SqlQueryResultSet;
-import com.summer.lijiahao.script.pub.db.model.IFkConstraint;
-import com.summer.lijiahao.script.pub.db.model.ITable;
 import org.apache.commons.lang.StringUtils;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.sql.*;
+import java.util.*;
 
 public class SqlUtil {
     private static final String DB_TYPE_ORACLE = "Oracle";
@@ -131,7 +120,7 @@ public class SqlUtil {
             return table;
         } catch (SQLException sQLException) {
 //            logger.error(String.format("获取表%s列信息出错。", new Object[]{tableName}));
-            throw new DatabaseRuntimeException(String.format("获取表%s列信息出错。", new Object[]{tableName}));
+            throw new DatabaseRuntimeException(String.format("获取表%s列信息出错。", tableName));
         } finally {
             if (colRs != null)
                 try {
@@ -235,8 +224,8 @@ public class SqlUtil {
                         mainTable.getName() + "为复合主键，不支持子表查询。");
             List<Map<String, Object>> results = sqlQueryResultSet
                     .getResults();
-            String pkName = ((IColumn) pkCols.get(0)).getName();
-            int dataType = ((IColumn) pkCols.get(0)).getDataType();
+            String pkName = pkCols.get(0).getName();
+            int dataType = pkCols.get(0).getDataType();
             Set<String> pks = new HashSet<String>();
             for (Map<String, Object> colNameValue : results) {
                 Object obj = colNameValue.get(pkName);
@@ -249,7 +238,7 @@ public class SqlUtil {
                     continue;
                 if (subTable.getFkConstraints() != null)
                     if (subTable.getFkConstraints().size() == 1) {
-                        fkConstraint = (IFkConstraint) subTable.getFkConstraints().get(0);
+                        fkConstraint = subTable.getFkConstraints().get(0);
                     } else {
                         fkConstraint = subTable
                                 .getFkConstraintByRefTableName(mainTable
@@ -263,7 +252,7 @@ public class SqlUtil {
                             subTable.getName() + "为多外键列，不支持。");
                 SqlQueryResultSet subResultSet = queryResults(
                         subQryInfo,
-                        geneInClause(((IColumn) fkConstraint.getColumns().get(0))
+                        geneInClause(fkConstraint.getColumns().get(0)
                                 .getName(), pks), conn);
                 if (subResultSet != null)
                     sqlQueryResultSet.getSubResultSets().add(
@@ -293,11 +282,9 @@ public class SqlUtil {
     }
 
     private static boolean isTypeString(int dataType) {
-        if (1 != dataType && 12 != dataType &&
-                -1 != dataType && -9 != dataType &&
-                -15 != dataType)
-            return false;
-        return true;
+        return 1 == dataType || 12 == dataType ||
+                -1 == dataType || -9 == dataType ||
+                -15 == dataType;
     }
 
     private static String retriveCatelog(String dataBaseType) {

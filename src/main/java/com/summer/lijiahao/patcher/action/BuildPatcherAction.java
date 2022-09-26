@@ -3,8 +3,8 @@ package com.summer.lijiahao.patcher.action;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.newvfs.impl.FsRoot;
-import com.summer.lijiahao.patcher.dialog.PatcherDialog;
 import com.summer.lijiahao.abs.AbstractAnAction;
+import com.summer.lijiahao.patcher.dialog.PatcherDialog;
 import org.jetbrains.annotations.NotNull;
 
 

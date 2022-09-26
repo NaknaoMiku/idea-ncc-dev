@@ -1,8 +1,8 @@
 package com.summer.lijiahao.script.pub.db.model.impl;
 
 import com.summer.lijiahao.script.pub.db.model.IColumn;
-import com.summer.lijiahao.script.pub.db.model.ITableBase;
 import com.summer.lijiahao.script.pub.db.model.ITable;
+import com.summer.lijiahao.script.pub.db.model.ITableBase;
 
 public class Column implements IColumn {
     private String name;
@@ -29,8 +29,16 @@ public class Column implements IColumn {
         return this.dataType;
     }
 
+    public void setDataType(int dataType) {
+        this.dataType = dataType;
+    }
+
     public String getName() {
         return (this.name == null) ? null : this.name.toLowerCase();
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getTypeName() {
@@ -49,63 +57,55 @@ public class Column implements IColumn {
         return this.defaultValue;
     }
 
-    public String getDesc() {
-        return this.desc;
-    }
-
-    public int getLength() {
-        return this.length;
-    }
-
-    public int getPrecise() {
-        return this.precise;
-    }
-
-    public boolean isNullable() {
-        return this.nullable;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDataType(int dataType) {
-        this.dataType = dataType;
-    }
-
-    public void setTable(ITable table) {
-        this.table = table;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public void setPrecise(int precise) {
-        this.precise = precise;
-    }
-
-    public void setNullable(boolean nullable) {
-        this.nullable = nullable;
-    }
-
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public String getDesc() {
+        return this.desc;
     }
 
     public void setDesc(String desc) {
         this.desc = desc;
     }
 
-    public void setStereotype(String stereoType) {
-        this.stereoType = stereoType;
+    public int getLength() {
+        return this.length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getPrecise() {
+        return this.precise;
+    }
+
+    public void setPrecise(int precise) {
+        this.precise = precise;
+    }
+
+    public boolean isNullable() {
+        return this.nullable;
+    }
+
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
+    }
+
+    public void setTable(ITable table) {
+        this.table = table;
     }
 
     public String toString() {
-        return String.valueOf(this.name) + ":" + this.typeName;
+        return this.name + ":" + this.typeName;
     }
 
     public String getStereotype() {
         return this.stereoType;
+    }
+
+    public void setStereotype(String stereoType) {
+        this.stereoType = stereoType;
     }
 }
