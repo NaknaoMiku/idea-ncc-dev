@@ -57,9 +57,12 @@
         <moduleType id="NCCMODULE" implementationClass="com.summer.lijiahao.module.NCCModuleType"/>
         <projectService serviceInterface="com.summer.lijiahao.base.NccEnvSettingService"
                         serviceImplementation="com.summer.lijiahao.base.NccEnvSettingService"/>
-
+        <projectService serviceImplementation="com.summer.lijiahao.utils.openapi.OpenApiService"/>
         <notificationGroup id="ncc-dev-tools-bmonkeyk"
                            displayType="BALLOON"/>
+
+        <toolWindow id="OpenApi Tool" secondary="false" anchor="right"
+                    factoryClass="com.summer.lijiahao.utils.openapi.OpenApiToolWin"/>
     </extensions>
 
 

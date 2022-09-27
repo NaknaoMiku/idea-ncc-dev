@@ -8,19 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pdm {
-    private String pdmName;
-
-    private String pdmDesc;
-
-    private String version;
-
     private final List<ITable> tables = new ArrayList();
-
     private final List<IFkConstraint> fkConstraints = new ArrayList();
-
     private final List<IIndex> indexs = new ArrayList();
-
     private final List<ViewInfo> views = new ArrayList();
+    private String pdmName;
+    private String pdmDesc;
+    private String version;
 
     public List<ITable> getTables() {
         return this.tables;

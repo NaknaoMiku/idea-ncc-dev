@@ -34,12 +34,9 @@ public class InitDataExportStratege2 implements IScriptExportStratege, IExportCo
     private final boolean isBusiness;
 
     private final Map<String, List<String>> mlTableInfo;
-
-    private String langCode;
-
-    private int autoFileNo;
-
     private final TableStructure struct;
+    private String langCode;
+    private int autoFileNo;
 
     public InitDataExportStratege2(VirtualFile folder, boolean isBusiness, String mapName, TableStructure struct, Map<String, String> tableNoMap, String langCode, Map<String, List<String>> mlTableInfo) {
         this.root = folder;

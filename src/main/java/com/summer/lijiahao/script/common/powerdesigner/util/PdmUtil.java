@@ -3,7 +3,6 @@ package com.summer.lijiahao.script.common.powerdesigner.util;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.summer.lijiahao.script.common.powerdesigner.core.Pdm;
 import com.summer.lijiahao.script.common.powerdesigner.exception.PDMParseRuntimeException;
-import com.summer.lijiahao.script.pub.db.model.IColumn;
 import com.summer.lijiahao.script.pub.db.model.impl.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;

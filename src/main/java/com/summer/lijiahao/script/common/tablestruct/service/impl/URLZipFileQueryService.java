@@ -19,11 +19,9 @@ public class URLZipFileQueryService implements ICommonTableStructQueryService {
     //    protected static Logger logger = LoggerFactory.getLogger(URLZipFileQueryService.class.getName());
     private static final String DEFAULT_URL = "http://20.10.80.128:12345/cfgs/tables.zip";
     private final NccEnvSettingService envSettingService = NccEnvSettingService.getInstance();
-    private Properties common;
-
-    private List<MainTableCfg> cfgs;
-
     private final File localLocation;
+    private Properties common;
+    private List<MainTableCfg> cfgs;
 
     public URLZipFileQueryService() throws BusinessException {
         localLocation = getDefaultLocalCacheLocation();

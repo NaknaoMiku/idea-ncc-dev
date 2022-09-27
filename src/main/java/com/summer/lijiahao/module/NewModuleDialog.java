@@ -17,16 +17,15 @@ import java.text.MessageFormat;
 
 public class NewModuleDialog extends JDialog {
 
+    private final AnActionEvent event;
+    private final String modulePath;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-
     private JTextField location;
     private JButton locationFileChooseBtn;
     private JTextField moduleNameField;
     private JTextField ncModuleNameField;
-    private final AnActionEvent event;
-    private final String modulePath;
 
     public NewModuleDialog(final AnActionEvent event) {
         this.event = event;

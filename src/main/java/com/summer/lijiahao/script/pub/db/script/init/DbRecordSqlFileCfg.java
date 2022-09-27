@@ -33,24 +33,15 @@ public class DbRecordSqlFileCfg {
     private final String commonMapPath;
 
     private final String moduleMapPath;
-
-    private String moduleQueryEngineFilePath;
-
-    private String moduleFreeReportFilePath;
-
-    private String oidMarkRuleFilePath;
-
-    private String department;
-
-    private Properties commonProp;
-
-    private Properties moduleProp;
-
-    private Properties qeProp;
-
-    private Properties frProp;
-
     private final Object obj;
+    private String moduleQueryEngineFilePath;
+    private String moduleFreeReportFilePath;
+    private String oidMarkRuleFilePath;
+    private String department;
+    private Properties commonProp;
+    private Properties moduleProp;
+    private Properties qeProp;
+    private Properties frProp;
 
     public DbRecordSqlFileCfg(String rootDir, String commonMapPath, String moduleMapPath) {
         this.obj = new Object();

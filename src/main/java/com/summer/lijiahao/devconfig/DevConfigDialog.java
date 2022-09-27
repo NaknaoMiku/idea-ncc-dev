@@ -30,13 +30,14 @@ import java.util.Map;
  */
 public class DevConfigDialog extends AbstractDialog {
 
+    //数据源相关缓存
+    private final Map<String, DatabaseDriverInfo> databaseDriverInfoMap = new HashMap<>();
+    private final Map<String, DataSourceMeta> dataSourceMetaMap = new LinkedHashMap();
+    private final Map<String, DriverInfo> driverInfoMap = new HashMap();
     private JPanel contentPane;
     private JButton okBtn;
     private JButton cancelBtn;
-
-
     private JTabbedPane tabbedPane;
-
     private JTextField homeText;
     private JTextField tablesText;
     private JTextField hostText;
@@ -50,8 +51,6 @@ public class DevConfigDialog extends AbstractDialog {
     private JComboBox driverBox;
     private JComboBox dbBox;
     private JPasswordField pwdText;
-
-
     private JButton homeSelBtn;
     private JButton tableSelBtn;
     private JButton testBtn;
@@ -71,11 +70,6 @@ public class DevConfigDialog extends AbstractDialog {
     private JTable mustTable;
     private JTable selTable;
     private JButton setLibBtn;
-
-    //数据源相关缓存
-    private final Map<String, DatabaseDriverInfo> databaseDriverInfoMap = new HashMap<>();
-    private final Map<String, DataSourceMeta> dataSourceMetaMap = new LinkedHashMap();
-    private final Map<String, DriverInfo> driverInfoMap = new HashMap();
     //当前数据源
     private DataSourceMeta currMeta;
 

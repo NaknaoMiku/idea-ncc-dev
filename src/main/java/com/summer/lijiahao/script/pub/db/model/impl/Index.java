@@ -8,12 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Index implements IIndex {
-    private String name;
-
-    private ITable table;
-
     private final List<IColumn> columns = new ArrayList();
-
+    private String name;
+    private ITable table;
     private boolean clustered;
 
     private boolean unique;

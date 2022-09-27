@@ -53,6 +53,7 @@ dependencies {
         exclude("org.slf4j")
     }
     implementation("com.oracle.database.jdbc:ojdbc8:21.6.0.0.1")
+    implementation("com.alibaba:fastjson:2.0.14")
     implementation(fileTree(mapOf("dir" to "lib", "include" to listOf("*.jar"))))
 }
 

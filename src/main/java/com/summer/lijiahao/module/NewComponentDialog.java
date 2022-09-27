@@ -23,13 +23,12 @@ import java.text.MessageFormat;
 
 public class NewComponentDialog extends JDialog {
 
+    private final AnActionEvent event;
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-
     private JTextField displayText;
     private JTextField nameText;
-    private final AnActionEvent event;
 
     public NewComponentDialog(final AnActionEvent event) {
         this.event = event;

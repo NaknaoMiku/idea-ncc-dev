@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FkConstraint extends Constraint implements IFkConstraint {
-    private ITable refTable;
-
     private final List<IColumn> refColumns = new ArrayList();
+    private ITable refTable;
 
     public ITable getRefTable() {
         return this.refTable;

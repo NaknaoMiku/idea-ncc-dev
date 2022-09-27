@@ -15,8 +15,8 @@ import java.util.*;
  */
 public class SearchTableUtil {
 
-    private static DataSourceMeta meta;
     private static final Map<String, DataSourceMeta> metaMap = new HashMap<>();
+    private static DataSourceMeta meta;
     private static SearchTableUtil instance;
 
 

@@ -10,12 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table implements ITable {
-    private String name;
-
     private final List<IColumn> allColumns = new ArrayList();
-
     private final List<IFkConstraint> fkConstraints = new ArrayList();
-
+    private String name;
     private IPkConstraint pkConstraint;
 
     private String desc;
