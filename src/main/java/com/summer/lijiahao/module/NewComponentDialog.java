@@ -2,6 +2,8 @@ package com.summer.lijiahao.module;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ContentEntry;
@@ -20,6 +22,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.Objects;
 
 public class NewComponentDialog extends JDialog {
 
@@ -69,42 +72,42 @@ public class NewComponentDialog extends JDialog {
     }
 
     private void onOK() {
-
-        String name = nameText.getText();
-        if (StringUtils.isBlank(name)) {
-            Messages.showErrorDialog(this, "please set componet name!", "Error");
-            return;
-        }
-
-        String display = displayText.getText();
-        if (StringUtils.isBlank(display)) {
-            Messages.showErrorDialog(this, "please set componet display!", "Error");
-            return;
-        }
-
-        if (!name.matches("[a-zA-Z]+")) {
-            Messages.showErrorDialog(this, "the name must be using letter only!", "Error");
-            return;
-        }
-        if (!display.matches("[a-zA-Z]+")) {
-            Messages.showErrorDialog(this, "the display must be using letter only!", "Error");
-            return;
-        }
-        String modulePath = event.getData(CommonDataKeys.VIRTUAL_FILE).getPath();
-        File file = new File(modulePath + File.separator + name);
-        if (file.exists()) {
-            Messages.showErrorDialog(this, "componet is exists! please replace name !", "Error");
-        }
-        //创建目录
-        String[] dirs = new String[]{"META-INF", "METADATA", "resources", "src/public", "src/private", "src/client", "script/conf", "config"};
-        for (String dir : dirs) {
-            String path = file.getPath() + File.separator + dir;
-            new File(path).mkdirs();
-        }
-
-        //创建配置文件
-        ConfigureFileUtil util = new ConfigureFileUtil();
         try {
+            String name = nameText.getText();
+            if (StringUtils.isBlank(name)) {
+                Messages.showErrorDialog(this, "Please set componet name!", "Error");
+                return;
+            }
+
+            String display = displayText.getText();
+            if (StringUtils.isBlank(display)) {
+                Messages.showErrorDialog(this, "Please set componet display!", "Error");
+                return;
+            }
+
+            if (!name.matches("[a-zA-Z]+")) {
+                Messages.showErrorDialog(this, "The name must be using letter only!", "Error");
+                return;
+            }
+            if (!display.matches("[a-zA-Z]+")) {
+                Messages.showErrorDialog(this, "The display must be using letter only!", "Error");
+                return;
+            }
+            String modulePath = Objects.requireNonNull(event.getData(CommonDataKeys.VIRTUAL_FILE)).getPath();
+            File file = new File(modulePath + File.separator + name);
+            if (file.exists()) {
+                Messages.showErrorDialog(this, "Componet is exists! please replace name !", "Error");
+            }
+            //创建目录
+            String[] dirs = new String[]{"META-INF", "METADATA", "resources", "src/public", "src/private", "src/client", "script/conf", "config"};
+            for (String dir : dirs) {
+                String path = file.getPath() + File.separator + dir;
+                new File(path).mkdirs();
+            }
+
+            //创建配置文件
+            ConfigureFileUtil util = new ConfigureFileUtil();
+
             //创建compinent文件
             String template = util.readTemplate("component.xml");
             String content = MessageFormat.format(template, name, display);
@@ -136,15 +139,18 @@ public class NewComponentDialog extends JDialog {
                     contentEntry.addSourceFolder(sourceRoot, false);
                 }
             }
-            modifiableModel.commit();
-        } catch (BusinessException e) {
-//            e.printStackTrace();
+
+            Application applicationManager = ApplicationManager.getApplication();
+            applicationManager.runWriteAction(modifiableModel::commit);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         dispose();
     }
 
     private void onCancel() {
-        // add your code here if necessary
+
         dispose();
     }
 
