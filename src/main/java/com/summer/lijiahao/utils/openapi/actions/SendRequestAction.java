@@ -69,7 +69,8 @@ public class SendRequestAction
                 this.openApiTool.getComponent("receiveText", JTextArea.class).setText("无返回数据！");
             }
         } catch (Exception exception) {
-            exception.printStackTrace();
+            String message = exception.getMessage();
+            Messages.showInfoMessage(message, "Error");
         }
     }
 }

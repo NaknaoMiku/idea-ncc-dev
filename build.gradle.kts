@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.summer.lijiahao"
-version = "1.0.4"
+version = "1.0.5"
 
 repositories {
     mavenCentral()
@@ -29,7 +29,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("212")
-        untilBuild.set("222.*")
+        untilBuild.set("223.*")
     }
 
     signPlugin {
