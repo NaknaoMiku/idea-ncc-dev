@@ -108,10 +108,6 @@
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
 
-        <action id="dev.config" class="com.summer.lijiahao.devconfig.action.DevConfigAction" popup="true" text="集成配置"
-                description="集成配置">
-        </action>
-
         <action id="dev.sql.item.export"
                 class="com.summer.lijiahao.script.action.ExportCommonInitAction" text="item导出预置脚本"
                 description="使用items.xml文件导出预置数据脚本">
@@ -137,17 +133,20 @@
         <action id="dev.application.client.create" class="com.summer.lijiahao.debug.action.NewClientApplicationAction"
                 text="client application" description="client application"/>
 
-        <action id="dev.dictionary" class="com.summer.lijiahao.dictionary.action.DataDictionaryAction" text="数据字典"
+        <action id="dev.dictionary" class="com.summer.lijiahao.utils.OpenDictionaryAction" text="数据字典"
                 description="数据字典"/>
 
-        <action id="dev.openHome" class="com.summer.lijiahao.utils.OpenNCHomeAction" text="NCHome"
-                description="NCHome"/>
+        <action id="dev.openapi" class="com.summer.lijiahao.utils.OpenApiAction" text="OpenApi文档"
+                description="OpenApi文档"/>
+
+        <action id="dev.openHome" class="com.summer.lijiahao.utils.OpenNCHomeAction" text="Home"
+                description="Home"/>
 
         <action id="dev.openConfig" class="com.summer.lijiahao.utils.OpenNCConfigAction" text="NC配置"
                 description="NC配置"/>
 
-        <action id="dev.openNccdev" class="com.summer.lijiahao.utils.OpenNccdevAction" text="开发论坛"
-                description="开发论坛"/>
+        <action id="dev.openNccdev" class="com.summer.lijiahao.utils.OpenNccdevAction" text="开发者社区"
+                description="开发者社区"/>
 
         <action id="dev.reload.module" class="com.summer.lijiahao.devconfig.action.LoadAllModuleAction" text="加载所有模块"
                 description="加载所有模块"/>
@@ -158,25 +157,21 @@
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </group>
 
-        <group id="dev.group" description="集成配置" text="集成配置" popup="true" icon="AllIcons.Actions.Colors">
-            <reference id="dev.config"/>
-            <reference id="dev.dictionary"/>
-<!--            <reference id="dev.openHome"/>-->
-<!--            <reference id="dev.openConfig"/>-->
-<!--            <reference id="dev.openNccdev"/>-->
-
+        <action id="dev.config" class="com.summer.lijiahao.devconfig.action.DevConfigAction" popup="true" text="集成配置"
+                description="集成配置" icon="AllIcons.Actions.Colors">
             <!--添加到bar显示-->
             <add-to-group group-id="ToolbarRunGroup" anchor="first"/>
             <!--添加到tool菜单显示-->
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-        </group>
+        </action>
 
-        <group id="DevTools" text="NCCTools" popup="true">
+        <group id="DevTools" text="开发资料" popup="true">
             <reference id="dev.openHome"/>
 <!--            <separator/>-->
             <reference id="dev.openConfig"/>
+            <reference id="dev.dictionary"/>
             <reference id="dev.openNccdev"/>
-<!--            <reference id="OpenAPIDoc"/>-->
+            <reference id="dev.openapi"/>
             <add-to-group group-id="MainMenu" anchor="before" relative-to-action="HelpMenu"/>
         </group>
     </actions>
