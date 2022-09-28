@@ -36,58 +36,58 @@
 1. 创建项目：
    创建一个空项目
 
-![](C:\Users\summer\OneDrive\Pictures\Snipaste_2022-09-28_17-25-47.png)
+![](https://s1.ax1x.com/2022/09/28/xm3L8g.md.png)
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-30-52-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm3xrn.md.png)
 
 2. 配置NCC环境
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-32-11-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm3zbq.md.png)
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-33-42-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm3O2Q.md.png)
 
 3. 创建模块
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-35-56-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm3Xvj.md.png)
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-36-26-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8pV0.md.png)
 
 4. 在模块下创建组件
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-37-25-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8C5T.md.png)
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-38-10-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm89aV.md.png)
 
 5. 创建服务
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-39-40-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8FGF.md.png)
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-40-42-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8iPU.md.png)
 
 5. 启动服务
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-46-11-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8eq1.md.png)
 
 ### 其他功能
 
 1. 复制鉴权文件、upm文件到home
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-44-06-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8k24.md.png)
 
 2. 复制*.properties资源文件到home
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-45-05-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8AxJ.md.png)
 
 3. OpenApi接口测试
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-48-06-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8ZrR.md.png)
 
 配置接口参数
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-49-06-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8nVx.md.png)
 
 4. 导出补丁
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-52-27-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8ua6.md.png)
 
-![](C:\Users\summer\AppData\Roaming\marktext\images\2022-09-28-17-52-44-image.png)
+![](https://s1.ax1x.com/2022/09/28/xm8KIK.md.png)
