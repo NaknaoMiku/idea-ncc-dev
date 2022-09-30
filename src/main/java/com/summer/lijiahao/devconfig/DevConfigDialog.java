@@ -83,13 +83,6 @@ public class DevConfigDialog extends AbstractDialog {
         initPath();
     }
 
-    public static void main(String[] args) {
-        DevConfigDialog dialog = new DevConfigDialog();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-    }
-
     /**
      * 加载home和tables路径
      */
@@ -170,11 +163,7 @@ public class DevConfigDialog extends AbstractDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         //JComponent 集合
         addComponent("homeText", homeText);

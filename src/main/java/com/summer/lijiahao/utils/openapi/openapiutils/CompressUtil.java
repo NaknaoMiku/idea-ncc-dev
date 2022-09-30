@@ -66,7 +66,7 @@ public class CompressUtil {
 
 
     public static String gzipCompress(String source) throws Exception {
-        String value = null;
+        String value;
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             GZIPOutputStream gzip = new GZIPOutputStream(out);
@@ -83,15 +83,14 @@ public class CompressUtil {
 
 
     public static String gzipDecompress(String source) throws Exception {
-        String value = null;
+        String value;
 
-        ByteArrayOutputStream out = null;
-        ByteArrayInputStream in = null;
+        byte[] input = Base64Util.decryptBASE64(source);
 
-        try {
-            byte[] input = Base64Util.decryptBASE64(source);
-            out = new ByteArrayOutputStream();
-            in = new ByteArrayInputStream(input);
+        try(ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ByteArrayInputStream in = new ByteArrayInputStream(input)) {
+
+
             GZIPInputStream ungzip = new GZIPInputStream(in);
 
             byte[] buffer = new byte[buffSize];
@@ -103,13 +102,6 @@ public class CompressUtil {
             value = out.toString(StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new Exception("gzip解压异常 ", e);
-        } finally {
-            if (in != null) {
-                in.close();
-            }
-            if (out != null) {
-                out.close();
-            }
         }
 
         return value;

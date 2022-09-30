@@ -36,7 +36,7 @@ public class PropXml {
         }
         DataSourceMeta[] metaswithdesign = new DataSourceMeta[metas.length + 1];
         System.arraycopy(metas, 0, metaswithdesign, 1, metas.length);
-        if (metas == null || metas.length == 0) {
+        if (metas.length == 0) {
             metaswithdesign[0] = new DataSourceMeta();
         } else {
             metaswithdesign[0] = metas[0];

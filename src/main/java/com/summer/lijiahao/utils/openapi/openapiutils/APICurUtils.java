@@ -35,23 +35,6 @@ public class APICurUtils
 
     private String pwd;
 
-    public static void main(String[] args) {
-        APICurUtils util = new APICurUtils();
-        try {
-            String token = util.getToken();
-            System.out.println(token);
-            util.setApiUrl("nccloud/api/riaorg/orgmanage/org/queryOrgByCode");
-            String json = "{\"code\": [\"01\", \"T2001\"]}";
-            util.getAPIRetrun(token, json);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String getApiUrl() {
-        return this.apiUrl;
-    }
-
     public void setApiUrl(String apiUrl) {
         this.apiUrl = apiUrl;
     }
@@ -71,27 +54,6 @@ public class APICurUtils
 
         String sign = SHA256Util.getSHA256(this.client_id + this.client_secret + this.pubKey, this.pubKey);
         paramMap.put("signature", sign);
-
-        String url = this.baseUrl + "nccloud/opm/accesstoken";
-        String mediaType = "application/x-www-form-urlencoded";
-        String token = doPost(url, paramMap, mediaType, null, "");
-        return token;
-    }
-
-    private String getTokenByRefreshToken(String refresh_token) throws Exception {
-        Map<String, String> paramMap = new HashMap<>();
-        paramMap.put("grant_type", "refresh_token");
-
-        paramMap.put("client_id", this.client_id);
-
-        paramMap.put("client_secret",
-                URLEncoder.encode(Encryption.pubEncrypt(this.pubKey, this.client_secret), StandardCharsets.UTF_8));
-
-        String sign =
-                SHA256Util.getSHA256(this.client_id + this.client_secret + refresh_token + this.pubKey, this.pubKey);
-        paramMap.put("signature", sign);
-        paramMap.put("refresh_token", refresh_token);
-        paramMap.put("biz_center", this.biz_center);
 
         String url = this.baseUrl + "nccloud/opm/accesstoken";
         String mediaType = "application/x-www-form-urlencoded";
@@ -184,16 +146,16 @@ public class APICurUtils
         BufferedReader bufferedReader = null;
         String result = null;
         try {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append(baseUrl);
             if (paramMap != null) {
                 sb.append("?");
                 for (Map.Entry<String, String> entry : paramMap.entrySet()) {
                     String key = entry.getKey();
                     String value = entry.getValue();
-                    sb.append(key + "=" + value).append("&");
+                    sb.append(key).append("=").append(value).append("&");
                 }
-                baseUrl = sb.toString().substring(0, sb.toString().length() - 1);
+                baseUrl = sb.substring(0, sb.toString().length() - 1);
             }
 
             URL urlObj = new URL(baseUrl);
@@ -221,7 +183,7 @@ public class APICurUtils
                 in = urlConnection.getErrorStream();
             }
             bufferedReader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
-            StringBuffer temp = new StringBuffer();
+            StringBuilder temp = new StringBuilder();
             String line = bufferedReader.readLine();
             while (line != null) {
                 temp.append(line).append("\r\n");
@@ -234,8 +196,6 @@ public class APICurUtils
             result = new String(temp.toString().getBytes(StandardCharsets.UTF_8), ecod);
         } catch (ConnectException connectException) {
             Messages.showErrorDialog("服务器连接失败，请检查！", "错误");
-        } catch (Exception e) {
-            throw e;
         } finally {
             if (bufferedReader != null) {
                 try {
@@ -261,14 +221,6 @@ public class APICurUtils
             urlConnection.disconnect();
         }
         return result;
-    }
-
-    public String getGrant_type() {
-        return this.grant_type;
-    }
-
-    public void setGrant_type(String grant_type) {
-        this.grant_type = grant_type;
     }
 
     public String getAPIRetrun(String token, String json) throws Exception {
@@ -326,19 +278,4 @@ public class APICurUtils
         this.pwd = pwd;
     }
 
-    class SecretConst {
-        public static final String LEVEL0 = "L0";
-
-
-        public static final String LEVEL1 = "L1";
-
-
-        public static final String LEVEL2 = "L2";
-
-
-        public static final String LEVEL3 = "L3";
-
-
-        public static final String LEVEL4 = "L4";
-    }
 }

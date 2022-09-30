@@ -59,7 +59,7 @@ public class ModuleFileUtil {
      * @return
      */
     public static Set<String> getModuleSet() {
-        Set<String> moduleSet = new HashSet();
+        HashSet<String> moduleSet = new HashSet<>();
         //公共
         moduleSet.add("baseapp");
         moduleSet.add("iuap");

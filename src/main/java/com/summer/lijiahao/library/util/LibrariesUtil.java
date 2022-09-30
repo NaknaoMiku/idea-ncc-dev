@@ -115,9 +115,6 @@ public class LibrariesUtil {
     /**
      * 设置依赖库
      *
-     * @param urlSet
-     * @param project
-     * @param libraryModel
      */
     private static void setLibrary(Set<String> urlSet, Project project, Library.ModifiableModel libraryModel) {
 
@@ -326,9 +323,9 @@ public class LibrariesUtil {
         if (!name.startsWith("yyconfig")) {
             return false;
         }
-        flag = name.indexOf(".xml") > -1;
+        flag = name.contains(".xml");
         if (!flag) {
-            flag = name.indexOf(".json") > -1;
+            flag = name.contains(".json");
         }
         if (flag) {
             flag = !isSystemConfig(name);

@@ -3,7 +3,6 @@ package com.summer.lijiahao.utils.openapi;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.summer.lijiahao.utils.openapi.actions.FormatRequestJsonAction;
 import com.summer.lijiahao.utils.openapi.actions.SendRequestAction;
@@ -12,9 +11,9 @@ import com.summer.lijiahao.utils.openapi.ui.OpenApiTool;
 
 public class OpenApiView
         extends SimpleToolWindowPanel {
-    public OpenApiTool openApiTool;
+    private OpenApiTool openApiTool;
 
-    public OpenApiView(Project project) {
+    public OpenApiView() {
         super(false, true);
         this.openApiTool = new OpenApiTool();
 

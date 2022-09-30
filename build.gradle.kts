@@ -48,7 +48,6 @@ tasks {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/com.jolbox/bonecp
     implementation("com.jolbox:bonecp:0.8.0.RELEASE") {
         exclude("org.slf4j")
     }

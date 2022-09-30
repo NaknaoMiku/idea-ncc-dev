@@ -77,8 +77,7 @@ public class ProjectManager {
      * @return
      */
     public Module getModule(String moduleName) {
-        Project project = getProject();
-        return ModuleManager.getInstance(project).findModuleByName(moduleName);
+        return ModuleManager.getInstance(getProject()).findModuleByName(moduleName);
     }
 
     /**
