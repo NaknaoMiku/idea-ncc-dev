@@ -15,7 +15,7 @@ import java.io.File;
 import java.util.Objects;
 
 /**
- * idea按钮抽象类
+ * idea按钮抽象
  */
 public abstract class AbstractAnAction extends AnAction {
     @Override

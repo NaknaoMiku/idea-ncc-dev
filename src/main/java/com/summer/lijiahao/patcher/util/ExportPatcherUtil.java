@@ -52,6 +52,7 @@ public class ExportPatcherUtil {
     private final String PATH_EXTEND = File.separator + "extend";
     private final String PATH_SRC = File.separator + "src";
     private final String TYPE_JAVA = ".java";
+    private final String TYPE_KOTLIN = ".kt";
     private final String TYPE_CLASS = ".class";
     private final String TYPE_XML = ".xml";
     private final String TYPE_UPM = ".upm";
@@ -177,8 +178,8 @@ public class ExportPatcherUtil {
             for (String fileUrl : fileUrlSet) {
                 File fromFile = new File(fileUrl);
                 String fileName = fromFile.getName();
-                if (fileName.endsWith(TYPE_JAVA) || fileName.endsWith(TYPE_WSDL)) {//导出java文件
-                    boolean flag = exportJava(moduleName, ncModuleName, compilerOutputUrl, fromFile);
+                if (fileName.endsWith(TYPE_JAVA) || fileName.endsWith(TYPE_WSDL) || fileName.endsWith(TYPE_KOTLIN)) {//导出java文件
+                    boolean flag = exportJavaOrKotlin(moduleName, ncModuleName, compilerOutputUrl, fromFile);
                     if (!flag) {
                         continue;
                     }
@@ -458,7 +459,7 @@ public class ExportPatcherUtil {
      * @param fromFile
      * @throws IOException
      */
-    private boolean exportJava(String moduleName, String ncModuleName, String compilerOutputUrl, File fromFile) throws Exception {
+    private boolean exportJavaOrKotlin(String moduleName, String ncModuleName, String compilerOutputUrl, File fromFile) throws Exception {
 
         String toPath = null;
         String patchPath = fromFile.getPath();
@@ -466,7 +467,16 @@ public class ExportPatcherUtil {
             //不在src下的不导出
             return false;
         }
-        String className = patchPath.split(Matcher.quoteReplacement(PATH_SRC))[1].replace(TYPE_JAVA, TYPE_CLASS);
+
+        String className = "";
+        if (fromFile.getName().endsWith(TYPE_JAVA)) {
+            className = patchPath.split(Matcher.quoteReplacement(PATH_SRC))[1].replace(TYPE_JAVA, TYPE_CLASS);
+        } else if(fromFile.getName().endsWith(TYPE_KOTLIN)) {
+            className = patchPath.split(Matcher.quoteReplacement(PATH_SRC))[1].replace(TYPE_KOTLIN, TYPE_CLASS);
+        } else {
+            className = patchPath.split(Matcher.quoteReplacement(PATH_SRC))[1];
+        }
+
         String javaName = patchPath.split(Matcher.quoteReplacement(PATH_SRC))[1];
         if (StringUtils.isNotBlank(ncModuleName)) {//nc模块
             String modulePath = exportPath + PATH_REPLACEMENT + PATH_MODULES + File.separator + ncModuleName + File.separator;
@@ -535,7 +545,8 @@ public class ExportPatcherUtil {
             } else {
                 if ((elementPath.endsWith(TYPE_JAVA) && elementPath.contains(PATH_SRC)) || elementPath.endsWith(TYPE_XML) || elementPath.endsWith(TYPE_UPM)
                         || elementPath.endsWith(TYPE_BMF) || elementPath.endsWith(TYPE_BPF) || elementPath.endsWith(TYPE_PROPERTIES)
-                        || elementPath.endsWith(TYPE_REST) || elementPath.endsWith(TYPE_OPENAPI_MD) || elementPath.endsWith(TYPE_WSDL)) {
+                        || elementPath.endsWith(TYPE_REST) || elementPath.endsWith(TYPE_OPENAPI_MD) || elementPath.endsWith(TYPE_WSDL) ||
+                        elementPath.endsWith(TYPE_KOTLIN)) {
                     fileUrlSet.add(elementPath);
                 }
             }
