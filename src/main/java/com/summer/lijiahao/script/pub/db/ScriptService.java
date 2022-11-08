@@ -22,8 +22,8 @@ import java.util.Stack;
 
 public class ScriptService implements IScriptService {
     //    protected static Logger logger = LoggerFactory.getLogger(ScriptService.class.getName());
-    public static final String SQL_SERPERATOR = IOUtils.LINE_SEPARATOR + "go" +
-            IOUtils.LINE_SEPARATOR;
+    public static final String SQL_SERPERATOR = System.lineSeparator() + "go" +
+            System.lineSeparator();
 
     private IScriptExportStratege stratege;
 

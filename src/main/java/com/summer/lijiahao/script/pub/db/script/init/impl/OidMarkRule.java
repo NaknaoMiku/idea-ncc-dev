@@ -15,7 +15,7 @@ import java.util.*;
 
 @XStreamAlias("oidMarkRule")
 public class OidMarkRule {
-    private static final Map<String, OidMarkRule> instanceMap = new HashMap();
+    private static final Map<String, OidMarkRule> instanceMap = new HashMap<>();
     //    protected static Logger logger = LoggerFactory.getLogger(OidMarkRule.class.getName());
     @XStreamImplicit
     private List<OidMarkMap> oidMarkMaps;
@@ -53,7 +53,7 @@ public class OidMarkRule {
         List<Class<?>> clazzs = new ArrayList<>();
         clazzs.add(OidMarkRule.class);
         clazzs.add(OidMarkMap.class);
-        Annotations.configureAliases(xstream, clazzs.toArray(new Class[0]));
+//        Annotations.configureAliases(xstream, clazzs.toArray(new Class[0]));
         InputStreamReader reader = null;
         OidMarkRule rule = null;
         long lastModified = ruleCfgfile.lastModified();
@@ -79,7 +79,7 @@ public class OidMarkRule {
         } else {
             rule.tables = Collections.unmodifiableList(Collections.EMPTY_LIST);
         }
-        Map<String, String> deptOidMapTemp = new HashMap<String, String>();
+        Map<String, String> deptOidMapTemp = new HashMap<>();
         if (rule.oidMarkMaps != null && !rule.oidMarkMaps.isEmpty())
             for (OidMarkMap oidMarkMap : rule.oidMarkMaps)
                 deptOidMapTemp.put(oidMarkMap.getDepartment(), oidMarkMap.getOidMark());

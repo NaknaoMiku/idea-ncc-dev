@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table implements ITable {
-    private final List<IColumn> allColumns = new ArrayList();
-    private final List<IFkConstraint> fkConstraints = new ArrayList();
+    private final List<IColumn> allColumns = new ArrayList<>();
+    private final List<IFkConstraint> fkConstraints = new ArrayList<>();
     private String name;
     private IPkConstraint pkConstraint;
 
@@ -74,13 +74,13 @@ public class Table implements ITable {
         sb.append(this.name).append("(");
         for (IColumn col : this.allColumns)
             sb.append(col.getName()).append(" ").append(col.getTypeName()).append(", ");
-        sb.append(IOUtils.LINE_SEPARATOR).append("primary key: (");
+        sb.append(System.lineSeparator()).append("primary key: (");
         for (IColumn pkCol : this.pkConstraint.getColumns())
             sb.append(pkCol.getName()).append(",");
         sb.deleteCharAt(sb.length() - 1).append(")");
-        if (this.fkConstraints != null && !this.fkConstraints.isEmpty())
+        if (!this.fkConstraints.isEmpty())
             for (IFkConstraint fkCol : this.fkConstraints) {
-                sb.append(IOUtils.LINE_SEPARATOR).append("foreign key: (");
+                sb.append(System.lineSeparator()).append("foreign key: (");
                 for (IColumn col : fkCol.getColumns())
                     sb.append(col.getName()).append(",");
                 sb.deleteCharAt(sb.length() - 1).append(")");

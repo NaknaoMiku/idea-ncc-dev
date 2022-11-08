@@ -39,7 +39,6 @@ public class DevConfigDialog extends AbstractDialog {
     private JButton cancelBtn;
     private JTabbedPane tabbedPane;
     private JTextField homeText;
-    private JTextField tablesText;
     private JTextField hostText;
     private JTextField portText;
     private JTextField dbNameText;
@@ -52,7 +51,6 @@ public class DevConfigDialog extends AbstractDialog {
     private JComboBox dbBox;
     private JPasswordField pwdText;
     private JButton homeSelBtn;
-    private JButton tableSelBtn;
     private JButton testBtn;
     private JButton setDevBtn;
     private JButton setBaseBtn;
@@ -88,7 +86,6 @@ public class DevConfigDialog extends AbstractDialog {
      */
     private void initPath() {
         homeText.setText(NccEnvSettingService.getInstance().getNcHomePath());
-        tablesText.setText(NccEnvSettingService.getInstance().getTablesPath());
         DataSourceUtil.initDataSource(this);
     }
 
@@ -110,7 +107,6 @@ public class DevConfigDialog extends AbstractDialog {
         //home路径选择按钮
         homeSelBtn.addActionListener(new SelHomePathAction(this));
         setLibBtn.addActionListener(new SetLibraryAction(this));
-        tableSelBtn.addActionListener(new SelTablePathAction(this));
 
         //数据源相关按钮
         testBtn.addActionListener(new TestConnectionAction(this));
@@ -167,7 +163,6 @@ public class DevConfigDialog extends AbstractDialog {
 
         //JComponent 集合
         addComponent("homeText", homeText);
-        addComponent("tablesText", tablesText);
         addComponent("dbBox", dbBox);
         addComponent("dbTypeBox", dbTypeBox);
         addComponent("driverBox", driverBox);
@@ -186,7 +181,6 @@ public class DevConfigDialog extends AbstractDialog {
         addComponent("dsTab", dsTab);
         addComponent("moduleTab", moduleTab);
         addComponent("homeSelBtn", homeSelBtn);
-        addComponent("tableSelBtn", tableSelBtn);
         addComponent("testBtn", testBtn);
         addComponent("setDevBtn", setDevBtn);
         addComponent("setBaseBtn", setBaseBtn);

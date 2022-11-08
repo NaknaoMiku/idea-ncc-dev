@@ -94,9 +94,7 @@ public class OKAction extends AbstractButtonAction {
      */
     private void setServiceConfig(boolean homeChanged) {
         String homePath = getDialog().getComponent(JTextField.class, "homeText").getText();
-        String tablesPath = getDialog().getComponent(JTextField.class, "tablesText").getText();
 
         NccEnvSettingService.getInstance().setNcHomePath(homePath);
-        NccEnvSettingService.getInstance().setTablesPath(tablesPath);
     }
 }
