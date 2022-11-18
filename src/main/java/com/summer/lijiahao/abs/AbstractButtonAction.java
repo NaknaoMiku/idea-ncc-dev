@@ -22,7 +22,7 @@ public abstract class AbstractButtonAction implements ActionListener {
         try {
             doAction(event);
         } catch (BusinessException e) {
-            Messages.showErrorDialog(e.getMessage(), "出错了");
+            Messages.showErrorDialog(e.getMessage(), "Error");
         }
     }
 

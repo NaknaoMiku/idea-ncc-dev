@@ -46,7 +46,7 @@ public abstract class AbstractAnAction extends AnAction {
     }
 
     /**
-     * 是否nc module 根目录
+     * 是否nc module
      *
      * @param event
      * @return

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * nc类路径定义
+ * nc类路径定
  */
 public class ClassPathConstantUtil {
 
@@ -24,12 +24,6 @@ public class ClassPathConstantUtil {
 
     public static Map<String, String> libPathMap = new HashMap<>();
 
-    /**
-     * nc 类路径
-     * 顺序不可更改
-     *
-     * @return
-     */
     public static List<String> getNCLibrary() {
         List<String> ncLibraries = new ArrayList<>();
         ncLibraries.add(PATH_NAME_ANT);

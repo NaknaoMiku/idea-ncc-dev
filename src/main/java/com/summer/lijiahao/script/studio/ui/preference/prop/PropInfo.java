@@ -57,7 +57,7 @@ public class PropInfo {
             try {
                 metas[i] = (DataSourceMeta) this.dataSource[i].clone();
                 if (isEncode()) {
-                    metas[i].setPassword(AESEncode.decrypt(metas[i].getPassword()));
+                    metas[i].setPassword(AESEncodeUtil.decrypt(metas[i].getPassword()));
                 }
 
             } catch (CloneNotSupportedException e) {

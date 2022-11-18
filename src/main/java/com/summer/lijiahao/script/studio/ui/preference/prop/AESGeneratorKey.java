@@ -1,18 +1,18 @@
 package com.summer.lijiahao.script.studio.ui.preference.prop;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.security.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
+import java.security.Security;
 
-/**
- * @description: TODO
- * @author: liuchao
- * @date: 2022/4/1
- */
 public class AESGeneratorKey {
     public static final String DEFAULT_PROVIDER_NAME = "BC";
     private static final byte[] KEY_END = {43, 65, 23, 6, -54, -24, -16, 26, 7, 34, -29, -52, -14, 27, 38, 41};
@@ -23,12 +23,8 @@ public class AESGeneratorKey {
 
     static {
         if (Security.getProvider("BC") == null) {
-            try {
-                String clsName = "org.bouncycastle.jce.provider.BouncyCastleProvider";
-                Object o = Class.forName(clsName).newInstance();
-                Security.addProvider((Provider) o);
-            } catch (Exception localException) {
-            }
+            BouncyCastleProvider bouncyCastleProvider = new BouncyCastleProvider();
+            Security.addProvider(bouncyCastleProvider);
         }
     }
 

@@ -14,11 +14,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 工程管理器
- *
- * @author liuchao
- */
 public class ProjectManager {
 
     private static final Logger LOG = Logger.getInstance(ProjectManager.class);

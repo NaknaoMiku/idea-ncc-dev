@@ -9,7 +9,7 @@
     <name>NCC Develop Tool</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="lijiahaosummer@gmail.com" url="https://www.lijiahaosummer.com">yonyou</vendor>
+    <vendor email="lijiahaosummer@gmail.com">yonyou</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
@@ -29,23 +29,23 @@
     <change-notes><![CDATA[
       <h3>1.0.5</h3>
       <ul>
-          <li>1. 新增打开OpenApi测试功能</li>
+          <li>1. New OpenApi test function</li>
       </ul>
 
       <h3>1.0.4</h3>
       <ul>
-          <li>1. 新增打开NC Home功能</li>
-          <li>2. 新增打开NC配置功能</li>
-          <li>3. 新增打开社区（https://nccdev.yonyou.com/index）功能</li>
-          <li>4. 兼容IntelliJ IDEA 2022.2.2</li>
+          <li>1. Add the function of opening NC Home</li>
+          <li>2. Add the function of opening NC configuration</li>
+          <li>3. Add the function of opening Developing communities(https://nccdev.yonyou.com/index)</li>
+          <li>4. Compatible IntelliJ IDEA 2022.2.2</li>
       </ul>
 
       <h3>1.0.3</h3>
       <ul>
-          <li>1. 调整插件使用的api，避免新版本开发工具不兼容</li>
-          <li>2. 导出补丁时默认勾选包含源代码</li>
-          <li>3. 支持复制资源文件(*.properties)到home</li>
-          <li>4. 修复部分情况下插件报错的问题</li>
+          <li>1. Adjust the api used by plug-ins to avoid incompatibility of new version development tools</li>
+          <li>2. When exporting patches, check Include Source Code by defaul</li>
+          <li>3. Support copying resource files (*. properties) to home</li>
+          <li>4. Fix the plug-in error in some cases</li>
       </ul>
     ]]>
     </change-notes>

@@ -1,23 +1,19 @@
 package com.summer.lijiahao.script.studio.ui.preference.prop;
 
+import com.summer.lijiahao.base.NccEnvSettingService;
+import nc.uap.plugin.studio.ui.preference.rsa.AESEncode;
+import nc.uap.plugin.studio.ui.preference.rsa.AESGeneratorKey;
 import nc.uap.plugin.studio.ui.preference.rsa.Encode;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.util.Objects;
 
-/**
- * @description: TODO
- * @author: liuchao
- * @date: 2022/4/1
- */
-public class AESEncode {
+public class AESEncodeUtil {
     static final IvParameterSpec iv = new IvParameterSpec(getUTF8Bytes("1234567890123456"));
     static final String transform = "AES/CBC/PKCS5Padding";
     private static final String KEY = System.getProperty("project.aes.seed", "yonyou.default");
@@ -25,7 +21,7 @@ public class AESEncode {
     private static final String SECURE_RABDOM = "SHA1PRNG";
     private static final String FLAY = "#";
 
-    public AESEncode() {
+    public AESEncodeUtil() {
     }
 
     public static String encrypt(String data) {
@@ -58,8 +54,8 @@ public class AESEncode {
             byte[] encoded = new byte[updateBytes + finalBytes];
             outBuffer.duplicate().get(encoded);
             encodedString = parseByte2HexStr(encoded);
-        } catch (Throwable var9) {
-            var9.printStackTrace();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
 
         return encodedString;
@@ -67,10 +63,9 @@ public class AESEncode {
 
     private static String aesDecode(String encodedString) {
         ByteBuffer decoded = ByteBuffer.allocateDirect(1024);
-
         try {
             ByteBuffer outBuffer = ByteBuffer.allocateDirect(1024);
-            outBuffer.put(parseHexStr2Byte(encodedString));
+            outBuffer.put(Objects.requireNonNull(parseHexStr2Byte(encodedString)));
             outBuffer.flip();
             SecretKeySpec secretKeySpec = generateKey();
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -85,14 +80,17 @@ public class AESEncode {
         return asString(decoded);
     }
 
-    private static SecretKeySpec generateKey() throws NoSuchAlgorithmException {
-        KeyGenerator kgen = KeyGenerator.getInstance("AES");
-        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-        secureRandom.setSeed(KEY.getBytes());
-        kgen.init(256, secureRandom);
-        SecretKey secretKey = kgen.generateKey();
-        byte[] enCodeFormat = secretKey.getEncoded();
-        SecretKeySpec keySpec = new SecretKeySpec(enCodeFormat, "AES");
+    private static SecretKeySpec generateKey() throws IOException {
+        String ncHome = NccEnvSettingService.getInstance().getNcHomePath();
+        SecretKeySpec keySpec = null;
+        if (AESEncode.query(ncHome) != null) {
+            keySpec = new SecretKeySpec(Objects.requireNonNull(parseHexStr2Byte(AESEncode.query(ncHome))), "AES");
+        } else {
+            byte[] keysecByte = AESGeneratorKey.genBindIpKey();
+            AESEncode.insert(parseByte2HexStr(keysecByte), ncHome);
+            keySpec = new SecretKeySpec(keysecByte, "AES");
+        }
+
         return keySpec;
     }
 
@@ -126,8 +124,8 @@ public class AESEncode {
     private static String parseByte2HexStr(byte[] buf) {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < buf.length; ++i) {
-            String hex = Integer.toHexString(buf[i] & 255);
+        for (byte b : buf) {
+            String hex = Integer.toHexString(b & 255);
             if (hex.length() == 1) {
                 hex = '0' + hex;
             }
