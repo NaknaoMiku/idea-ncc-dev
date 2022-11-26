@@ -32,8 +32,8 @@ public class DevConfigDialog extends AbstractDialog {
 
     //数据源相关缓存
     private final Map<String, DatabaseDriverInfo> databaseDriverInfoMap = new HashMap<>();
-    private final Map<String, DataSourceMeta> dataSourceMetaMap = new LinkedHashMap();
-    private final Map<String, DriverInfo> driverInfoMap = new HashMap();
+    private final Map<String, DataSourceMeta> dataSourceMetaMap = new LinkedHashMap<>();
+    private final Map<String, DriverInfo> driverInfoMap = new HashMap<>();
     private JPanel contentPane;
     private JButton okBtn;
     private JButton cancelBtn;
@@ -49,6 +49,7 @@ public class DevConfigDialog extends AbstractDialog {
     private JComboBox dbTypeBox;
     private JComboBox driverBox;
     private JComboBox dbBox;
+    private JCheckBox plaintext;
     private JPasswordField pwdText;
     private JButton homeSelBtn;
     private JButton testBtn;
@@ -129,6 +130,14 @@ public class DevConfigDialog extends AbstractDialog {
         selAllRBtn.addActionListener(new SelAllAction(this, TableModelUtil.MODULE_TYPE_SEL));
         cancelRBtn.addActionListener(new CancelAllAction(this, TableModelUtil.MODULE_TYPE_SEL));
 
+        plaintext.addItemListener(e -> {
+            if(e.getStateChange()==ItemEvent.SELECTED){//被选中
+                pwdText.setEchoChar((char)0);
+            }else{
+                pwdText.setEchoChar('•');
+            }
+        });
+
     }
 
 //    private void onOK() {
@@ -174,6 +183,7 @@ public class DevConfigDialog extends AbstractDialog {
         addComponent("pwdText", pwdText);
         addComponent("devChx", devChx);
         addComponent("baseChx", baseChx);
+        addComponent("plaintext", plaintext);
         addComponent("okBtn", okBtn);
         addComponent("cancelBtn", cancelBtn);
         addComponent("applyBtn", applyBtn);
