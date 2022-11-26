@@ -144,6 +144,9 @@
         <action id="dev.openapi" class="com.summer.lijiahao.utils.OpenApiAction" text="OpenApi文档"
                 description="OpenApi文档"/>
 
+        <action id="dev.useHelp" class="com.summer.lijiahao.utils.OpenUseHelpAction" text="使用帮助"
+                description="使用帮助"/>
+
         <action id="dev.openHome" class="com.summer.lijiahao.utils.OpenNCHomeAction" text="Home"
                 description="Home"/>
 
@@ -177,6 +180,7 @@
             <reference id="dev.dictionary"/>
             <reference id="dev.openNccdev"/>
             <reference id="dev.openapi"/>
+            <reference id="dev.useHelp"/>
             <add-to-group group-id="MainMenu" anchor="before" relative-to-action="HelpMenu"/>
         </group>
     </actions>

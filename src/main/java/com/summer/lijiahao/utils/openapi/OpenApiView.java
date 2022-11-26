@@ -25,7 +25,6 @@ public class OpenApiView
         ActionToolbar toolbar = ActionManager.getInstance().createActionToolbar("toolbar", barGroup, true);
         toolbar.setTargetComponent(this);
         setToolbar(toolbar.getComponent());
-
         setContent(this.openApiTool.getComponent());
     }
 
