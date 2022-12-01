@@ -33,6 +33,7 @@ public class PatcherDialog extends AbstractDialog {
     private JProgressBar progressBar;
     private JPanel logPanel;
     private JCheckBox cloudFlagCheckBox;
+    private JCheckBox deployCheck;
     private JBList fieldList;
 
     public PatcherDialog(final AnActionEvent event) {
@@ -98,6 +99,7 @@ public class PatcherDialog extends AbstractDialog {
 
         boolean srcFlag = srcFlagCheckBox.isSelected();
         boolean cloudFlag = cloudFlagCheckBox.isSelected();
+        boolean deployFlag = deployCheck.isSelected();
 
         // 设置当前进度值
         logPanel.setVisible(true);
@@ -113,7 +115,7 @@ public class PatcherDialog extends AbstractDialog {
 //        try {
         // 修复导出报错 --chenshuaim
         SwingUtilities.invokeLater(() -> {
-            ExportPatcherUtil util = new ExportPatcherUtil(patcherName.getText(), serverName.getText(), exportPath, srcFlag, cloudFlag, event);
+            ExportPatcherUtil util = new ExportPatcherUtil(patcherName.getText(), serverName.getText(), exportPath, srcFlag, cloudFlag, deployFlag, event);
             try {
                 util.exportPatcher(progressBar);
                 String zipName = util.getZipName();
@@ -132,13 +134,6 @@ public class PatcherDialog extends AbstractDialog {
             }
 
         });
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        }
-
-        // add your code here
     }
 
     private void onCancel() {

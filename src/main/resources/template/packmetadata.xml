@@ -18,6 +18,6 @@
     <id>{3}</id>
     <time>{4}</time>
     <department>yonyou</department>
-    <needDeploy>false</needDeploy>
+    <needDeploy>{5}</needDeploy>
     <searchKeys/>
 </packmetadata>

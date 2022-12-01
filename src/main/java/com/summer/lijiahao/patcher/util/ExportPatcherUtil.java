@@ -86,6 +86,8 @@ public class ExportPatcherUtil {
     private boolean srcFlag = false;
     private boolean cloudFlag = false;
 
+    private boolean deployFlag = false;
+
     /**
      * 补丁工具类构造方法
      *
@@ -95,7 +97,7 @@ public class ExportPatcherUtil {
      * @param srcFlag
      * @param event
      */
-    public ExportPatcherUtil(String patchName, String webServerName, String exportPath, boolean srcFlag, boolean cloudFlag, AnActionEvent event) {
+    public ExportPatcherUtil(String patchName, String webServerName, String exportPath, boolean srcFlag, boolean cloudFlag, boolean deployFlag, AnActionEvent event) {
         this.event = event;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
@@ -104,6 +106,7 @@ public class ExportPatcherUtil {
         this.patchName = patchName;
         this.srcFlag = srcFlag;
         this.cloudFlag = cloudFlag;
+        this.deployFlag = deployFlag;
         if (StringUtils.isNotBlank(webServerName)) {
             if (!webServerName.startsWith(File.separator)) {
                 webServerName = File.separator + webServerName;
@@ -311,7 +314,7 @@ public class ExportPatcherUtil {
         }
         File metadataFile = new File(exportPath + File.separator + "packmetadata.xml");
         template = util.readTemplate("packmetadata.xml");
-        content = MessageFormat.format(template, modifyClasses, modifyModules, patchName, id, dateStr);
+        content = MessageFormat.format(template, modifyClasses, modifyModules, patchName, id, dateStr, this.deployFlag);
         util.outFile(metadataFile, content, "UTF-8", false);
     }
 
