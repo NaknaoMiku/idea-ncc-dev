@@ -5,11 +5,12 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.summer.lijiahao.nccdevtool.devconfig.listener.*
 import com.summer.lijiahao.nccdevtool.devconfig.service.NCCloudEnvSettingService
 import com.summer.lijiahao.nccdevtool.devconfig.util.datasource.DataSourceUtil
+import com.summer.lijiahao.nccdevtool.devconfig.util.libraries.LibrariesUtil
 import com.summer.lijiahao.nccdevtool.devconfig.util.modules.DefaultTableModelUtil
 import com.summer.lijiahao.nccdevtool.devconfig.util.modules.ModulesUtil
 import java.awt.Toolkit
+import java.awt.event.ItemEvent
 import javax.swing.*
-import javax.swing.table.DefaultTableModel
 
 /**
  * @Description 开发配置弹窗
@@ -43,9 +44,6 @@ class NCCloudDevConfigDialog(event: AnActionEvent) : DialogWrapper(true) {
     var delBtn: JButton? = null
     var dsTab: JPanel? = null
     var moduleTab: JPanel? = null
-    var defaultBtn: JButton? = null
-    var selAllLBtn: JButton? = null
-    var cancelAllLBtn: JButton? = null
     var mustBtn: JButton? = null
     var selAllRBtn: JButton? = null
     var cancelRBtn: JButton? = null
@@ -76,14 +74,17 @@ class NCCloudDevConfigDialog(event: AnActionEvent) : DialogWrapper(true) {
         return contentPane!!
     }
 
+    /**
+     * 重写按钮列表
+     */
     override fun createActions(): Array<Action> {
         val helpAction = helpAction
         return if (helpAction === myHelpAction && helpId == null) arrayOf(
             okAction,
             cancelAction,
-            ApplyAction()
+            ApplyAction(this)
         ) else arrayOf(
-            okAction, cancelAction, ApplyAction(), helpAction
+            okAction, cancelAction, ApplyAction(this), helpAction
         )
     }
 
@@ -110,14 +111,43 @@ class NCCloudDevConfigDialog(event: AnActionEvent) : DialogWrapper(true) {
         dbBox!!.addItemListener(SelectDataSourceListener(this))
         dbTypeBox!!.addItemListener(SelectDataTypeListener(this))
 //        driverBox!!.addItemListener(DriverBoxListener(this))
+
+        mustBtn!!.addActionListener(SelectMustModuleListener(this))
+        selAllRBtn!!.addActionListener(SelectAllModuleListener(this))
+        cancelRBtn!!.addActionListener(SelectAllCancelModuleListener(this))
+
+        plaintext!!.addItemListener { e: ItemEvent ->
+            if (e.stateChange == ItemEvent.SELECTED) { //被选中
+                pwdText!!.echoChar = 0.toChar()
+            } else {
+                pwdText!!.echoChar = '•'
+            }
+        }
     }
 
     private fun initModule() {
-        val selectedModel =  DefaultTableModelUtil.selectedModel;
+        val selectedModel = DefaultTableModelUtil.selectedModel
 
-        ModulesUtil.initAllModules(this, selectedModel);
+        ModulesUtil.initAllModules(this, selectedModel)
 
         selTable?.model = selectedModel
     }
 
+
+    override fun doOKAction() {
+        val homePath = this.homeText?.text
+        if (!homePath.isNullOrEmpty()) {
+            //判断当前的home路径是否和环境的一致
+            val homeChanged = NCCloudEnvSettingService.getInstance(this.event).ncHomePath != homePath
+            if (homeChanged) {
+                NCCloudEnvSettingService.getInstance(this.event).ncHomePath = homePath
+                LibrariesUtil.setLibraries(this.event, homePath)
+            }
+            DataSourceUtil.writeDataSource(this)
+            ModulesUtil.writeModuleToConfig(this)
+
+        }
+
+        super.doOKAction()
+    }
 }

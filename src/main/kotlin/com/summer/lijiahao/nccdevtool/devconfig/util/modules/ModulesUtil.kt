@@ -11,7 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 class ModulesUtil {
     companion object {
-        val defaultMustModules: LinkedHashSet<String> = linkedSetOf(
+        private val defaultMustModules: LinkedHashSet<String> = linkedSetOf(
             "baseapp", "iuap", "opm", "platform", "pubapp", "pubapputil",
 
             "riaaam", "riaadp", "riaam", "riacc", "riadc", "riamm",
@@ -23,9 +23,104 @@ class ModulesUtil {
             "workbench", "imag", "graphic_report", "sscrp"
         )
 
+        private var allModules: MutableList<String> = mutableListOf()
+
         fun initAllModules(dialog: NCCloudDevConfigDialog, selectedModel: DefaultTableModel) {
             val homePath = dialog.homeText!!.text
 
+            if (homePath.isNotBlank()) {
+                getAllModules(homePath)
+
+                //已选择模块
+                val selectedModuleStr: String = NCCloudEnvSettingService.getInstance(dialog.event).ex_modules
+                val selectedModules: LinkedHashSet<String> = linkedSetOf()
+                val strings: Array<String> =
+                    selectedModuleStr.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                selectedModules.addAll(listOf(*strings))
+
+
+                for ((index, module) in allModules.withIndex()) {
+
+                    val isSelected = selectedModules.contains(module)
+                    val vm: Vector<Any> = Vector<Any>()
+                    vm.add(index)
+                    vm.add(isSelected)
+                    vm.add(module)
+                    selectedModel.addRow(vm)
+                }
+            }
+        }
+
+        /**
+         * 设置必选模块
+         */
+        fun setMustModules(dialog: NCCloudDevConfigDialog) {
+            dialog.selTable?.let {
+                val rowCount: Int = it.rowCount
+                for (i in 0 until rowCount) {
+                    val moduleName = it.model.getValueAt(i, 2)
+                    if (defaultMustModules.contains(moduleName)) {
+                        it.model.setValueAt(true, i, 1)
+                    } else {
+                        it.model.setValueAt(false, i, 1)
+                    }
+                }
+            }
+        }
+
+        /**
+         * 设置模块全选
+         */
+        fun setSelectAllModule(dialog: NCCloudDevConfigDialog) {
+            dialog.selTable?.let {
+                val rowCount: Int = it.rowCount
+                for (i in 0 until rowCount) {
+                    it.model.setValueAt(true, i, 1)
+                }
+            }
+        }
+
+        /**
+         * 设置模块全消
+         */
+        fun setCancelAllModule(dialog: NCCloudDevConfigDialog) {
+            dialog.selTable?.let {
+                val rowCount: Int = it.rowCount
+                for (i in 0 until rowCount) {
+                    it.model.setValueAt(false, i, 1)
+                }
+            }
+        }
+
+        /**
+         * 将勾选的模块写入到配置文件中
+         */
+        fun writeModuleToConfig(dialog: NCCloudDevConfigDialog) {
+            dialog.selTable?.let {
+                val rowCount: Int = it.rowCount
+                val selectedModuleNames: MutableList<String> = mutableListOf()
+                for (i in 0 until rowCount) {
+                    val isSelected = if (it.model.getValueAt(i, 1) != null) {
+                        it.model.getValueAt(i, 1).toString()
+                    } else {
+                        "false"
+                    }
+                    if (isSelected == "true") {
+                        val moduleName = it.model.getValueAt(i, 2)
+                        moduleName?.let { selectedModuleNames.add(moduleName as String) }
+                    }
+                }
+
+                var selectedModuleStr = ""
+                for (moduleName in selectedModuleNames) {
+                    selectedModuleStr = "$selectedModuleStr$moduleName,"
+                }
+                NCCloudEnvSettingService.getInstance(dialog.event).ex_modules = selectedModuleStr
+            }
+        }
+
+        private fun getAllModules(homePath: String) {
+            allModules = mutableListOf() //先清空，暂时没有用
             if (homePath.isNotBlank()) {
                 //扫描所有module
                 val moduleFile = File(homePath + File.separator + "modules")
@@ -43,35 +138,7 @@ class ModulesUtil {
                 }
                 //排序
                 moduleList.sort()
-
-                //必选模块
-                val mustModuleStr: String = NCCloudEnvSettingService.getInstance(dialog.event).must_modules
-                var mustModules: LinkedHashSet<String> = linkedSetOf()
-                if (mustModuleStr.isEmpty()) {
-                    mustModules = defaultMustModules
-                } else {
-                    val strings = mustModuleStr.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    mustModules.addAll(listOf(*strings))
-                }
-
-                //已选择模块
-                val selectedModuleStr: String = NCCloudEnvSettingService.getInstance(dialog.event).ex_modules
-                val selectedModules: LinkedHashSet<String> = linkedSetOf()
-                if (mustModuleStr.isEmpty()) {
-                    val strings: Array<String> =
-                        selectedModuleStr.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    selectedModules.addAll(listOf(*strings))
-                }
-
-                for ((index,module) in moduleList.withIndex()){
-
-                    val isSelected = selectedModules.contains(module)
-                    val vm: Vector<Any> = Vector<Any>()
-                    vm.add(index)
-                    vm.add(isSelected)
-                    vm.add(module)
-                    selectedModel.addRow(vm)
-                }
+                allModules = moduleList
             }
         }
 

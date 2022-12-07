@@ -165,7 +165,7 @@ class DataSourceUtil {
         /**
          * 将选中的数据源显示在弹窗中
          */
-        fun fillDataSource(dialog: NCCloudDevConfigDialog, currentDataSource : DataSource) {
+        fun fillDataSource(dialog: NCCloudDevConfigDialog, currentDataSource: DataSource) {
             dialog.hostText?.text = currentDataSource.databaseUrl
             dialog.oidText?.text = currentDataSource.oidMark
             dialog.userText?.text = currentDataSource.user

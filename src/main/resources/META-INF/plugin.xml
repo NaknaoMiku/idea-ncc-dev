@@ -74,7 +74,8 @@
     </extensions>
 
     <actions>
-        <action id="dev.config" class="com.summer.lijiahao.nccdevtool.devconfig.ui.NCCloudDevConfigAction" popup="true" text="开发配置"
+        <action id="dev.config" class="com.summer.lijiahao.nccdevtool.devconfig.ui.NCCloudDevConfigAction" popup="true"
+                text="开发配置"
                 description="开发配置" icon="AllIcons.Actions.Colors">
             <!--添加到tool菜单显示-->
             <add-to-group group-id="ToolsMenu" anchor="last"/>

@@ -11,6 +11,7 @@ import com.intellij.openapi.roots.OrderRootType
 import com.intellij.openapi.roots.impl.libraries.LibraryEx
 import com.intellij.openapi.roots.libraries.Library
 import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar
+import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VirtualFileManager
 import com.summer.lijiahao.nccdevtool.devconfig.service.NCCloudEnvSettingService
@@ -20,6 +21,15 @@ import java.util.jar.JarFile
 class LibrariesUtil {
 
     companion object {
+        fun setLibrariesAndTip(event: AnActionEvent, homePath: String) {
+            val opt = Messages.showYesNoDialog(
+                "是否更新类路径？", "询问", Messages.getQuestionIcon()
+            )
+            if (opt == Messages.OK) {
+                setLibraries(event, homePath)
+            }
+        }
+
         fun setLibraries(event: AnActionEvent, homePath: String) {
 
             if (homePath.isEmpty()) {

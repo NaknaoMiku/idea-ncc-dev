@@ -365,14 +365,6 @@
                           </component>
                         </children>
                       </scrollpane>
-                      <component id="18473" class="javax.swing.JButton" binding="mustBtn">
-                        <constraints>
-                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="必选"/>
-                        </properties>
-                      </component>
                       <component id="8798a" class="javax.swing.JButton" binding="selAllRBtn">
                         <constraints>
                           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -389,12 +381,12 @@
                           <text value="全消"/>
                         </properties>
                       </component>
-                      <component id="74852" class="javax.swing.JButton" binding="defaultBtn">
+                      <component id="18473" class="javax.swing.JButton" binding="mustBtn">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="平台默认"/>
+                          <text value="必选"/>
                         </properties>
                       </component>
                     </children>

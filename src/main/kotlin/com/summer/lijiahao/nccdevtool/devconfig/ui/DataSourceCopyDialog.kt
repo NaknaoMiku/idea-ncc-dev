@@ -4,7 +4,6 @@ import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.Messages
 import com.summer.lijiahao.nccdevtool.devconfig.util.datasource.DataSource
 import com.summer.lijiahao.nccdevtool.devconfig.util.datasource.DataSourceUtil
-import java.awt.Toolkit
 import javax.swing.DefaultComboBoxModel
 import javax.swing.JComponent
 import javax.swing.JPanel
