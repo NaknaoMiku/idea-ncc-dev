@@ -38,14 +38,18 @@ class ModulesUtil {
                     selectedModuleStr.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 selectedModules.addAll(listOf(*strings))
 
+                //在赋值前先移除之前的元素
+                selectedModel.dataVector.removeAllElements()
 
+                val allModuleName: LinkedHashMap<String, String> = ModulesNameUtil().getModuleNameFromXML()
                 for ((index, module) in allModules.withIndex()) {
 
                     val isSelected = selectedModules.contains(module)
                     val vm: Vector<Any> = Vector<Any>()
                     vm.add(index)
-                    vm.add(isSelected)
+                    vm.add(!isSelected)
                     vm.add(module)
+                    vm.add(allModuleName[module])
                     selectedModel.addRow(vm)
                 }
             }
@@ -105,7 +109,7 @@ class ModulesUtil {
                     } else {
                         "false"
                     }
-                    if (isSelected == "true") {
+                    if (isSelected != "true") {
                         val moduleName = it.model.getValueAt(i, 2)
                         moduleName?.let { selectedModuleNames.add(moduleName as String) }
                     }
@@ -115,6 +119,10 @@ class ModulesUtil {
                 for (moduleName in selectedModuleNames) {
                     selectedModuleStr = "$selectedModuleStr$moduleName,"
                 }
+                if (selectedModuleStr.isNotEmpty()) {
+                    selectedModuleStr = selectedModuleStr.substring(0,selectedModuleStr.length -1)
+                }
+
                 NCCloudEnvSettingService.getInstance(dialog.event).ex_modules = selectedModuleStr
             }
         }

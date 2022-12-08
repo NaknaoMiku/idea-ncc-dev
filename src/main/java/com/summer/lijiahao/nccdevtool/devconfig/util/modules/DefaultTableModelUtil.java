@@ -21,6 +21,7 @@ public class DefaultTableModelUtil {
             };
         }
 
+
         //第二列不允许编辑
         public boolean isCellEditable(int row, int column) {
             return column == 1;

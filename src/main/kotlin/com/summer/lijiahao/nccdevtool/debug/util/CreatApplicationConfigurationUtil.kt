@@ -86,26 +86,21 @@ class CreatApplicationConfigurationUtil {
             if (serverFlag) {
                 conf.mainClassName = serverClass
                 var exModulesStr: String = NCCloudEnvSettingService.getInstance(event).ex_modules
-                if (StringUtils.isBlank(exModulesStr)) {
+
+                val modules = exModulesStr.split(",")
+                if(modules.isNotEmpty()) {
                     exModulesStr = ""
-                    val homeFile = File(homePath + File.separator + "modules")
-                    if (homeFile.exists()) {
-                        val modules = homeFile.listFiles()
-                        if (modules != null) {
-                            for (module: File in modules) {
-                                val moduleName = module.name
-                                if (ModulesUtil.defaultMustModules.contains(moduleName)) {
-                                    continue
-                                }
-                                exModulesStr += ",$moduleName"
-                            }
-                            if (exModulesStr.isNotEmpty()) {
-                                exModulesStr = exModulesStr.substring(1)
-                                NCCloudEnvSettingService.getInstance(event).ex_modules = exModulesStr
-                            }
+                    for (module in modules) {
+                        if (ModulesUtil.defaultMustModules.contains(module)) {
+                            exModulesStr = "$exModulesStr$module,"
                         }
                     }
                 }
+                if (exModulesStr.isNotEmpty()) {
+                    exModulesStr = exModulesStr.substring(0,exModulesStr.length -1)
+                }
+                NCCloudEnvSettingService.getInstance(event).ex_modules = exModulesStr
+
                 envs["FIELD_EX_MODULES"] = exModulesStr
                 var hotwebs = envs["FIELD_HOTWEBS"]
                 if (StringUtils.isBlank(hotwebs)) {

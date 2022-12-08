@@ -9,6 +9,7 @@ import com.intellij.ui.ToolbarDecorator
 import com.intellij.ui.components.JBList
 import com.summer.lijiahao.nccdevtool.devconfig.service.NCCloudEnvSettingService
 import com.summer.lijiahao.nccdevtool.patch.listener.ChooseFileListener
+import com.summer.lijiahao.nccdevtool.patch.util.ExportPatcherUtil
 import java.awt.Rectangle
 import java.io.File
 import javax.swing.*
@@ -108,7 +109,7 @@ class PatcherDialog(event: AnActionEvent) : DialogWrapper(true) {
             )
             try {
                 util.exportPatcher(progressBar)
-                var zipName: String = util.getZipName()
+                var zipName: String = util.zipName
                 zipName = if (zipName.isBlank()) {
                     "no files export , please build project , or select src retry !"
                 } else {
@@ -119,7 +120,7 @@ class PatcherDialog(event: AnActionEvent) : DialogWrapper(true) {
             } catch (e: Exception) {
                 Messages.showErrorDialog(e.message, "Error")
             } finally {
-                util.delete(File(util.getExportPath()))
+                util.delete(File(util.exportPath))
                 super.doOKAction()
             }
         }

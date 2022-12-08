@@ -11,6 +11,8 @@ import com.summer.lijiahao.nccdevtool.devconfig.util.modules.ModulesUtil
 import java.awt.Toolkit
 import java.awt.event.ItemEvent
 import javax.swing.*
+import javax.swing.table.TableColumn
+import javax.swing.table.TableColumnModel
 
 /**
  * @Description 开发配置弹窗
@@ -55,7 +57,7 @@ class NCCloudDevConfigDialog(event: AnActionEvent) : DialogWrapper(true) {
     init {
         this.event = event
         isModal = true
-        title = "NCCloud Config"
+        title = "开发配置"
         init()
     }
 
@@ -131,6 +133,13 @@ class NCCloudDevConfigDialog(event: AnActionEvent) : DialogWrapper(true) {
         ModulesUtil.initAllModules(this, selectedModel)
 
         selTable?.model = selectedModel
+
+        this.selTable?.let {
+            val tableMode : TableColumnModel = it.columnModel
+            val noColumn : TableColumn = tableMode.getColumn(0)
+            noColumn.preferredWidth = 5
+            noColumn.width = 5
+        }
     }
 
 

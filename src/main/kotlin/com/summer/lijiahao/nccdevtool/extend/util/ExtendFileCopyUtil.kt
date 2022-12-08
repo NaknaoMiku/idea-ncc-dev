@@ -54,7 +54,7 @@ class ExtendFileCopyUtil {
                 for (com in list) {
                     if (!com.endsWith(".xml") && !com.endsWith(".iml") && com != "META-INF") {
                         copyDir(
-                            contentRoots[0].path + File.separator + PROJECT_CONFIG_FILE_PATH,
+                            contentRoots[0].path + File.separator  + com + PROJECT_CONFIG_FILE_PATH,
                             homePath + HOME_CONFIG_FILE_PATH
                         )
                     }
