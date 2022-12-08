@@ -1,10 +1,10 @@
 package com.summer.lijiahao.nccdevtool.module.util
 
 import com.intellij.openapi.module.Module
-import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.libraries.Library
 import com.intellij.openapi.util.Pair
+import com.summer.lijiahao.nccdevtool.base.util.ProjectManager
 import com.summer.lijiahao.nccdevtool.devconfig.util.libraries.LibrariesUtil
 import com.summer.lijiahao.nccdevtool.module.NCCModuleType
 import java.io.File
@@ -29,7 +29,7 @@ class ModuleUtil {
             moduleType = MODULE_TYPE_MAVEN
         }
         val libraries: Array<Library> = LibrariesUtil.getProjectLibraries(project)
-        val module: Module? = ModuleManager.getInstance(project).findModuleByName(file.name)
+        val module: Module? = ProjectManager().getModule(project, file.name)
         module ?: let {
             //创建module
             val builder = NCCModuleType().createModuleBuilder()

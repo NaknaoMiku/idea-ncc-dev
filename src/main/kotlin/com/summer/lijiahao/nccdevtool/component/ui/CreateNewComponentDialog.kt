@@ -4,13 +4,13 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.Module
-import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.summer.lijiahao.nccdevtool.base.util.ConfigureFileUtil
+import com.summer.lijiahao.nccdevtool.base.util.ProjectManager
 import org.apache.commons.lang.StringUtils
 import java.io.File
 import java.text.MessageFormat
@@ -93,7 +93,7 @@ class CreateNewComponentDialog(event: AnActionEvent) : DialogWrapper(true) {
             util.outFile(manifest, newManifest, "utf-8", false)
 
             //添加source目录
-            val module: Module = ModuleManager.getInstance(event.project!!).findModuleByName(file.parentFile.name)!!
+            val module: Module = ProjectManager().getModule(event.project, file.parentFile.name)
             val modifiableModel = ModuleRootManager.getInstance(module).modifiableModel
             val contentEntry = modifiableModel.contentEntries[0]
             for (str in dirs) {

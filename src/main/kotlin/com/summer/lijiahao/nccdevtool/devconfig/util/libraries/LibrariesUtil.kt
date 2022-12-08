@@ -3,7 +3,6 @@ package com.summer.lijiahao.nccdevtool.devconfig.util.libraries
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.module.Module
-import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.roots.ModuleRootModificationUtil
@@ -14,6 +13,7 @@ import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VirtualFileManager
+import com.summer.lijiahao.nccdevtool.base.util.ProjectManager
 import com.summer.lijiahao.nccdevtool.devconfig.service.NCCloudEnvSettingService
 import java.io.*
 import java.util.jar.JarFile
@@ -144,7 +144,7 @@ class LibrariesUtil {
         }
 
         private fun setAllModuleLibrary(project: Project) {
-            val modules: Array<Module> = ModuleManager.getInstance(project).modules
+            val modules: Array<Module> = ProjectManager().getAllModules(project)
             val libraries: Array<Library> = getProjectLibraries(project)
             for (module in modules) {
                 val contentRoots = ModuleRootManager.getInstance(module).contentRoots
