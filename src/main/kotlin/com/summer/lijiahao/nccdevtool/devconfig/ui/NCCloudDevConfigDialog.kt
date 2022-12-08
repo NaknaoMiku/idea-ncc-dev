@@ -97,26 +97,26 @@ class NCCloudDevConfigDialog(event: AnActionEvent) : DialogWrapper(true) {
 
     private fun initListener() {
         //home路径选择按钮
-        homeSelBtn!!.addActionListener(SelectHomeListener(homeSelBtn!!, this))
-        setLibBtn!!.addActionListener(SetLibraryListener(this))
+        homeSelBtn?.addActionListener(SelectHomeListener(homeSelBtn!!, this))
+        setLibBtn?.addActionListener(SetLibraryListener(this))
 
         //数据源相关按钮
-        testBtn!!.addActionListener(TestConnectionListener(this))
-        setDevBtn!!.addActionListener(SetDevDataSourceListener(this))
-        setBaseBtn!!.addActionListener(SetBaseDataSourceListener(this))
-        copyBtn!!.addActionListener(CopyDataSourceListener(this))
-        delBtn!!.addActionListener(DeleteDataSourceListener(this))
+        testBtn?.addActionListener(TestConnectionListener(this))
+        setDevBtn?.addActionListener(SetDevDataSourceListener(this))
+        setBaseBtn?.addActionListener(SetBaseDataSourceListener(this))
+        copyBtn?.addActionListener(CopyDataSourceListener(this))
+        delBtn?.addActionListener(DeleteDataSourceListener(this))
 
         //数据源监听
-        dbBox!!.addItemListener(SelectDataSourceListener(this))
-        dbTypeBox!!.addItemListener(SelectDataTypeListener(this))
+        dbBox?.addItemListener(SelectDataSourceListener(this))
+        dbTypeBox?.addItemListener(SelectDataTypeListener(this))
 //        driverBox!!.addItemListener(DriverBoxListener(this))
 
-        mustBtn!!.addActionListener(SelectMustModuleListener(this))
-        selAllRBtn!!.addActionListener(SelectAllModuleListener(this))
-        cancelRBtn!!.addActionListener(SelectAllCancelModuleListener(this))
+        mustBtn?.addActionListener(SelectMustModuleListener(this))
+        selAllRBtn?.addActionListener(SelectAllModuleListener(this))
+        cancelRBtn?.addActionListener(SelectAllCancelModuleListener(this))
 
-        plaintext!!.addItemListener { e: ItemEvent ->
+        plaintext?.addItemListener { e: ItemEvent ->
             if (e.stateChange == ItemEvent.SELECTED) { //被选中
                 pwdText!!.echoChar = 0.toChar()
             } else {

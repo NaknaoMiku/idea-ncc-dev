@@ -11,7 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 class ModulesUtil {
     companion object {
-        private val defaultMustModules: LinkedHashSet<String> = linkedSetOf(
+        val defaultMustModules: LinkedHashSet<String> = linkedSetOf(
             "baseapp", "iuap", "opm", "platform", "pubapp", "pubapputil",
 
             "riaaam", "riaadp", "riaam", "riacc", "riadc", "riamm",

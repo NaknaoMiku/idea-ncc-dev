@@ -69,16 +69,103 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <moduleType id="NCCMODULE" implementationClass="com.summer.lijiahao.nccdevtool.module.NCCModuleType"/>
         <projectService
                 serviceImplementation="com.summer.lijiahao.nccdevtool.devconfig.service.NCCloudEnvSettingService"/>
     </extensions>
 
     <actions>
+
+        <action id="dev.module.conver" class="com.summer.lijiahao.nccdevtool.module.action.ConvertModuleAction"
+                text="转为ncc模块"
+                description="转为ncc模块" icon="AllIcons.Actions.ModuleDirectory">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="dev.module.newmodule" class="com.summer.lijiahao.nccdevtool.module.action.CreateNewNCModuleAction"
+                text="新建ncc模块"
+                description="新建ncc模块" icon="AllIcons.Actions.ModuleDirectory">
+            <add-to-group group-id="NewGroup" relative-to-action="NewModule" anchor="before"/>
+        </action>
+
+        <action id="dev.module.newcomponent"
+                class="com.summer.lijiahao.nccdevtool.component.action.CreateNCComponentAction"
+                text="新建ncc组件"
+                description="新建ncc组件" icon="AllIcons.Actions.ModuleDirectory">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="NewGroup" relative-to-action="NewModule" anchor="before"/>
+        </action>
+
+        <action id="dev.extend.copy" class="com.summer.lijiahao.nccdevtool.extend.action.CopyExtendFileToHomeAction"
+                text="复制鉴权文件到nchome"
+                description="复制鉴权文件到nchome">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+        <action id="copy.upm.copy" class="com.summer.lijiahao.nccdevtool.extend.action.CopyUpmFileToHomeAction"
+                text="复制upm文件到nchome"
+                description="复制upm文件到nchome">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+        <action id="dev.resources.copy"
+                class="com.summer.lijiahao.nccdevtool.extend.action.CopyResourcesFileToHomeAction"
+                text="复制resources文件到home" description="复制resources文件到home">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="dev.set.libraries" class="com.summer.lijiahao.nccdevtool.extend.action.LibrariesSetAction"
+                popup="true"
+                text="设置nc类路径" description="设置nc类路径">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="dev.application.server.create" class="com.summer.lijiahao.nccdevtool.debug.action.NewServerApplicationAction"
+                text="Server Application" description="Server application"/>
+        <action id="dev.application.client.create" class="com.summer.lijiahao.nccdevtool.debug.action.NewClientApplicationAction"
+                text="Client Application" description="Client application"/>
+
+        <group id="dev.debug" text="调试..." popup="true" description="调试..."
+               class="com.summer.lijiahao.nccdevtool.debug.action.AppGroupAction">
+            <reference id="dev.application.server.create"/>
+<!--            <reference id="dev.application.client.create"/>-->
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </group>
+
         <action id="dev.config" class="com.summer.lijiahao.nccdevtool.devconfig.ui.NCCloudDevConfigAction" popup="true"
                 text="开发配置"
                 description="开发配置" icon="AllIcons.Actions.Colors">
             <!--添加到tool菜单显示-->
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
+
+        <action id="dev.patcher.export" class="com.summer.lijiahao.nccdevtool.patch.action.BuildPatcherAction"
+                text="导出NCC补丁"
+                description="导出NMC格式补丁">
+            <add-to-group group-id="ChangesViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="Vcs.Log.ChangesBrowser.Popup" anchor="last"/>
+        </action>
+
+        <action id="dev.openHome" class="com.summer.lijiahao.nccdevtool.menu.action.OpenNCHomeAction" text="Home"
+                description="Home"/>
+        <action id="dev.openConfig" class="com.summer.lijiahao.nccdevtool.menu.action.OpenNCConfigAction" text="NC配置"
+                description="NC配置"/>
+        <action id="dev.dictionary" class="com.summer.lijiahao.nccdevtool.menu.action.OpenDictionaryAction" text="数据字典"
+                description="数据字典"/>
+        <action id="dev.openNccdev" class="com.summer.lijiahao.nccdevtool.menu.action.OpenNccdevAction" text="开发者社区"
+                description="开发者社区"/>
+        <action id="dev.openapi" class="com.summer.lijiahao.nccdevtool.menu.action.OpenApiAction" text="OpenApi文档"
+                description="OpenApi文档"/>
+        <action id="dev.useHelp" class="com.summer.lijiahao.nccdevtool.menu.action.OpenUseHelpAction" text="使用帮助"
+                description="使用帮助"/>
+
+        <group id="DevTools" text="集成配置" popup="true">
+            <reference id="dev.openHome"/>
+            <reference id="dev.openConfig"/>
+            <reference id="dev.dictionary"/>
+            <reference id="dev.openNccdev"/>
+            <reference id="dev.openapi"/>
+            <reference id="dev.useHelp"/>
+            <add-to-group group-id="MainMenu" anchor="before" relative-to-action="HelpMenu"/>
+        </group>
     </actions>
 </idea-plugin>

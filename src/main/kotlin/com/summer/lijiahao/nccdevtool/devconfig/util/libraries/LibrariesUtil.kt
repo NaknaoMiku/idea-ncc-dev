@@ -398,5 +398,17 @@ class LibrariesUtil {
             }
             return false
         }
+
+        fun setModuleLibrary(project: Project?, module: Module) {
+            val libraries = getProjectLibraries(project!!)
+            if (libraries.isEmpty()) {
+                throw Exception("this project is not set ncc libraries!")
+            }
+            for (library in libraries) {
+                if (ModuleRootManager.getInstance(module).modifiableModel.findLibraryOrderEntry(library) == null) {
+                    ModuleRootModificationUtil.addDependency(module, library)
+                }
+            }
+        }
     }
 }
