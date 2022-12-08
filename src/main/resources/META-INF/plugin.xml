@@ -69,9 +69,14 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="ncc-dev-tools-bmonkeyk" displayType="BALLOON"/>
         <moduleType id="NCCMODULE" implementationClass="com.summer.lijiahao.nccdevtool.module.NCCModuleType"/>
         <projectService
                 serviceImplementation="com.summer.lijiahao.nccdevtool.devconfig.service.NCCloudEnvSettingService"/>
+
+        <projectService serviceImplementation="com.summer.lijiahao.nccdevtool.opanapi.service.OpenApiConfigService"/>
+        <toolWindow id="OpenApi Tool" secondary="false" anchor="right" icon="AllIcons.Debugger.Overhead"
+                    factoryClass="com.summer.lijiahao.nccdevtool.opanapi.OpenApiToolWin"/>
     </extensions>
 
     <actions>
