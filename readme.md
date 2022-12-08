@@ -1,6 +1,6 @@
 # 适用于在IntelliJ IDEA上开发用友NCC的插件
 
-##NOTE
+## NOTE
 插件已采用kotlin重构，后续插件功能的新增及BUG修复，优先更新kotlin版本，重构后的代码在仓库kotlin分支
 
 ### 功能
