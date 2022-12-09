@@ -9,6 +9,7 @@ import com.summer.lijiahao.nccdevtool.devconfig.util.datasource.DataSource
 import com.summer.lijiahao.nccdevtool.devconfig.util.datasource.DataSourceUtil
 import java.awt.event.ActionEvent
 import java.sql.Connection
+import java.sql.SQLException
 import java.sql.Statement
 
 class TestConnectionListener(dialog: NCCloudDevConfigDialog) : AbstractListener(dialog) {
@@ -36,10 +37,13 @@ class TestConnectionListener(dialog: NCCloudDevConfigDialog) : AbstractListener(
                     isSuccess = true
                 }
             }
+        } catch (e: SQLException) {
+            isSuccess = false
+            msg = e.cause?.message
         } catch (e: Exception) {
+            isSuccess = false
             msg = e.message
         }
-
 
         if (isSuccess) {
             Messages.showMessageDialog("Test Succeed!", "tips", Messages.getInformationIcon())

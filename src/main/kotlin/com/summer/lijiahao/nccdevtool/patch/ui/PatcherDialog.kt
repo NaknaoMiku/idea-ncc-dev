@@ -41,6 +41,10 @@ class PatcherDialog(event: AnActionEvent) : DialogWrapper(true) {
         logPanel!!.isVisible = false
         patcherName!!.isEditable = true
         isModal = true
+
+        val envSettingService: NCCloudEnvSettingService = NCCloudEnvSettingService.getInstance(event)
+        savePath?.text = envSettingService.lastPatcherPath
+
         initListener()
 
         return contentPane!!

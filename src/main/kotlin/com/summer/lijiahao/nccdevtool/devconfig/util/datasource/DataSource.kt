@@ -35,9 +35,9 @@ class DataSource(
     var conInUse: String
     var conIdle: String
 
-    var url: String
-    var port: String
-    var dbName: String
+    var url: String = ""
+    var port: String = ""
+    var dbName: String = ""
     val jdbcType: String
 
     init {
@@ -57,10 +57,11 @@ class DataSource(
         this.conInUse = conInUse
         this.conIdle = conIdle
 
-        this.dbName = databaseUrl.split("/")[1]
-        val urlAndPort = databaseUrl.split("@")[1].split("/")[0].split(":")
-        this.url = urlAndPort[0]
-        this.port = urlAndPort[1]
+        val info : Array<String?> = CreateDataUrlUtil.getJDBCInfo(databaseUrl)
+
+        info[0]?.let { this.url = it }
+        info[1]?.let { this.port = it }
+        info[2]?.let { this.dbName = it }
         this.jdbcType = databaseUrl.split(":")[0]
     }
 }

@@ -12,7 +12,7 @@ class DatabaseDriverUtil {
         private const val PATH = "/ierp/bin/dbdriverset.xml"
         var databaseTypeMap: LinkedHashMap<String, LinkedHashSet<String>> = linkedMapOf()
 
-        fun getInitDataSourceType(dialog: NCCloudDevConfigDialog, type: String) {
+        fun getInitDataSourceType(dialog: NCCloudDevConfigDialog, type: String) : DatabaseType? {
             val homePath = dialog.homeText!!.text
 
             if (homePath.isNotBlank()) {
@@ -38,7 +38,13 @@ class DatabaseDriverUtil {
                     }
                     databases[databaseType] = DatabaseType(databaseType, drivers)
                 }
+
+                return databases[type]
+            } else {
+                return null
             }
+
+
         }
 
         /**
