@@ -57,7 +57,7 @@ class DataSource(
         this.conInUse = conInUse
         this.conIdle = conIdle
 
-        val info : Array<String?> = CreateDataUrlUtil.getJDBCInfo(databaseUrl)
+        val info: Array<String?> = CreateDataUrlUtil.getJDBCInfo(databaseUrl)
 
         info[0]?.let { this.url = it }
         info[1]?.let { this.port = it }

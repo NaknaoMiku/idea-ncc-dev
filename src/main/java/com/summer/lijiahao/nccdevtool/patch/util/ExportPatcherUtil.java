@@ -473,7 +473,7 @@ public class ExportPatcherUtil {
         String className = "";
         if (fromFile.getName().endsWith(TYPE_JAVA)) {
             className = patchPath.split(Matcher.quoteReplacement(PATH_SRC))[1].replace(TYPE_JAVA, TYPE_CLASS);
-        } else if(fromFile.getName().endsWith(TYPE_KOTLIN)) {
+        } else if (fromFile.getName().endsWith(TYPE_KOTLIN)) {
             className = patchPath.split(Matcher.quoteReplacement(PATH_SRC))[1].replace(TYPE_KOTLIN, TYPE_CLASS);
         } else {
             className = patchPath.split(Matcher.quoteReplacement(PATH_SRC))[1];

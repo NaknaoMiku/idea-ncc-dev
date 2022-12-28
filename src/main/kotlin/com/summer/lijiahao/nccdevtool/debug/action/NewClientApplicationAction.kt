@@ -12,7 +12,7 @@ class NewClientApplicationAction : AbstractAnAction() {
             CreatApplicationConfigurationUtil.createApplicationConfiguration(event, false)
             Messages.showInfoMessage("success", "Tips")
         } catch (e: Exception) {
-            Messages.showInfoMessage( e.message, "Error")
+            Messages.showInfoMessage(e.message, "Error")
         }
     }
 

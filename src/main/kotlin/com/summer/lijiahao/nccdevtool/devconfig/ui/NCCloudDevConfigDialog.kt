@@ -135,8 +135,8 @@ class NCCloudDevConfigDialog(event: AnActionEvent) : DialogWrapper(true) {
         selTable?.model = selectedModel
 
         this.selTable?.let {
-            val tableMode : TableColumnModel = it.columnModel
-            val noColumn : TableColumn = tableMode.getColumn(0)
+            val tableMode: TableColumnModel = it.columnModel
+            val noColumn: TableColumn = tableMode.getColumn(0)
             noColumn.preferredWidth = 5
             noColumn.width = 5
         }

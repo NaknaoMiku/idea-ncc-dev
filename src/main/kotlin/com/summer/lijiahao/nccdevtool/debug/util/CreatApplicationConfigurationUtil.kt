@@ -88,7 +88,7 @@ class CreatApplicationConfigurationUtil {
                 var exModulesStr: String = NCCloudEnvSettingService.getInstance(event).ex_modules
 
                 val modules = exModulesStr.split(",")
-                if(modules.isNotEmpty()) {
+                if (modules.isNotEmpty()) {
                     exModulesStr = ""
                     for (module in modules) {
                         if (ModulesUtil.defaultMustModules.contains(module)) {
@@ -97,7 +97,7 @@ class CreatApplicationConfigurationUtil {
                     }
                 }
                 if (exModulesStr.isNotEmpty()) {
-                    exModulesStr = exModulesStr.substring(0,exModulesStr.length -1)
+                    exModulesStr = exModulesStr.substring(0, exModulesStr.length - 1)
                 }
                 NCCloudEnvSettingService.getInstance(event).ex_modules = exModulesStr
 
@@ -113,21 +113,19 @@ class CreatApplicationConfigurationUtil {
                     timeZone = "GMT+8"
                 }
                 envs["FIELD_TIMEZONE"] = timeZone
-                conf.setVMParameters(
-                    "-Dnc.exclude.modules=\$FIELD_EX_MODULES$\n" +
-                            "-Dnc.runMode=develop\n" +
-                            "-Dnc.server.location=\$FIELD_NC_HOME$\n" +
-                            "-DEJBConfigDir=\$FIELD_NC_HOME$/ejbXMLs\n" +
-                            "-DExtServiceConfigDir=\$FIELD_NC_HOME$/ejbXMLs\n" +
-                            "-Duap.hotwebs=\$FIELD_HOTWEBS$\n" +
-                            "-Duap.disable.codescan=false\n" +
-                            "-Xmx1024m\n" +
-                            "-XX:MetaspaceSize=128m\n" +
-                            "-XX:MaxMetaspaceSize=512m\n" +
-                            "-Dorg.owasp.esapi.resources=\$FIELD_NC_HOME$/ierp/bin/esapi\n" +
-                            "-Dfile.encoding=\$FIELD_ENCODING$\n" +  // 默认添加时区
-                            "-Duser.timezone=\$FIELD_TIMEZONE$\n"
-                )
+                conf.vmParameters = "-Dnc.exclude.modules=\$FIELD_EX_MODULES$\n" +
+                        "-Dnc.runMode=develop\n" +
+                        "-Dnc.server.location=\$FIELD_NC_HOME$\n" +
+                        "-DEJBConfigDir=\$FIELD_NC_HOME$/ejbXMLs\n" +
+                        "-DExtServiceConfigDir=\$FIELD_NC_HOME$/ejbXMLs\n" +
+                        "-Duap.hotwebs=\$FIELD_HOTWEBS$\n" +
+                        "-Duap.disable.codescan=false\n" +
+                        "-Xmx1024m\n" +
+                        "-XX:MetaspaceSize=128m\n" +
+                        "-XX:MaxMetaspaceSize=512m\n" +
+                        "-Dorg.owasp.esapi.resources=\$FIELD_NC_HOME$/ierp/bin/esapi\n" +
+                        "-Dfile.encoding=\$FIELD_ENCODING$\n" +  // 默认添加时区
+                        "-Duser.timezone=\$FIELD_TIMEZONE$\n"
             } else {
                 // ip和端口号读取home中的，没有就取默认值127.0.0.1:80
 //                var ipAndPort = IpAndPort()

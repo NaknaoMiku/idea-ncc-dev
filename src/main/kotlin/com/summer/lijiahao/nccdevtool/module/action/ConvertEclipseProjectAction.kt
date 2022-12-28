@@ -62,16 +62,19 @@ class ConvertEclipseProjectAction : AbstractAnAction() {
         val root = componentDoc.rootElement
         val businessComponets = root.elements("BusinessComponet")
 
+        val componetSet: MutableSet<String> = mutableSetOf()
         for (businessComponet in businessComponets) {
             val componetName = businessComponet.attribute("name").text
-
-            for (srcDir in srcDirs) {
-                if (File(modulePath + componetName + File.separator + srcDir).exists()) {
-                    val classpathentry: Element = classpathElement.addElement("classpathentry")
-                    classpathentry.addAttribute("kind", "src")
-                    classpathentry.addAttribute("output", "$componetName/classes")
-                    classpathentry.addAttribute("path", "$componetName/$srcDir")
+            if (!componetSet.contains(componetName)) {
+                for (srcDir in srcDirs) {
+                    if (File(modulePath + componetName + File.separator + srcDir).exists()) {
+                        val classpathentry: Element = classpathElement.addElement("classpathentry")
+                        classpathentry.addAttribute("kind", "src")
+                        classpathentry.addAttribute("output", "$componetName/classes")
+                        classpathentry.addAttribute("path", "$componetName/$srcDir")
+                    }
                 }
+                componetSet.add(componetName)
             }
         }
 

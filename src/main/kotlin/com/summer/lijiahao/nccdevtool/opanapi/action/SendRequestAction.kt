@@ -42,7 +42,7 @@ class SendRequestAction(openApiTool: OpenApiTool) : DumbAwareAction("发送", "�
             Messages.showErrorDialog("请求路径以nccloud开头", "错误")
             return
         }
-        val util: IAPIUtils= if (isNewVersion!!) {
+        val util: IAPIUtils = if (isNewVersion!!) {
             APICurUtils()
         } else {
             APIOldUtils()
@@ -53,7 +53,7 @@ class SendRequestAction(openApiTool: OpenApiTool) : DumbAwareAction("发送", "�
             openApiConfig.usercode, null
         )
         try {
-            val token: String = util.getToken()
+            val token: String = util.token
             util.setApiUrl(requestUrl)
             val result: String = util.getAPIRetrun(token, requestJson)
             if (StringUtils.isNotBlank(result)) {

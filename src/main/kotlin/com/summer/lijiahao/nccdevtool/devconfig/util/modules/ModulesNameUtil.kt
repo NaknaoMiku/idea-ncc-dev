@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets
 
 class ModulesNameUtil {
 
-    fun getModuleNameFromXML() : LinkedHashMap<String, String>  {
+    fun getModuleNameFromXML(): LinkedHashMap<String, String> {
         val allModuleName: LinkedHashMap<String, String> = linkedMapOf()
         val reader = SAXReader()
         // 解析xml得到Document

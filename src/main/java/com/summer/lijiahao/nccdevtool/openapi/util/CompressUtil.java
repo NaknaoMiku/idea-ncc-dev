@@ -87,8 +87,8 @@ public class CompressUtil {
 
         byte[] input = Base64Util.decryptBASE64(source);
 
-        try(ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ByteArrayInputStream in = new ByteArrayInputStream(input)) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+             ByteArrayInputStream in = new ByteArrayInputStream(input)) {
 
 
             GZIPInputStream ungzip = new GZIPInputStream(in);

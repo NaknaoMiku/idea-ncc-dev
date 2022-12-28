@@ -120,7 +120,7 @@ class ModulesUtil {
                     selectedModuleStr = "$selectedModuleStr$moduleName,"
                 }
                 if (selectedModuleStr.isNotEmpty()) {
-                    selectedModuleStr = selectedModuleStr.substring(0,selectedModuleStr.length -1)
+                    selectedModuleStr = selectedModuleStr.substring(0, selectedModuleStr.length - 1)
                 }
 
                 NCCloudEnvSettingService.getInstance(dialog.event).ex_modules = selectedModuleStr

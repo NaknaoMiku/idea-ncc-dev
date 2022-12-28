@@ -4,7 +4,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.ui.DialogWrapper
 import com.summer.lijiahao.nccdevtool.opanapi.service.OpenApiConfig
 import com.summer.lijiahao.nccdevtool.opanapi.service.OpenApiConfigService
-import javax.swing.*
+import javax.swing.JComponent
+import javax.swing.JPanel
+import javax.swing.JTextArea
+import javax.swing.JTextField
 
 class OpenapiSettingDialog(event: AnActionEvent) : DialogWrapper(true) {
     private var event: AnActionEvent

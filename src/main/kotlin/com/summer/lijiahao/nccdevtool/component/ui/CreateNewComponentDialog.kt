@@ -55,7 +55,7 @@ class CreateNewComponentDialog(event: AnActionEvent) : DialogWrapper(true) {
                 Messages.showErrorDialog("The display must be using letter only!", "Error")
                 return
             }
-            val modulePath = event!!.getData(CommonDataKeys.VIRTUAL_FILE)!!.path
+            val modulePath = event.getData(CommonDataKeys.VIRTUAL_FILE)!!.path
             val file = File(modulePath + File.separator + name)
             if (file.exists()) {
                 Messages.showErrorDialog("Componet is exists! please replace name !", "Error")

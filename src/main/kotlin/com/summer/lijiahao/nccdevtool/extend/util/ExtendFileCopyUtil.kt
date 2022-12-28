@@ -54,7 +54,7 @@ class ExtendFileCopyUtil {
                 for (com in list) {
                     if (!com.endsWith(".xml") && !com.endsWith(".iml") && com != "META-INF") {
                         copyDir(
-                            contentRoots[0].path + File.separator  + com + PROJECT_CONFIG_FILE_PATH,
+                            contentRoots[0].path + File.separator + com + PROJECT_CONFIG_FILE_PATH,
                             homePath + HOME_CONFIG_FILE_PATH
                         )
                     }
@@ -186,7 +186,7 @@ class ExtendFileCopyUtil {
             if (file.isDirectory) {
                 val childrenFile = file.listFiles() ?: return fileUrlSet
                 for (childFile in childrenFile) {
-                    fileUrlSet.addAll(getFileUrl(childFile.path)!!)
+                    fileUrlSet.addAll(getFileUrl(childFile.path))
                 }
             } else {
                 if ((filePath.endsWith(".rest") || filePath.endsWith(".upm")) && File(filePath).parent.endsWith("META-INF")) {

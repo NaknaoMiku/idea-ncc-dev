@@ -17,7 +17,7 @@ import java.util.Map;
 public class APICurUtils
         implements IAPIUtils {
     private final String secret_level = "L0";
-    private String grant_type = "client";
+    private final String grant_type = "client";
     private String apiUrl;
     private String pubKey;
 

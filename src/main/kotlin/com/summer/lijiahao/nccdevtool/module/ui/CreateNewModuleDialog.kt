@@ -89,7 +89,7 @@ class CreateNewModuleDialog(event: AnActionEvent) : DialogWrapper(true) {
             util.outFile(file, content, "gb2312", false)
 
             //设置类路径
-            LibrariesUtil.setModuleLibrary(project, module!!);
+            LibrariesUtil.setModuleLibrary(project, module!!)
         } catch (e: Exception) {
             Messages.showErrorDialog(e.message, "Error")
         }

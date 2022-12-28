@@ -12,7 +12,7 @@ class ChooseFileListener(dialog: PatcherDialog) : AbstractListener(dialog) {
         fileChooser.fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
         val flag = fileChooser.showOpenDialog(null)
         if (flag == JFileChooser.APPROVE_OPTION) {
-            dialog.savePath?.setText(fileChooser.selectedFile.absolutePath)
+            dialog.savePath?.text = fileChooser.selectedFile.absolutePath
         }
     }
 }

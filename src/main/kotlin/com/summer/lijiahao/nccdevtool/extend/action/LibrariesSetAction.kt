@@ -12,7 +12,7 @@ class LibrariesSetAction : AbstractAnAction() {
             val flag = isNCModule(event)
             if (flag) {
                 //设置类路径
-                LibrariesUtil.setModuleLibrary(event.project, event.getData(LangDataKeys.MODULE)!!);
+                LibrariesUtil.setModuleLibrary(event.project, event.getData(LangDataKeys.MODULE)!!)
                 Messages.showInfoMessage("success", "Tips")
             }
         } catch (e: Exception) {
