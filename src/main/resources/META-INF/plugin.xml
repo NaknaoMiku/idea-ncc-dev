@@ -89,7 +89,13 @@
 
         <action id="dev.module.conver" class="com.summer.lijiahao.nccdevtool.module.action.ConvertModuleAction"
                 text="转为ncc模块"
-                description="转为ncc模块" icon="AllIcons.Actions.ModuleDirectory">
+                description="转为ncc模块" icon="AllIcons.Providers.Eclipse">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+
+        <action id="dev.module.eclipse" class="com.summer.lijiahao.nccdevtool.module.action.ConvertEclipseProjectAction"
+                text="转为eclipse项目"
+                description="转为eclipse项目" icon="AllIcons.Actions.ModuleDirectory">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
 

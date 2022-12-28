@@ -67,7 +67,7 @@ class DataSourcePwdAESEncodeUtil {
 
         private fun generateKey(homePath: String): SecretKeySpec {
             val keySpec: SecretKeySpec = if (AESEncode.query(homePath) != null) {
-                SecretKeySpec(Objects.requireNonNull(parseHexStr2Byte(AESEncode.query(homePath))), "AES")
+                SecretKeySpec(parseHexStr2Byte(AESEncode.query(homePath)), "AES")
             } else {
                 val keysecByte = AESGeneratorKey.genBindIpKey()
                 AESEncode.insert(parseByte2HexStr(keysecByte), homePath)
